@@ -1,9 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Note_screen">
+    android:id="@+id/noteScreen"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-</android.support.constraint.ConstraintLayout>
+    <!-- Scroll View added so tool bar shift up with keyboard -->
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></ScrollView>
+    <include
+        android:id="@+id/bottom_toolbar"
+        layout="@layout/note_screen_bottom_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        />
+    <EditText
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="12dp"
+        android:gravity="left"
+        android:hint="Title"
+        android:textSize="30dp"></EditText>
+
+    <EditText
+        android:id="@+id/noteText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/toolbar"
+        android:layout_below="@+id/titleText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginHorizontal="12dp"
+        android:background="@android:color/transparent"
+        android:gravity="start|top"
+        android:hint="Add a note..." />
+
+
+
+</RelativeLayout>
