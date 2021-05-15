@@ -65,7 +65,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         inflater.inflate(R.menu.open_note_bottom_sheet, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -73,7 +72,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 Open_Bottom_Sheet_Setting();
                 return true;
             case android.R.id.home:
-                saveData();
                 finish();
                 return true;
             default:
@@ -92,7 +90,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(NOTE_SCREEN_COLOR,hexColor);
         editor.apply();
-
         saveNote();
     }
     public void loadData()
@@ -102,9 +99,9 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     }
     public void updateData()
     {
+        loadNote();
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(Color.parseColor(note_screen_color));
-        loadNote();
     }
     public void saveNote()
     {
@@ -209,6 +206,9 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 break;
             case "Orange":
                 view.setBackgroundColor(Color.parseColor("#F2994A"));
+                break;
+            case "White":
+                view.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 break;
             default:
                 break;
