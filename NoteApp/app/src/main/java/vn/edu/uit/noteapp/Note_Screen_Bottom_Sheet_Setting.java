@@ -26,6 +26,7 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
     Button greenButton;
     Button yellowButton;
     Button orangeButton;
+    Button whiteButton;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,6 +39,16 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
         greenButton = v.findViewById(R.id.change_bg_green);
         yellowButton = v.findViewById(R.id.change_bg_yellow);
         orangeButton = v.findViewById(R.id.change_bg_orange);
+        whiteButton = v.findViewById(R.id.change_bg_white);
+
+        whiteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.OnColorButtonClicked("White");
+                outlineButton(whiteButton);
+                dismiss();
+            }
+        });
 
         redButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +92,6 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
                 dismiss();
             }
         });
-
 
         return v;
     }
