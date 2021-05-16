@@ -52,7 +52,7 @@
         <ImageView
             android:layout_width="39dp"
             android:layout_height="36dp"
-            android:src="@drawable/key_icon"></ImageView>
+            android:src="@drawable/ic_baseline_vpn_key_24"></ImageView>
 
         <TextView
             android:layout_width="345dp"

@@ -38,6 +38,6 @@
             android:layout_toRightOf="@+id/item_notebookscreen"
             android:backgroundTint="@color/white"
             android:layout_weight="1"
-            android:src="@drawable/menu_item_recycler"></ImageButton>
+            android:src="@drawable/ic_baseline_more_vert_24"></ImageButton>
     </LinearLayout>
 </RelativeLayout>
