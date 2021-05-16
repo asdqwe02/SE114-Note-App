@@ -1,23 +1,29 @@
 package vn.edu.uit.noteapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -37,6 +43,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
 
     EditText title_Text;
     EditText note_Text;
+    ImageButton show_CheckBox;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +56,16 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
 
         title_Text=findViewById(R.id.titleText);
         note_Text=findViewById(R.id.noteText);
+        show_CheckBox=findViewById(R.id.show_checkbox);
+
+        show_CheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (note_Text.getVisibility()==View.VISIBLE)
+                    note_Text.setVisibility(View.INVISIBLE);
+                else note_Text.setVisibility(View.VISIBLE);
+            }
+        });
 
         loadData();
         updateData();
@@ -72,6 +89,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 Open_Bottom_Sheet_Setting();
                 return true;
             case android.R.id.home:
+                saveData();
                 finish();
                 return true;
             default:
@@ -184,11 +202,23 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
 
         }
     }
+    public void deleteNote(){
+        File dir = getFilesDir();
+        File TITLE_file = new File(dir,TITLE_FILE_NAME);
+        File NOTE_file = new File(dir, NOTE_FILE_NAME);
+        boolean TITLE_deleted = TITLE_file.delete();
+        boolean NOTE_deleted = NOTE_file.delete();
+        //title_Text.setText("");
+        //note_Text.setText("");
+        SharedPreferences settings = getSharedPreferences(SHARE_PREFS,MODE_PRIVATE);
+        settings.edit().clear().commit();
+        finish();
+    }
     @Override
-    public void OnColorButtonClicked(String color) {
+    public void OnBottomSheet_ButtonClicked(String text) {
         View view = this.getWindow().getDecorView();
         ActionBar actionBar=getSupportActionBar();
-        switch (color){
+        switch (text){
             case "Red":
                 view.setBackgroundColor(Color.parseColor("#EB5757"));
                 //actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#EB5757")));
@@ -210,14 +240,17 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             case "White":
                 view.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 break;
+            case "Move To Trash":
+                deleteNote();
+                break;
             default:
                 break;
         }
     }
-    public void onStop () {
-        //do your stuff here
+    @Override
+    public void onBackPressed() {
+        // your code.
         saveData();
-
-        super.onStop();
+        super.onBackPressed();
     }
 }
