@@ -9,15 +9,23 @@
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
     <!-- Scroll View added so tool bar shift up with keyboard -->
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></ScrollView>
+
     <include
         android:id="@+id/bottom_toolbar"
         layout="@layout/note_screen_bottom_toolbar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
+        />
+    <include
+        android:id="@+id/checkbox_recyclerview"
+        layout="@layout/checkbox_recyclerview"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_below="@+id/titleText"
+        android:layout_above="@id/bottom_toolbar"
+
         />
     <EditText
         android:id="@+id/titleText"
@@ -28,20 +36,22 @@
         android:layout_marginHorizontal="12dp"
         android:gravity="left"
         android:hint="Title"
+        android:background="@android:color/transparent"
         android:textSize="30dp"></EditText>
 
     <EditText
         android:id="@+id/noteText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/toolbar"
         android:layout_below="@+id/titleText"
+        android:layout_above="@id/bottom_toolbar"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginHorizontal="12dp"
         android:background="@android:color/transparent"
         android:gravity="start|top"
-        android:hint="Add a note..." />
+        android:hint="Add a note..."></EditText>
+
 
 
 

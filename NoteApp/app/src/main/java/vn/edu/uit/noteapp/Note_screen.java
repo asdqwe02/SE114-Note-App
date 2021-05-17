@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,6 +22,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,6 +32,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom_Sheet_Setting.BottomSheetListener  {
 
@@ -40,6 +44,10 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     //shared preferences
     public static final String SHARE_PREFS = "sharedPrefs";
     public static final String NOTE_SCREEN_COLOR = "note_screen_color";
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     EditText title_Text;
     EditText note_Text;
@@ -61,12 +69,36 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         show_CheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (note_Text.getVisibility()==View.VISIBLE)
+                if (note_Text.getVisibility()==View.VISIBLE && mRecyclerView.getVisibility()==View.INVISIBLE){
                     note_Text.setVisibility(View.INVISIBLE);
-                else note_Text.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
+                else {
+                    note_Text.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.INVISIBLE);
+                }
+
             }
         });
 
+        //handling checkbox recyclerview
+        ArrayList<Checkbox_recyclerview_items> exampleList= new ArrayList<>();
+        exampleList.add(new Checkbox_recyclerview_items("text 1",false));
+        exampleList.add(new Checkbox_recyclerview_items("text 2",false));
+        exampleList.add(new Checkbox_recyclerview_items("text 3",false));
+        exampleList.add(new Checkbox_recyclerview_items("text 4",false));
+
+        mRecyclerView = findViewById(R.id.checkbox_recyclerview_layout);
+        mRecyclerView.setHasFixedSize(true); // if recycler view don't change set this to true note: will delete later
+        mLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new Checkbox_recyclerview_adapter(exampleList);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setVisibility(View.INVISIBLE);
+
+
+        //share preferences and save txt file
         loadData();
         updateData();
     }
