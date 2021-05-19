@@ -45,8 +45,8 @@ public class NoteBookScreenn extends AppCompatActivity {
     {
         item_model.add(new Model_Item("new"));
         item_model.add(new Model_Item("test"));
-
-
+        item_model.add(new Model_Item("Work"));
+        item_model.add(new Model_Item("Study"));
     }
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

@@ -18,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:paddingLeft="10dp"
             android:src="@drawable/notebook_icon"></ImageView>
 
         <TextView
@@ -27,14 +28,16 @@
             android:layout_toRightOf="@id/icon_notebook"
             android:layout_weight="10"
             android:gravity="center_horizontal"
+            android:paddingLeft="30dp"
+            android:text="Text"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="20dp"></TextView>
+            android:textSize="25dp"></TextView>
 
         <ImageButton
             android:id="@+id/menu_item"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/item_notebookscreen"
             android:backgroundTint="@color/white"
             android:layout_weight="1"
