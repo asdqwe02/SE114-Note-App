@@ -1,10 +1,9 @@
-package vn.edu.uit.noteapp;
+package vn.edu.uit.noteapp.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -12,29 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import vn.edu.uit.noteapp.Checkbox_recyclerview_items;
+import vn.edu.uit.noteapp.R;
+
 public class Checkbox_recyclerview_adapter extends RecyclerView.Adapter<Checkbox_recyclerview_adapter.Checkbox_recyclerview_ViewHolder> {
     private  ArrayList<Checkbox_recyclerview_items> cri_LIST;
 
-    public  class Checkbox_recyclerview_ViewHolder extends RecyclerView.ViewHolder{
+    public static class Checkbox_recyclerview_ViewHolder extends RecyclerView.ViewHolder{
         public CheckBox checkBox;
         public EditText checkBox_EditText;
         public Checkbox_recyclerview_ViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBox=itemView.findViewById(R.id.recycler_checkbox);
             checkBox_EditText=itemView.findViewById(R.id.checkbox_edittext);
-
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked)
-                    {
-                        cri_LIST.remove(getAdapterPosition());
-                        notifyItemRemoved(getAdapterPosition());
-                    }
-
-
-                }
-            });
         }
     }
 
