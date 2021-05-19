@@ -1,22 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.NoteApp" parent="Theme.AppCompat.Light">
+    <style name="Theme.NoteApp" parent="Theme.MaterialComponents.Light.Bridge">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorAccent">@color/teal_200</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="colorPrimaryDark">@color/dark_lue</item>
+        <item name="colorAccent">@color/teal_700</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="Theme.NoteApp.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+
+    <!--Atttemp to make rounded bottomsheet dialog-->
+    <!-- BottomSheet -->
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
     </style>
-    <style name="Theme.NoteApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="Theme.NoteApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <style name="BottomsheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/BottomsheetStyle</item>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_dialog</item>
     </style>
-    <style name="BottomsheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@android:color/transparent</item>
+
+    <!--floating button-->
+    <style name="labelStyle">
+
     </style>
 </resources>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/noteScreen"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+    <!-- Scroll View added so tool bar shift up with keyboard -->
+
+    <include
+        android:id="@+id/bottom_toolbar"
+        layout="@layout/note_screen_bottom_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        />
+    <include
+        android:id="@+id/checkbox_recyclerview"
+        layout="@layout/checkbox_recyclerview"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_below="@+id/titleText"
+        android:layout_above="@id/bottom_toolbar"
+
+        />
+    <EditText
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="12dp"
+        android:gravity="left"
+        android:hint="Title"
+        android:background="@android:color/transparent"
+        android:textSize="30dp"
+        android:layout_alignParentLeft="true"></EditText>
+
+    <EditText
+        android:id="@+id/noteText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleText"
+        android:layout_above="@id/bottom_toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginHorizontal="12dp"
+        android:background="@android:color/transparent"
+        android:gravity="start|top"
+        android:hint="Add a note..."
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"></EditText>
+
+</RelativeLayout>

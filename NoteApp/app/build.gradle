@@ -26,23 +26,28 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildFeatures {
-        viewBinding true
-    }
 }
 
 dependencies {
-
+    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
+    // get behavior for floating button
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    //Material Des
-    implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'androidx.navigation:navigation-fragment:2.3.0'
-    implementation 'androidx.navigation:navigation-ui:2.3.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    //Rounded Image View
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //recycler view
+    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+
+    //scalable size of screen
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.intuit.ssp:ssp-android:1.0.6'
+
+    //Material design
+    implementation 'com.google.android.material:material:1.3.0'
+
+    //Rounded imageview
     implementation 'com.makeramen:roundedimageview:2.3.0'
 }
