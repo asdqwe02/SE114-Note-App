@@ -12,7 +12,7 @@
         android:layout_margin="4dp"
         android:gravity="center"
         android:background="@android:color/transparent"
-        android:paddingLeft="4dp">
+        >
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/recycler_checkbox"
             android:layout_width="30dp"
