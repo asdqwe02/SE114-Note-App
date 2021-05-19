@@ -8,6 +8,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
+@Dao
 public interface NoteDao {
     @Query("SELECT * FROM notes ORDER BY id DESC")
     List<Note> getAllNotes();
