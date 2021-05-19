@@ -40,16 +40,17 @@
         >
         <Button
             android:id="@+id/add_Checkbox_RecyclerView_items_Btton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:background="@drawable/ic_baseline_add_circle_outline_24">
 
         </Button>
         <EditText
             android:id="@+id/add_Checkbox_RecyclerView_items_Etext"
             android:layout_width="match_parent"
-            android:paddingTop="4dp"
             android:layout_height="35dp"
+            android:layout_marginTop="4dp"
+            android:paddingTop="2dp"
             >
 
         </EditText>
