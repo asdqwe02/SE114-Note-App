@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_horizontal"
+            android:text="Display Setting"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold"></TextView>
+
+        <Switch
+            android:id="@+id/swdarkmode"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Dark Mode" />
+
+        <Switch
+            android:id="@+id/swnotidelete"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:checked="true"
+            android:text="Show notification before delete notes" />
+
+        <Switch
+            android:id="@+id/swaddlocation"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Add new note to the end" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_horizontal"
+            android:text="Reminder Setting"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold"></TextView>
+
+        <Switch
+            android:id="@+id/swnotionly"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Only notifications" />
+
+        <Switch
+            android:id="@+id/swsoundonly"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Only sounds" />
+
+        <Switch
+            android:id="@+id/swbothnoti"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Both notifications and sounds" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_horizontal"
+            android:text="Others"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/textViewpassword"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Passwords setting"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
