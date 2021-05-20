@@ -1,19 +1,14 @@
-package vn.edu.uit.noteapp;
+package vn.edu.uit.noteapp.activity;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-
 import android.os.Bundle;
-import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,6 +29,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import vn.edu.uit.noteapp.Checkbox_recyclerview_items;
+import vn.edu.uit.noteapp.R;
+import vn.edu.uit.noteapp.adapter.Checkbox_recyclerview_adapter;
+import vn.edu.uit.noteapp.bottomsheet.Note_Screen_Bottom_Sheet_Setting;
 
 public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom_Sheet_Setting.BottomSheetListener  {
 
@@ -172,6 +172,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 Open_Bottom_Sheet_Setting();
                 return true;
             case android.R.id.home:
+                Sync_EditText_With_CheckBox_RecyclerView();
                 saveData();
                 finish();
                 return true;
