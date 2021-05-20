@@ -86,8 +86,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 //link to notebook screen
             case R.id.nav_notebook:
-                //Intent intent = new Intent(MainActivity.this, Notebook_screen.class);
-                //startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, Notebook_Screen.class);
+                startActivity(intent);
                 break;
 
                 //link to reminder screen
@@ -98,13 +98,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 //link to settings screen
             case R.id.nav_settings:
-                //Intent intent = new Intent(MainActivity.this, Settings_screen.class);
-                //startActivity(intent);
+                intent = new Intent(MainActivity.this, Setting_Screen.class);
+                startActivity(intent);
                 break;
 
             //link to feedback screen
             case R.id.nav_feedback:
-                Intent intent = new Intent(MainActivity.this, Feedback_activity.class);
+                intent = new Intent(MainActivity.this, Feedback_activity.class);
                 startActivity(intent);
                 break;
         }

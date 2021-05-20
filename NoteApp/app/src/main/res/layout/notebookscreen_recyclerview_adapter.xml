@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/icon_notebook"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:src="@drawable/ic_add_to_notebook_24"></ImageView>
+
+        <TextView
+            android:id="@+id/item_notebookscreen"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/icon_notebook"
+            android:layout_weight="10"
+            android:gravity="center_horizontal"
+            android:paddingLeft="30dp"
+            android:text="Text"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="25dp"></TextView>
+
+        <ImageButton
+            android:id="@+id/menu_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/item_notebookscreen"
+            android:backgroundTint="@color/white"
+            android:layout_weight="1"
+            android:src="@drawable/ic_baseline_more_vert_24"></ImageButton>
+    </LinearLayout>
+</RelativeLayout>
