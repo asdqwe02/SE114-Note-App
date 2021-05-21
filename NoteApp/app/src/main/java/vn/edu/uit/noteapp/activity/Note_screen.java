@@ -1,9 +1,12 @@
 package vn.edu.uit.noteapp.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,14 +16,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,9 +31,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import vn.edu.uit.noteapp.Checkbox_recyclerview_items;
+import vn.edu.uit.noteapp.Note;
+import vn.edu.uit.noteapp.NotesDatabase;
+
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.Checkbox_recyclerview_adapter;
 import vn.edu.uit.noteapp.bottomsheet.Note_Screen_Bottom_Sheet_Setting;
@@ -52,12 +61,11 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    EditText title_Text;
-    EditText note_Text;
+    EditText title_Text, note_Text, Add_CRI_Etext;
     ImageButton show_CheckBox;
     Button Add_CRI_Btton;
-    EditText Add_CRI_Etext;
     LinearLayout Add_CRI_Views;
+    TextView noteDateTime;
 
     public ArrayList<Checkbox_recyclerview_items> checkboxRecyclerviewItems= new ArrayList<>();
     @Override
@@ -74,14 +82,19 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note_Text=findViewById(R.id.noteText);
         show_CheckBox=findViewById(R.id.show_checkbox);
 
+        noteDateTime=findViewById(R.id.noteDateTime);
+
         Add_CRI_Btton = findViewById(R.id.add_Checkbox_RecyclerView_items_Btton);
         Add_CRI_Etext = findViewById(R.id.add_Checkbox_RecyclerView_items_Etext);
         Add_CRI_Views = findViewById(R.id.add_CRI_views);
 
+        noteDateTime.setText(
+                new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault()).format(new Date())
+        );
+
         show_CheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 Sync_EditText_With_CheckBox_RecyclerView();
 
@@ -119,8 +132,9 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
 
 
         //share preferences and save txt file
-        loadData();
-        updateData();
+//        loadData();
+//        updateData();
+
     }
 
     public void Sync_EditText_With_CheckBox_RecyclerView()
@@ -172,15 +186,66 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 Open_Bottom_Sheet_Setting();
                 return true;
             case android.R.id.home:
-                Sync_EditText_With_CheckBox_RecyclerView();
-                saveData();
+
                 finish();
+                return true;
+            case R.id.SaveNote:
+                Sync_EditText_With_CheckBox_RecyclerView();
+                //saveData();
+                saveNote_V2();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
     }
+
+    public void saveNote_V2(){
+        //get Note background color to save
+        View view = this.getWindow().getDecorView();
+        Drawable background = view.getBackground();
+        int colorID = ((ColorDrawable) background).getColor();
+        String hexColor = String.format("#%06X", (0xFFFFFF & colorID));
+
+
+        //If title doesn't have text send an alert message
+        if (title_Text.getText().toString().trim().isEmpty()){
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("Missing note Title");
+            alertDialog.setMessage("Note need to have a Title");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+            return;
+        }
+
+        final Note note = new Note();
+        note.setTitle(title_Text.getText().toString());
+        note.setNoteText(note_Text.getText().toString());
+        note.setDateTime(noteDateTime.getText().toString());
+        note.setColor(hexColor);
+
+        class SaveNoteTask extends AsyncTask <Void, Void, Void>{
+            @Override
+            protected Void doInBackground(Void... voids) {
+                NotesDatabase.getNotesDatabase(getApplicationContext()).noteDao().insertNote(note);
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void aVoids) {
+                super.onPostExecute(aVoids);
+                Intent intent = new Intent();
+                setResult(RESULT_OK,intent); //return ra result code after activity end by saving
+                finish();
+            }
+        }
+        new SaveNoteTask().execute();
+    }
+
     public void saveData()
     {
         View view = this.getWindow().getDecorView();
@@ -285,7 +350,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             title_Text.setText(title_sb.toString());
             note_Text.setText(note_sb.toString());
 
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -351,7 +415,9 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     public void onBackPressed() {
         // your code.
         Sync_EditText_With_CheckBox_RecyclerView();
-        saveData();
+      
+//        saveData();
+        saveNote_V2();
         super.onBackPressed();
     }
 }

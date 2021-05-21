@@ -80,8 +80,4 @@
         android:background="@android:color/transparent"
         android:gravity="start|top"
         android:hint="Add a note..."></EditText>
-
-
-
-
 </RelativeLayout>

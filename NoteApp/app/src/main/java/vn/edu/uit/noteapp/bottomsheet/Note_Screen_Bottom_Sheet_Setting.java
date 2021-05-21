@@ -44,8 +44,6 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
         BOTTOM_SHEET_COlOR_BUTTON[4] = "OrangeButton";
         BOTTOM_SHEET_COlOR_BUTTON[5] = "WhiteButton";
 
-
-
         View v = inflater.inflate(R.layout.bottom_sheet_note_screen,container,false);
         redButton = v.findViewById(R.id.change_bg_red);
         blueButton = v.findViewById(R.id.change_bg_blue);
@@ -54,7 +52,6 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
         orangeButton = v.findViewById(R.id.change_bg_orange);
         whiteButton = v.findViewById(R.id.change_bg_white);
         moveNoteToTrashButton = v.findViewById(R.id.move_to_trash_button);
-
 
         //Delete button click event
         moveNoteToTrashButton.setOnClickListener(new View.OnClickListener() {
@@ -209,7 +206,6 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
         Drawable  Button_bg_with_check_mark = getContext().getResources().getDrawable(R.drawable.ic_check);
         button.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check,0,0,0);
     }
-
 
     //Doesn't work don't know why
     private void resetButtonBG() {
