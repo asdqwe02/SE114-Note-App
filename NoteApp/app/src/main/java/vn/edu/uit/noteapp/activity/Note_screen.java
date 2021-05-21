@@ -202,6 +202,14 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     }
 
     public void saveNote_V2(){
+        //get Note background color to save
+        View view = this.getWindow().getDecorView();
+        Drawable background = view.getBackground();
+        int colorID = ((ColorDrawable) background).getColor();
+        String hexColor = String.format("#%06X", (0xFFFFFF & colorID));
+
+
+        //If title doesn't have text send an alert message
         if (title_Text.getText().toString().trim().isEmpty()){
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("Missing note Title");
@@ -215,10 +223,12 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             alertDialog.show();
             return;
         }
+
         final Note note = new Note();
         note.setTitle(title_Text.getText().toString());
         note.setNoteText(note_Text.getText().toString());
         note.setDateTime(noteDateTime.getText().toString());
+        note.setColor(hexColor);
 
         class SaveNoteTask extends AsyncTask <Void, Void, Void>{
             @Override
@@ -230,7 +240,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             protected void onPostExecute(Void aVoids) {
                 super.onPostExecute(aVoids);
                 Intent intent = new Intent();
-                setResult(RESULT_OK,intent);
+                setResult(RESULT_OK,intent); //return ra result code after activity end by saving
                 finish();
             }
         }

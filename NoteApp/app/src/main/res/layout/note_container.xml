@@ -6,7 +6,8 @@
     android:layout_marginLeft="@dimen/_12sdp"
     android:layout_marginTop="@dimen/_12sdp"
     android:background="@drawable/note_container_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:elevation="@dimen/_4sdp">
 
     <TextView
         android:id="@+id/noteTitle"
