@@ -6,9 +6,5 @@
         android:id="@+id/Open_Bottom_Sheet_Setting"
         android:title="open bottom sheet"
         android:icon="@drawable/ic_more_vert"
-        android:id="@+id/SaveNote"
-        android:icon="@drawable/ic_baseline_check_circle_outline_24"
-        android:title="Saving Note"
-        app:showAsAction="always" />
         app:showAsAction="always" />
 </menu>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -182,7 +183,6 @@
                         android:text="  User interface  "
                         android:layout_marginLeft="10dp"
                         android:textSize="10sp" />
-                  
                 </LinearLayout>
 
                 <TextView
@@ -205,21 +205,18 @@
                         android:layout_height="wrap_content"
                         android:text="Of course"
                         android:buttonTint="@color/blue_light"/>
-                  
                     <RadioButton android:id="@+id/radio_notSure"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dp"
                         android:text="Not sure"
                         android:buttonTint="@color/blue_light"/>
-
                     <RadioButton android:id="@+id/radio_No"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dp"
                         android:text="No"
                         android:buttonTint="@color/blue_light"/>
-
                 </RadioGroup>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -271,4 +268,3 @@
             app:layout_constraintTop_toBottomOf="@+id/edittext"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
-
