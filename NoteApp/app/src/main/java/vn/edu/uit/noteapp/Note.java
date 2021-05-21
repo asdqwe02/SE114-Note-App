@@ -78,6 +78,6 @@ public class Note implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return title + " : " +dateTime;
+        return id + title + " : " + dateTime;
     }
 }
