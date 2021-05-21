@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#59E0E0E0"
+    android:theme="@style/ThemeOverlay.AppCompat.Light"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        >
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_image"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"></ImageButton>
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_add_alert"
+            android:background="?android:attr/selectableItemBackground"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            ></ImageButton>
+
+        <ImageButton
+            android:id="@+id/show_checkbox"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_crop_square"
+            android:background="?android:attr/selectableItemBackground"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+
+           ></ImageButton>
+
+
+    </LinearLayout>
+</Toolbar>
