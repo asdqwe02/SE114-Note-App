@@ -18,14 +18,14 @@
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/ic_image"
+            android:src="@drawable/ic_baseline_image_24"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"></ImageButton>
 
         <ImageButton
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:src="@drawable/ic_add_alert"
+            android:src="@drawable/ic_outline_add_alert_24"
             android:background="?android:attr/selectableItemBackground"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             ></ImageButton>
@@ -34,9 +34,10 @@
             android:id="@+id/show_checkbox"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_crop_square"
+            android:src="@drawable/ic_baseline_crop_square_24"
             android:background="?android:attr/selectableItemBackground"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+
            ></ImageButton>
 
         <TextView
@@ -45,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="date time" />
+
 
     </LinearLayout>
 </Toolbar>
