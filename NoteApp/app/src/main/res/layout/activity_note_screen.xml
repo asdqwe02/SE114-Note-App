@@ -42,7 +42,7 @@
             android:id="@+id/add_Checkbox_RecyclerView_items_Btton"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:background="@drawable/ic_baseline_add_circle_outline_24">
+            android:background="@drawable/ic_add_circle_outline">
 
         </Button>
         <EditText
@@ -80,6 +80,4 @@
         android:background="@android:color/transparent"
         android:gravity="start|top"
         android:hint="Add a note..."></EditText>
-
-
 </RelativeLayout>
