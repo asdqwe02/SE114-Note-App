@@ -1,9 +1,12 @@
 package vn.edu.uit.noteapp.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,10 +16,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +33,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import vn.edu.uit.noteapp.Checkbox_recyclerview_items;
 import vn.edu.uit.noteapp.Note;
@@ -54,12 +62,11 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    EditText title_Text;
-    EditText note_Text;
+    EditText title_Text, note_Text, Add_CRI_Etext;
     ImageButton show_CheckBox;
     Button Add_CRI_Btton;
-    EditText Add_CRI_Etext;
     LinearLayout Add_CRI_Views;
+    TextView noteDateTime;
 
     public ArrayList<Checkbox_recyclerview_items> checkboxRecyclerviewItems= new ArrayList<>();
     @Override
@@ -80,6 +87,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         Add_CRI_Btton = findViewById(R.id.add_Checkbox_RecyclerView_items_Btton);
         Add_CRI_Etext = findViewById(R.id.add_Checkbox_RecyclerView_items_Etext);
         Add_CRI_Views = findViewById(R.id.add_CRI_views);
+
 
         noteDateTime.setText(
                 new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault()).format(new Date())
@@ -183,8 +191,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 return true;
             case R.id.SaveNote:
                 Sync_EditText_With_CheckBox_RecyclerView();
-                saveData();
-                finish();
+                //saveData();
+                saveNote_V2();
                 return true;
 
             default:
@@ -238,6 +246,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         }
         new SaveNoteTask().execute();
     }
+
 
     public void saveData()
     {

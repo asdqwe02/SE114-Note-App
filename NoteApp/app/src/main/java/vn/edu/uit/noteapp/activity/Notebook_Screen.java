@@ -24,7 +24,6 @@ public class Notebook_Screen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notebook_screen);
         ActionBar ab = getSupportActionBar();
         //Title for ActionBar
         ab.setTitle("Notebook Screen");
