@@ -3,8 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/SaveNote"
+        android:icon="@drawable/ic_baseline_check_circle_outline_24"
+        android:title="Saving Note"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/Open_Bottom_Sheet_Setting"
-        android:title="open bottom sheet"
         android:icon="@drawable/ic_more_vert"
+        android:title="open bottom sheet"
         app:showAsAction="always" />
 </menu>

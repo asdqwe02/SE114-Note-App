@@ -1,4 +1,6 @@
 package vn.edu.uit.noteapp.activity;
+import android.annotation.SuppressLint;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -23,6 +25,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ImageButton img_menuBTN;
+
+    private RecyclerView noteRecyclerView;
+    private NoteAdapter noteAdapter;
+    List<Note> noteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

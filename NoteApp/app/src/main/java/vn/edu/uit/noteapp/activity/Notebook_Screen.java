@@ -33,7 +33,7 @@ public class Notebook_Screen extends AppCompatActivity {
         //Button Back ActionBar
         ab.setDisplayHomeAsUpEnabled(true);
         //ab.setSubtitle("This is Subtitle");
-
+        setContentView(R.layout.activity_notebook_screen);
         recyclerView = findViewById(R.id.recycle_main);
         item_model = new ArrayList<>();
         CreateItem();
