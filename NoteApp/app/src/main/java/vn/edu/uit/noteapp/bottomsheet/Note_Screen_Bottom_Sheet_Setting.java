@@ -4,19 +4,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import vn.edu.uit.noteapp.R;
+import vn.edu.uit.noteapp.activity.Note_screen;
 
-public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment {
+public class Note_Screen_Bottom_Sheet_Setting extends BottomSheetDialogFragment {
     private BottomSheetListener mListener;
     Button redButton;
     Button blueButton;
@@ -56,7 +60,6 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
         moveNoteToTrashButton = v.findViewById(R.id.move_to_trash_button);
 
 
-        //Delete button click event
         moveNoteToTrashButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +70,6 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
             }
         });
 
-        //white button click event
         whiteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +79,6 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
             }
         });
 
-        //red event click event
         redButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +88,6 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
             }
         });
 
-        //blue button click button
         blueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +97,6 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
             }
         });
 
-        //green button click event
         greenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,8 +105,6 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
                 dismiss();
             }
         });
-
-        //yellow button click event
         yellowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,8 +113,6 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
                 dismiss();
             }
         });
-
-        //orange button click event
         orangeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,8 +122,9 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
             }
         });
 
-        loadBottomSheetData();
-        updateBottomSheetData();
+        sync_bottomSheet_colorButton_With_noteScreen();
+//        loadBottomSheetData();
+//        updateBottomSheetData();
 
         return v;
     }
@@ -139,13 +135,44 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
         settings.edit().clear().commit();
     }
 
+    public void sync_bottomSheet_colorButton_With_noteScreen(){
+        View v = ((Note_screen) getActivity()).getWindow().getDecorView();
+        Drawable background = v.getBackground();
+        int colorID = ((ColorDrawable) background).getColor();
+        String hexColor = String.format("#%06X", (0xFFFFFF & colorID));
+        switch (hexColor)
+        {
+            case "#EB5757": //red
+                CheckMarkColorButton(redButton);
+                break;
+            case "#56CCF2": //blue
+                CheckMarkColorButton(blueButton);
+                break;
+            case "#6FCF97": //green
+                CheckMarkColorButton(greenButton);
+                break;
+            case "#F2C94C": //yellow
+                CheckMarkColorButton(yellowButton);
+                break;
+            case "#F2994A": //orange
+                CheckMarkColorButton(orangeButton);
+                break;
+            case "#FFFFFF": //white
+                CheckMarkColorButton(whiteButton);
+                break;
+            default:
+                break;
+        }
+
+    }
+
+
     public boolean check_DrawableLeft(Button button){
         Drawable[] drawable = button.getCompoundDrawables();
         if (drawable[0] != null)
             return true;
         return  false;
     }
-
     public void saveBottomSheetData()
     {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(BOTTOM_SHEET_SHARE_PREFS,Context.MODE_PRIVATE);
@@ -158,14 +185,12 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
         editor.putBoolean(BOTTOM_SHEET_COlOR_BUTTON[5],check_DrawableLeft(whiteButton));
         editor.apply();
     }
-
     public void loadBottomSheetData(){
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(BOTTOM_SHEET_SHARE_PREFS,Context.MODE_PRIVATE);
         for (int i=0;i<6;i++){
             bottom_sheet_color_button[i]=sharedPreferences.getBoolean(BOTTOM_SHEET_COlOR_BUTTON[i],false);
         }
     }
-
     public void updateBottomSheetData(){
         for (int i=0;i<6;i++) {
             if (bottom_sheet_color_button[i]==true)
@@ -201,7 +226,7 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
         setStyle(STYLE_NORMAL, R.style. AppBottomSheetDialogTheme);
     }
 
-    //Doesn't work don't know why
+    //Donesn't work don't know why
 
     private void CheckMarkColorButton(Button button) {
         resetButtonBG();
@@ -211,7 +236,7 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
     }
 
 
-    //Doesn't work don't know why
+    //Donesn't work don't know why
     private void resetButtonBG() {
         redButton.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
         blueButton.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);

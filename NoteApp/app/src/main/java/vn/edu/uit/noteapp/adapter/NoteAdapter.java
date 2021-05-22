@@ -15,12 +15,15 @@ import java.util.List;
 
 import vn.edu.uit.noteapp.Note;
 import vn.edu.uit.noteapp.R;
+import vn.edu.uit.noteapp.listeners.NotesListener;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder>{
     List<Note> notes;
+    NotesListener notesListener;
 
-    public NoteAdapter(List<Note> notes) {
+    public NoteAdapter(List<Note> notes, NotesListener noteListener) {
         this.notes = notes;
+        this.notesListener=noteListener;
     }
 
     @NonNull
@@ -38,6 +41,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         holder.setNote(notes.get(position));
+        holder.NoteContainerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notesListener.onNoteClicked(notes.get(position),position);
+            }
+        });
     }
 
     @Override
@@ -79,4 +88,5 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             }
         }
     }
+
 }

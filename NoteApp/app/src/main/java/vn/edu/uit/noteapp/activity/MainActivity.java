@@ -26,15 +26,21 @@ import vn.edu.uit.noteapp.NotesDatabase;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.BookmarkScreen_adapter;
 import vn.edu.uit.noteapp.adapter.NoteAdapter;
+import vn.edu.uit.noteapp.listeners.NotesListener;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener, NotesListener {
 
     //variables
     public static final int REQUEST_CODE_ADD_NOTE = 1;
+    public static final int REQUEST_CODE_UPDATE_NOTE = 2;
+    public static final int REQUEST_CODE_SHOW_NOTES = 3;
     private ImageButton fab_add_note;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ImageButton img_menuBTN;
+
+    private int noteClickedPosition = -1;
 
     private RecyclerView noteRecyclerView;
     private NoteAdapter noteAdapter;
@@ -83,14 +89,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         );
 
         noteList = new ArrayList<>();
-        noteAdapter = new NoteAdapter(noteList);
+        noteAdapter = new NoteAdapter(noteList, this);
         noteRecyclerView.setAdapter(noteAdapter);
 
-        getNotes();
+        getNotes(REQUEST_CODE_SHOW_NOTES);
     }
 
     @SuppressLint("StaticFileLeak")
-    public void getNotes() {
+    public void getNotes(final int requestCode) {
         class GetNoteTask extends AsyncTask<Void, Void, List<Note>> {
             @Override
             protected List<Note> doInBackground(Void... voids) {
@@ -103,14 +109,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             protected void onPostExecute(List<Note> notes) {
                 super.onPostExecute(notes);
                 Log.d("MY_NOTE", notes.toString());
-                if (noteList.size() == 0) {
+                if (requestCode == REQUEST_CODE_SHOW_NOTES) {
                     noteList.addAll(notes);
                     noteAdapter.notifyDataSetChanged();
-                } else {
+                } else if (requestCode == REQUEST_CODE_ADD_NOTE) {
                     noteList.add(0, notes.get(0));
                     noteAdapter.notifyItemInserted(0);
+                    noteRecyclerView.smoothScrollToPosition(0);
+                } else if (requestCode == REQUEST_CODE_UPDATE_NOTE) {
+                    noteList.remove(noteClickedPosition);
+                    noteList.add(noteClickedPosition, notes.get(noteClickedPosition));
+                    noteAdapter.notifyItemChanged(noteClickedPosition);
                 }
-                noteRecyclerView.setOverScrollMode(0);
 
             }
         }
@@ -125,6 +135,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else{
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onNoteClicked(Note note, int position) {
+        noteClickedPosition = position;
+        Intent intent = new Intent(getApplicationContext(), Note_screen.class);
+        intent.putExtra("isViewOrUpdate", true);
+        intent.putExtra("note", note);
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
     }
 
     @Override
@@ -172,7 +191,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ADD_NOTE && resultCode == RESULT_OK) {
-            getNotes();
+            getNotes(REQUEST_CODE_ADD_NOTE);
+        } else if (requestCode == REQUEST_CODE_UPDATE_NOTE && resultCode == RESULT_OK) {
+            if (data != null)
+                getNotes(REQUEST_CODE_UPDATE_NOTE);
         }
     }
 }
