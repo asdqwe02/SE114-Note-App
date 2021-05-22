@@ -11,4 +11,13 @@
     <string name="nav_feedback">Feedback</string>
     <string name="nav_help">Help and support</string>
     <string name="Rate_your_experiecnce">Rate Your Experiecnce</string>
+    <string name="delete">Delete</string>
+    <string name="rename">Rename</string>
+    <string name="lock_this_notebook">Lock this notebook</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="reminder_settings">Reminder Settings</string>
+    <string name="only_notifications">Only notifications</string>
+    <string name="only_sounds">Only sounds</string>
+    <string name="both_notifications_and_sounds">Both notifications and sounds</string>
+    <string name="passwords_setting">Passwords setting</string>
 </resources>

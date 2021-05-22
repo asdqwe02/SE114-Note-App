@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingBottom="15dp"
+    android:background="@color/white"
     android:id="@+id/Open_Bottom_Sheet_Setting">
     <!--android:background="@drawable/rounded_dialog" note: this doesn't work-->
 
@@ -50,8 +51,8 @@
             android:layout_marginHorizontal="20dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
-
             />
+
         <Button
             android:id="@+id/change_bg_orange"
             android:background="@drawable/roundedbutton"
@@ -74,34 +75,38 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Move to notebook"
+        android:text="        Move to notebook"
+        android:textAlignment="textStart"
         android:background="?android:attr/selectableItemBackground"
-        android:drawableLeft="@drawable/ic_add_to_notebook_24"
+        android:drawableLeft="@drawable/ic_note_book"
         android:padding="10dp"
-        ></Button>
+        android:layout_gravity="start"></Button>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bookmark this note"
+        android:text="        Bookmark this note"
+        android:textAlignment="textStart"
         android:background="?android:attr/selectableItemBackground"
-        android:drawableLeft="@drawable/ic_baseline_bookmark_border_24"
+        android:drawableLeft="@drawable/ic_bookmark"
         android:padding="10dp"
-        ></Button>
+        android:layout_gravity="start"></Button>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add reminder"
+        android:text="        Add reminder"
+        android:textAlignment="textStart"
         android:background="?android:attr/selectableItemBackground"
-        android:drawableLeft="@drawable/ic_outline_add_alert_24"
+        android:drawableLeft="@drawable/ic_reminder"
         android:padding="10dp"
-        ></Button>
+        android:layout_gravity="start"></Button>
     <Button
         android:id="@+id/move_to_trash_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Move to trash"
+        android:text="        Move to trash"
+        android:textAlignment="textStart"
         android:background="?android:attr/selectableItemBackground"
-        android:drawableLeft="@drawable/ic_baseline_delete_24"
+        android:drawableLeft="@drawable/ic_delete"
         android:padding="10dp"
-        ></Button>
+        android:layout_gravity="start"></Button>
 </LinearLayout>

@@ -14,10 +14,11 @@ public class Setting_Screen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Setting");
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        actionBar.setDisplayHomeAsUpEnabled(true); //hoặc 0xFFFF6666
         setContentView(R.layout.activity_setting_screen);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Settings");
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 }

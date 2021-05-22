@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="250dp"
-    android:background="@color/grey_metal"
+    android:background="@color/blue_light"
     android:orientation="vertical"
     android:gravity="bottom"
     android:padding="20dp">
@@ -10,17 +10,18 @@
     <ImageView
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@mipmap/ic_easynote"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ho Thinh"
         android:textSize="24sp"
         android:textColor="@color/black"
-        android:fontFamily="monospace"/>
+        android:fontFamily="@font/lobster_regular"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="huuthinh468@gmail.com"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:fontFamily="sans-serif"/>
 </LinearLayout>

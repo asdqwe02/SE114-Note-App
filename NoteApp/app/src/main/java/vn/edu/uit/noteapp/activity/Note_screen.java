@@ -88,7 +88,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         Add_CRI_Etext = findViewById(R.id.add_Checkbox_RecyclerView_items_Etext);
         Add_CRI_Views = findViewById(R.id.add_CRI_views);
 
-
         noteDateTime.setText(
                 new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault()).format(new Date())
         );
@@ -134,8 +133,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
 
 
         //share preferences and save txt file
-//        loadData();
-//        updateData();
+        //loadData();
+        //updateData();
     }
 
     public void Sync_EditText_With_CheckBox_RecyclerView()
@@ -158,8 +157,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         mAdapter = new Checkbox_recyclerview_adapter(checkboxRecyclerviewItems);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-
-
     }
 
     public void Add_CRI(){
@@ -174,12 +171,14 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         Note_Screen_Bottom_Sheet_Setting bottomSheet = new Note_Screen_Bottom_Sheet_Setting();
         bottomSheet.show(getSupportFragmentManager(), "Note_Screen_bottomSheetSetting");
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.open_note_bottom_sheet, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -194,7 +193,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 //saveData();
                 saveNote_V2();
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -230,7 +228,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note.setDateTime(noteDateTime.getText().toString());
         note.setColor(hexColor);
 
-        class SaveNoteTask extends AsyncTask <Void, Void, Void>{
+        class SaveNoteTask extends AsyncTask<Void, Void, Void> {
             @Override
             protected Void doInBackground(Void... voids) {
                 NotesDatabase.getNotesDatabase(getApplicationContext()).noteDao().insertNote(note);
@@ -246,7 +244,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         }
         new SaveNoteTask().execute();
     }
-
 
     public void saveData()
     {
@@ -418,7 +415,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     public void onBackPressed() {
         // your code.
         Sync_EditText_With_CheckBox_RecyclerView();
-//        saveData();
+        //saveData();
         saveNote_V2();
         super.onBackPressed();
     }
