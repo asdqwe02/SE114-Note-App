@@ -46,7 +46,7 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
 
 
 
-        View v = inflater.inflate(R.layout.bottom_sheet_note_screen,container,false);
+        View v = inflater.inflate(R.layout.bottom_sheet_setting,container,false);
         redButton = v.findViewById(R.id.change_bg_red);
         blueButton = v.findViewById(R.id.change_bg_blue);
         greenButton = v.findViewById(R.id.change_bg_green);
@@ -54,7 +54,6 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
         orangeButton = v.findViewById(R.id.change_bg_orange);
         whiteButton = v.findViewById(R.id.change_bg_white);
         moveNoteToTrashButton = v.findViewById(R.id.move_to_trash_button);
-
 
 
         moveNoteToTrashButton.setOnClickListener(new View.OnClickListener() {
@@ -200,7 +199,7 @@ public class Note_Screen_Bottom_Sheet_Setting  extends BottomSheetDialogFragment
     }
 
 
-    //Doesn't work don't know why
+    //Donesn't work don't know why
     private void resetButtonBG() {
         redButton.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
         blueButton.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
