@@ -40,12 +40,6 @@
 
            ></ImageButton>
 
-        <TextView
-            android:id="@+id/noteDateTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="date time" />
 
 
     </LinearLayout>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--<ScrollView-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:orientation="vertical">-->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -160,10 +160,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_20sdp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:text="User interface"
-                        android:textSize="10sp"
-                        android:layout_marginLeft="15dp" />
+                        android:text="  User interface  "
+                        android:layout_marginLeft="10dp"
+                        android:textSize="10sp" />
                 </LinearLayout>
 
                 <TextView
@@ -185,17 +184,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Of course"
-                        android:outlineSpotShadowColor="@color/blue_light"/>
+                        android:buttonTint="@color/blue_light"/>
                     <RadioButton android:id="@+id/radio_notSure"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dp"
-                        android:text="Not sure" />
+                        android:text="Not sure"
+                        android:buttonTint="@color/blue_light"/>
                     <RadioButton android:id="@+id/radio_No"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dp"
-                        android:text="No" />
+                        android:text="No"
+                        android:buttonTint="@color/blue_light"/>
                 </RadioGroup>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -244,4 +245,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edittext"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-<!--</ScrollView>-->
+</ScrollView>
+

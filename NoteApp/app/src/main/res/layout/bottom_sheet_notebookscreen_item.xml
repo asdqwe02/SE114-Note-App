@@ -66,19 +66,13 @@
         android:id="@+id/remove_layout_item_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp">
-
-        <ImageView
-            android:layout_width="39dp"
-            android:layout_height="36dp"
-            android:src="@drawable/ic_baseline_more_vert_24"></ImageView>
-
-        <TextView
-            android:layout_width="345dp"
-            android:layout_height="31dp"
-            android:text="    Move to Trash"
-            android:textColor="@color/black"
-            android:textSize="25dp"></TextView>
-    </LinearLayout>
-
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
+        android:drawableLeft="@drawable/ic_delete"
+        android:text="        Delete notebook"
+        android:textAlignment="textStart"
+        android:layout_gravity="start" />
 </LinearLayout>
+</androidx.cardview.widget.CardView>
+
