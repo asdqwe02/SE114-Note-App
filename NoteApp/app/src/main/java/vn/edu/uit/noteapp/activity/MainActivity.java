@@ -3,9 +3,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -93,6 +96,26 @@ public class MainActivity extends AppCompatActivity implements
         noteRecyclerView.setAdapter(noteAdapter);
 
         getNotes(REQUEST_CODE_SHOW_NOTES, false);
+
+        EditText inputSearch=findViewById(R.id.inputSearch);
+        inputSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                noteAdapter.cancelTimer();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (noteList.size()!=0)
+                    noteAdapter.searchNotes(s.toString());
+            }
+        });
+
     }
 
     @SuppressLint("StaticFileLeak")
