@@ -13,20 +13,21 @@
     <include
         android:id="@+id/bottom_toolbar"
         layout="@layout/note_screen_bottom_toolbar"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
     <include
         android:id="@+id/checkbox_recyclerview"
         layout="@layout/checkbox_recyclerview"
-        android:layout_height="match_parent"
         android:layout_width="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:layout_below="@+id/titleText"
+        android:layout_height="match_parent"
         android:layout_above="@id/bottom_toolbar"
+        android:layout_below="@+id/titleText"
+        android:layout_alignTop="@id/imageNote"
+        android:layout_marginTop="@dimen/_45sdp"
+        android:layout_marginHorizontal="12dp"
         android:layout_marginBottom="41dp"
-
         />
 
     <LinearLayout
@@ -34,10 +35,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/bottom_toolbar"
-        android:background="@android:color/transparent"
         android:layout_marginHorizontal="12dp"
-        android:gravity="center"
-        >
+        android:background="@android:color/transparent"
+        android:gravity="center">
+
         <Button
             android:id="@+id/add_Checkbox_RecyclerView_items_Btton"
             android:layout_width="25dp"
@@ -45,13 +46,13 @@
             android:background="@drawable/ic_add_circle_outline">
 
         </Button>
+
         <EditText
             android:id="@+id/add_Checkbox_RecyclerView_items_Etext"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginTop="4dp"
-            android:paddingTop="2dp"
-            >
+            android:paddingTop="2dp">
 
         </EditText>
     </LinearLayout>
@@ -61,28 +62,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginHorizontal="12dp"
+        android:background="@android:color/transparent"
         android:gravity="left"
         android:hint="Title"
-        android:background="@android:color/transparent"
-        android:textSize="30dp"
-        android:layout_alignParentLeft="true"></EditText>
+        android:textSize="30dp"></EditText>
+
+    <ImageView
+        android:id="@+id/imageNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/app_name"
+        android:layout_alignTop="@+id/titleText"
+        android:visibility="gone"
+        />
 
     <EditText
         android:id="@+id/noteText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/titleText"
         android:layout_above="@id/bottom_toolbar"
+        android:layout_below="@+id/titleText"
+        android:layout_marginTop="@dimen/_45sdp"
+        android:layout_alignTop="@id/imageNote"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_marginHorizontal="12dp"
         android:background="@android:color/transparent"
         android:gravity="start|top"
         android:hint="Add a note..."
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"></EditText>
+        ></EditText>
+
 
 
 </RelativeLayout>

@@ -108,5 +108,6 @@
         android:background="?android:attr/selectableItemBackground"
         android:drawableLeft="@drawable/ic_delete"
         android:padding="10dp"
-        android:layout_gravity="start"></Button>
+        android:layout_gravity="start"
+        ></Button>
 </LinearLayout>

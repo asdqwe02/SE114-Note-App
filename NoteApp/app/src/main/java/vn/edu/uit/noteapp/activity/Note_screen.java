@@ -1,33 +1,51 @@
 package vn.edu.uit.noteapp.activity;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Gallery;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.loader.content.AsyncTaskLoader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Delete;
 
 import java.io.File;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Date;
 import java.util.Locale;
 
@@ -43,21 +61,20 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     private String note_screen_color;
     private boolean CRI_visibility = false;
 
-    private static final String TITLE_FILE_NAME = "exampleTITLE.txt";
-    private static final String NOTE_FILE_NAME = "exampleNOTE.txt";
-
-    //shared preferences
     public static final String SHARE_PREFS = "sharedPrefs";
-    public static final String NOTE_SCREEN_COLOR = "note_screen_color";
-    public static final String CRI_VISIBILITY_STATE = "INVISIBLE DEFAULT";
+    private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
+    private static final int REQUEST_CODE_SELECT_IMAGE = 2;
+
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Note alreadyAvailableNote;
+    private ImageView imageNote;
+    private AlertDialog dialogDeleteNote;
 
     EditText title_Text, note_Text, Add_CRI_Etext;
-    ImageButton show_CheckBox;
+    ImageButton show_CheckBox, addImage;
     Button Add_CRI_Btton;
     LinearLayout Add_CRI_Views;
     TextView noteDateTime;
@@ -78,6 +95,9 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note_Text = findViewById(R.id.noteText);
         show_CheckBox = findViewById(R.id.show_checkbox);
         noteDateTime = findViewById(R.id.noteDateTime);
+        addImage = findViewById(R.id.addNoteImage);
+        imageNote = findViewById(R.id.imageNote);
+
 
         Add_CRI_Btton = findViewById(R.id.add_Checkbox_RecyclerView_items_Btton);
         Add_CRI_Etext = findViewById(R.id.add_Checkbox_RecyclerView_items_Etext);
@@ -111,6 +131,24 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             }
         });
 
+
+        addImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(
+                        getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                            Note_screen.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            REQUEST_CODE_STORAGE_PERMISSION
+                    );
+                } else {
+                    selectImage();
+                }
+            }
+        });
+
         Add_CRI_Btton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,6 +170,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             alreadyAvailableNote = (Note) getIntent().getSerializableExtra("note");
             loadNote_V2();
         }
+
+
 
     }
 
@@ -272,16 +312,55 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         }
     }
 
+    private void showDeleteNoteDialog(){
+        if (dialogDeleteNote==null){
+            AlertDialog.Builder builder =  new AlertDialog.Builder(Note_screen.this);
+            View view = LayoutInflater.from(this).inflate(
+                    R.layout.delete_dialog,
+                    (ViewGroup) findViewById(R.id.DeleteNoteContainer)
+            );
+            builder.setView(view);
+            dialogDeleteNote = builder.create();
+            if (dialogDeleteNote.getWindow() != null){
+                dialogDeleteNote.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+            view.findViewById(R.id.btn_delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    class DeleteNoteTask extends AsyncTask <Void, Void, Void>{
+
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            NotesDatabase.getNotesDatabase(getApplicationContext()).noteDao()
+                                    .deleteNote(alreadyAvailableNote);
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+                            Intent intent = new Intent();
+                            intent.putExtra("isNoteDeleted", true);
+                            setResult(RESULT_OK,intent);
+                            finish();
+                        }
+                    }
+
+                    new DeleteNoteTask().execute();
+                }
+            });
+            view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogDeleteNote.dismiss();
+                }
+            });
+        }
+        dialogDeleteNote.show();
+    }
+
+
     public void deleteNote() {
-        File dir = getFilesDir();
-        File TITLE_file = new File(dir, TITLE_FILE_NAME);
-        File NOTE_file = new File(dir, NOTE_FILE_NAME);
-        boolean TITLE_deleted = TITLE_file.delete();
-        boolean NOTE_deleted = NOTE_file.delete();
-        //title_Text.setText("");
-        //note_Text.setText("");
-        SharedPreferences settings = getSharedPreferences(SHARE_PREFS, MODE_PRIVATE);
-        settings.edit().clear().commit();
         finish();
     }
 
@@ -312,11 +391,56 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 view.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 break;
             case "Move To Trash":
-                deleteNote();
+                if (alreadyAvailableNote!=null)
+                    showDeleteNoteDialog();
                 break;
             default:
                 break;
         }
+    }
+
+    public void selectImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                selectImage();
+            } else {
+                Toast.makeText(this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK) {
+            if (data != null) {
+                Uri selectedImageUri = data.getData();
+                if (selectedImageUri != null) {
+                    try {
+
+                        InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        imageNote.setImageBitmap(bitmap);
+                        imageNote.setVisibility(View.VISIBLE);
+
+                    } catch (Exception e) {
+                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }
+
     }
 
     @Override
