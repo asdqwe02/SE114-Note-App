@@ -2,19 +2,25 @@ package vn.edu.uit.noteapp.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -33,7 +39,7 @@ public class Notebook_Screen extends AppCompatActivity {
         setContentView(R.layout.activity_notebook_screen);
         ActionBar ab = getSupportActionBar();
         //Title for ActionBar
-        ab.setTitle("Notebook Screen");
+        ab.setTitle("Notebooks");
         //Background ActionBar
         ab.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         //Button Back ActionBar
@@ -44,24 +50,46 @@ public class Notebook_Screen extends AppCompatActivity {
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(Notebook_Screen.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
-                final View custom_layout = getLayoutInflater().inflate(R.layout.add_notebook_dialog,null);
-                dialog.setView(custom_layout);
-                dialog.setTitle("Add Notebook");
-                dialog.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                final Dialog dialog;
+                dialog = new Dialog(Notebook_Screen.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.add_notebook_dialog);
+
+                Window window = dialog.getWindow();
+                if (window == null){
+                    return;
+                }
+
+                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                WindowManager.LayoutParams windowAttributes = window.getAttributes();
+                windowAttributes.gravity = Gravity.BOTTOM;
+                window.setAttributes(windowAttributes);
+
+                dialog.setCancelable(true);
+
+                EditText editName = dialog.findViewById(R.id.notebook_name_create);
+                Button btn_Cancel = dialog.findViewById(R.id.btn_cancel);
+                Button btn_Create = dialog.findViewById(R.id.btn_create);
+
+                btn_Cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EditText edit = custom_layout.findViewById(R.id.notebook_name_create);
-                        item_model.add(new Model_Item_Notebook_screen(edit.getText().toString()));
+                    public void onClick(View v) {
+                        dialog.dismiss();
                     }
                 });
-                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                btn_Create.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
+                        item_model.add(new Model_Item_Notebook_screen(editName.getText().toString()));
+                        dialog.dismiss();
+                        Toast.makeText(Notebook_Screen.this, "Create success", Toast.LENGTH_SHORT).show();
                     }
                 });
-                AlertDialog done = dialog.create();
-                done.show();
+
+                dialog.show();
             }
         });
         recyclerView = findViewById(R.id.recycle_main);
