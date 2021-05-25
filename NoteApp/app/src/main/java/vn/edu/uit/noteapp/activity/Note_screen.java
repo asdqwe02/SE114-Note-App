@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -26,6 +27,7 @@ import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +74,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     private Note alreadyAvailableNote;
     private ImageView imageNote;
     private AlertDialog dialogDeleteNote;
+    private View CRI_View;
+    private String selectedImagePath;
 
     EditText title_Text, note_Text, Add_CRI_Etext;
     ImageButton show_CheckBox, addImage;
@@ -97,14 +101,14 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         noteDateTime = findViewById(R.id.noteDateTime);
         addImage = findViewById(R.id.addNoteImage);
         imageNote = findViewById(R.id.imageNote);
-
+        CRI_View = findViewById(R.id.checkbox_recyclerview);
 
         Add_CRI_Btton = findViewById(R.id.add_Checkbox_RecyclerView_items_Btton);
         Add_CRI_Etext = findViewById(R.id.add_Checkbox_RecyclerView_items_Etext);
         Add_CRI_Views = findViewById(R.id.add_CRI_views);
 
         Add_CRI_Views.setVisibility(View.INVISIBLE);
-
+        selectedImagePath = "";
 
         noteDateTime.setText(
                 new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault()).format(new Date())
@@ -156,6 +160,17 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             }
         });
 
+        findViewById(R.id.imageRemoveImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageNote.setImageBitmap(null);
+                imageNote.setVisibility(View.GONE);
+                findViewById(R.id.imageRemoveImage).setVisibility(View.GONE);
+                Formatting_View_To_Fit_Added_Image(false);
+                selectedImagePath="";
+            }
+        });
+
         //handling checkbox recyclerview
         mRecyclerView = findViewById(R.id.checkbox_recyclerview_layout);
         mRecyclerView.setHasFixedSize(true); // if recycler view don't change set this to true note: will delete later
@@ -170,7 +185,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             alreadyAvailableNote = (Note) getIntent().getSerializableExtra("note");
             loadNote_V2();
         }
-
 
 
     }
@@ -266,6 +280,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note.setNoteText(note_Text.getText().toString());
         note.setDateTime(noteDateTime.getText().toString());
         note.setColor(hexColor);
+        note.setImagePath(selectedImagePath);
+
         if (note_Text.getVisibility() == View.VISIBLE && mRecyclerView.getVisibility() == View.INVISIBLE)
             note.setCRIstate(false);
         else note.setCRIstate(true);
@@ -301,6 +317,18 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(Color.parseColor(note_screen_color));
 
+        if (alreadyAvailableNote.getImagePath() != null && !alreadyAvailableNote.getImagePath().trim().isEmpty()) {
+            imageNote.setImageBitmap(BitmapFactory.decodeFile(alreadyAvailableNote.getImagePath()));
+            imageNote.setVisibility(View.VISIBLE);
+            findViewById(R.id.imageRemoveImage).setVisibility(View.VISIBLE);
+            Formatting_View_To_Fit_Added_Image(true);
+            selectedImagePath =alreadyAvailableNote.getImagePath();
+
+        } else {
+            imageNote.setVisibility(View.GONE);
+            Formatting_View_To_Fit_Added_Image(false);
+        }
+
         if (alreadyAvailableNote.isCRIstate()) {
             Sync_EditText_With_CheckBox_RecyclerView();
             mRecyclerView.setVisibility(View.VISIBLE);
@@ -312,22 +340,22 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         }
     }
 
-    private void showDeleteNoteDialog(){
-        if (dialogDeleteNote==null){
-            AlertDialog.Builder builder =  new AlertDialog.Builder(Note_screen.this);
+    private void showDeleteNoteDialog() {
+        if (dialogDeleteNote == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(Note_screen.this);
             View view = LayoutInflater.from(this).inflate(
                     R.layout.delete_dialog,
                     (ViewGroup) findViewById(R.id.DeleteNoteContainer)
             );
             builder.setView(view);
             dialogDeleteNote = builder.create();
-            if (dialogDeleteNote.getWindow() != null){
+            if (dialogDeleteNote.getWindow() != null) {
                 dialogDeleteNote.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
             view.findViewById(R.id.btn_delete).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    class DeleteNoteTask extends AsyncTask <Void, Void, Void>{
+                    class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
 
                         @Override
                         protected Void doInBackground(Void... voids) {
@@ -341,7 +369,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                             super.onPostExecute(aVoid);
                             Intent intent = new Intent();
                             intent.putExtra("isNoteDeleted", true);
-                            setResult(RESULT_OK,intent);
+                            setResult(RESULT_OK, intent);
                             finish();
                         }
                     }
@@ -391,7 +419,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 view.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 break;
             case "Move To Trash":
-                if (alreadyAvailableNote!=null)
+                if (alreadyAvailableNote != null)
                     showDeleteNoteDialog();
                 break;
             default:
@@ -399,12 +427,35 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         }
     }
 
+    public void Formatting_View_To_Fit_Added_Image(boolean b) {
+
+        //change note text and CRI view to fit in with the image just added
+        RelativeLayout.LayoutParams note_textLayoutParams = (RelativeLayout.LayoutParams) note_Text.getLayoutParams();
+        RelativeLayout.LayoutParams cri_viewLayoutParams = (RelativeLayout.LayoutParams) CRI_View.getLayoutParams();
+        if (b) {
+
+            note_textLayoutParams.addRule(RelativeLayout.BELOW, R.id.imageNote);
+            note_Text.setLayoutParams(note_textLayoutParams); //causes layout update
+
+            cri_viewLayoutParams.addRule(RelativeLayout.BELOW, R.id.imageNote);
+            CRI_View.setLayoutParams(cri_viewLayoutParams);
+        } else {
+            note_textLayoutParams.addRule(RelativeLayout.BELOW, R.id.titleText);
+            note_Text.setLayoutParams(note_textLayoutParams); //causes layout update
+
+            cri_viewLayoutParams.addRule(RelativeLayout.BELOW, R.id.titleText);
+            CRI_View.setLayoutParams(cri_viewLayoutParams);
+        }
+    }
+
+
     public void selectImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
-        }
+        //if (intent.resolveActivity(getPackageManager()) != null) {
+        startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
+        Formatting_View_To_Fit_Added_Image(true);
+        //}
     }
 
     @Override
@@ -433,6 +484,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                         imageNote.setImageBitmap(bitmap);
                         imageNote.setVisibility(View.VISIBLE);
+                        findViewById(R.id.imageRemoveImage).setVisibility(View.VISIBLE);
+                        selectedImagePath = getPathFromUri(selectedImageUri);
 
                     } catch (Exception e) {
                         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -443,11 +496,25 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
 
     }
 
+    private String getPathFromUri(Uri contentUri) {
+        String filePath;
+        Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor == null) {
+            filePath = contentUri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex("_data");
+            filePath = cursor.getString(index);
+            cursor.close();
+        }
+        return filePath;
+    }
+
+
     @Override
     public void onBackPressed() {
         // your code.
         Sync_EditText_With_CheckBox_RecyclerView();
-//        saveData();
         saveNote_V2();
         super.onBackPressed();
     }

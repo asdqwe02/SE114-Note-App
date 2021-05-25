@@ -23,9 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_toolbar"
-        android:layout_below="@+id/titleText"
-        android:layout_alignTop="@id/imageNote"
-        android:layout_marginTop="@dimen/_45sdp"
+        android:layout_below="@id/titleText"
         android:layout_marginHorizontal="12dp"
         android:layout_marginBottom="41dp"
         />
@@ -79,18 +77,31 @@
         android:layout_marginRight="@dimen/_12sdp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/app_name"
-        android:layout_alignTop="@+id/titleText"
+        android:layout_below="@+id/titleText"
+        android:visibility="gone"/>
+    <ImageView
+        android:id="@+id/imageRemoveImage"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@drawable/background_delete"
+        android:contentDescription="@string/app_name"
+        android:padding="@dimen/_4sdp"
+        android:src="@drawable/ic_delete"
+        android:tint="@color/white"
+        android:layout_alignTop="@id/imageNote"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentEnd="true"
         android:visibility="gone"
         />
-
+    <!--android:layout_marginTop="@dimen/_45sdp"-->
     <EditText
         android:id="@+id/noteText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_toolbar"
         android:layout_below="@+id/titleText"
-        android:layout_marginTop="@dimen/_45sdp"
-        android:layout_alignTop="@id/imageNote"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
