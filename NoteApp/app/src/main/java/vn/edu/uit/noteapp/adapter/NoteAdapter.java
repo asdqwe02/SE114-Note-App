@@ -140,4 +140,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             timer.cancel();
     }
 
+    public List<Note> getNotesSource() {
+        return notesSource;
+    }
+
+    public List<Note> getNotes() {
+        return notes;
+    }
 }

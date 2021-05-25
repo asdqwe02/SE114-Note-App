@@ -3,7 +3,6 @@ package vn.edu.uit.noteapp.activity;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -23,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,16 +36,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.loader.content.AsyncTaskLoader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Delete;
 
-import java.io.File;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Date;
 import java.util.Locale;
 
@@ -69,7 +63,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
 
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private Checkbox_recyclerview_adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Note alreadyAvailableNote;
     private ImageView imageNote;
@@ -107,29 +101,29 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         Add_CRI_Etext = findViewById(R.id.add_Checkbox_RecyclerView_items_Etext);
         Add_CRI_Views = findViewById(R.id.add_CRI_views);
 
-        Add_CRI_Views.setVisibility(View.INVISIBLE);
+        Add_CRI_Views.setVisibility(View.GONE);
         selectedImagePath = "";
 
         noteDateTime.setText(
                 new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault()).format(new Date())
         );
 
+
+
         show_CheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
                 Sync_EditText_With_CheckBox_RecyclerView();
-
-                if (note_Text.getVisibility() == View.VISIBLE && mRecyclerView.getVisibility() == View.INVISIBLE) {
-                    note_Text.setVisibility(View.INVISIBLE);
+                if (note_Text.getVisibility() == View.VISIBLE && mRecyclerView.getVisibility() == View.GONE) {
+                    note_Text.setVisibility(View.GONE);
                     mRecyclerView.setVisibility(View.VISIBLE);
                     Add_CRI_Views.setVisibility(View.VISIBLE);
 
                 } else {
                     note_Text.setVisibility(View.VISIBLE);
-                    mRecyclerView.setVisibility(View.INVISIBLE);
-                    Add_CRI_Views.setVisibility(View.INVISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                    Add_CRI_Views.setVisibility(View.GONE);
                 }
 
             }
@@ -171,6 +165,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             }
         });
 
+
         //handling checkbox recyclerview
         mRecyclerView = findViewById(R.id.checkbox_recyclerview_layout);
         mRecyclerView.setHasFixedSize(true); // if recycler view don't change set this to true note: will delete later
@@ -179,7 +174,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
 
         if (getIntent().getBooleanExtra("isViewOrUpdate", false)) {
             alreadyAvailableNote = (Note) getIntent().getSerializableExtra("note");
@@ -190,15 +185,20 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     }
 
     public void Sync_EditText_With_CheckBox_RecyclerView() {
-        if (note_Text.getVisibility() == View.VISIBLE)
+        if (note_Text.getVisibility() == View.VISIBLE) {
             checkboxRecyclerviewItems.clear();
+        }
         else {
             note_Text.setText("");
-            for (int i = 0; i < checkboxRecyclerviewItems.size(); i++) {
+            ArrayList<Checkbox_recyclerview_items> tempCRI_List = new ArrayList<>();
+            tempCRI_List=mAdapter.getCri_LIST();
+            for (int i = 0; i < tempCRI_List.size(); i++) {
                 //template: String title = ((TextView) recyclerView.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.title)).getText().toString();
-                String tempE = ((EditText) mRecyclerView.findViewHolderForAdapterPosition(i).itemView.findViewById(R.id.checkbox_edittext)).getText().toString();
+                //String tempE = ((EditText) mRecyclerView.findViewHolderForAdapterPosition(i).itemView.findViewById(R.id.checkbox_edittext)).getText().toString();
+                String tempE = tempCRI_List.get(i).get_checkbox_edittext();
                 note_Text.setText(note_Text.getText() + tempE + "\n");
             }
+
         }
         String temp = note_Text.getText().toString();
         String lines[] = temp.split("\\r?\\n");
@@ -208,6 +208,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         mAdapter = new Checkbox_recyclerview_adapter(checkboxRecyclerviewItems);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+
 
 
     }
@@ -282,7 +284,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note.setColor(hexColor);
         note.setImagePath(selectedImagePath);
 
-        if (note_Text.getVisibility() == View.VISIBLE && mRecyclerView.getVisibility() == View.INVISIBLE)
+        if (note_Text.getVisibility() == View.VISIBLE && mRecyclerView.getVisibility() == View.GONE)
             note.setCRIstate(false);
         else note.setCRIstate(true);
 

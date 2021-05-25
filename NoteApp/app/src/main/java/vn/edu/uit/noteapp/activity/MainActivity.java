@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements
         noteList = new ArrayList<>();
         noteAdapter = new NoteAdapter(noteList, this);
         noteRecyclerView.setAdapter(noteAdapter);
-
         getNotes(REQUEST_CODE_SHOW_NOTES, false);
 
         EditText inputSearch=findViewById(R.id.inputSearch);

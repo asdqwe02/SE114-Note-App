@@ -1,5 +1,6 @@
 package vn.edu.uit.noteapp.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,6 @@ import vn.edu.uit.noteapp.R;
 
 public class Checkbox_recyclerview_adapter extends RecyclerView.Adapter<Checkbox_recyclerview_adapter.Checkbox_recyclerview_ViewHolder> {
     private  ArrayList<Checkbox_recyclerview_items> cri_LIST;
-
     public  class Checkbox_recyclerview_ViewHolder extends RecyclerView.ViewHolder{
         public CheckBox checkBox;
         public EditText checkBox_EditText;
@@ -42,7 +42,7 @@ public class Checkbox_recyclerview_adapter extends RecyclerView.Adapter<Checkbox
     }
 
     public Checkbox_recyclerview_adapter(ArrayList<Checkbox_recyclerview_items> cri_List){
-        cri_LIST=cri_List;
+        this.cri_LIST=cri_List;
     }
     @NonNull
     @Override
@@ -65,4 +65,10 @@ public class Checkbox_recyclerview_adapter extends RecyclerView.Adapter<Checkbox
     public int getItemCount() {
         return cri_LIST.size();
     }
+
+
+    public ArrayList<Checkbox_recyclerview_items> getCri_LIST() {
+        return cri_LIST;
+    }
+    
 }
