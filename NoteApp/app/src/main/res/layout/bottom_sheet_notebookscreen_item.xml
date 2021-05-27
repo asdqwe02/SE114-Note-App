@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:backgroundTintMode="screen"
-    app:cardCornerRadius="20dp">
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:backgroundTintMode="screen"
+        android:background="@color/bg_white_color">
         <View
             android:layout_width="70dp"
             android:layout_height="7dp"
@@ -28,6 +24,7 @@
             android:drawableLeft="@drawable/ic_lock"
             android:padding="10dp"
             android:text="        Lock this notebook"
+            android:textColor="@color/text_color"
             android:textAlignment="textStart" />
 
     <Button
@@ -40,6 +37,7 @@
         android:drawableLeft="@drawable/ic_edit"
         android:padding="10dp"
         android:text="        Rename notebook"
+        android:textColor="@color/text_color"
         android:textAlignment="textStart" />
 
     <Button
@@ -51,7 +49,7 @@
         android:padding="10dp"
         android:drawableLeft="@drawable/ic_delete"
         android:text="        Delete notebook"
+        android:textColor="@color/text_color"
         android:textAlignment="textStart"
         android:layout_gravity="start" />
 </LinearLayout>
-</androidx.cardview.widget.CardView>

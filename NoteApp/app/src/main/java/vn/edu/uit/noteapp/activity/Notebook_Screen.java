@@ -41,7 +41,7 @@ public class Notebook_Screen extends AppCompatActivity {
         //Title for ActionBar
         ab.setTitle("Notebooks");
         //Background ActionBar
-        ab.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        ab.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //Button Back ActionBar
         ab.setDisplayHomeAsUpEnabled(true);
         //ab.setSubtitle("This is Subtitle");
@@ -83,9 +83,15 @@ public class Notebook_Screen extends AppCompatActivity {
                 btn_Create.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        item_model.add(new Model_Item_Notebook_screen(editName.getText().toString()));
-                        dialog.dismiss();
-                        Toast.makeText(Notebook_Screen.this, "Create success", Toast.LENGTH_SHORT).show();
+                        String name = editName.getText().toString();
+                        if (name.matches("")){
+                            Toast.makeText(Notebook_Screen.this, "Please enter your notebook name", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            item_model.add(new Model_Item_Notebook_screen(editName.getText().toString()));
+                            dialog.dismiss();
+                            Toast.makeText(Notebook_Screen.this, "Create success", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 

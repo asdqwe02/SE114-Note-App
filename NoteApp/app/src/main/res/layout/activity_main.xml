@@ -46,8 +46,8 @@
 
             <ImageButton
                 android:id="@+id/imgbtn_menu"
-                android:layout_width="19dp"
-                android:layout_height="19dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@android:color/transparent"
                 android:backgroundTint="@color/black"
                 android:contentDescription="@string/app_label"
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lobster_regular"
                 android:text="@string/app_label"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -111,7 +111,7 @@
             android:importantForAutofill="no"
             android:includeFontPadding="false"
             android:inputType="text"
-            android:textColorHint="@color/light_black" />
+            android:textColorHint="@color/text_hint" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

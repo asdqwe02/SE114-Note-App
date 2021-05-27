@@ -3,7 +3,7 @@
     android:id="@+id/DeleteNoteContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_button"
+    android:background="@drawable/bg_dialog"
     android:layout_margin="20dp"
     android:orientation="vertical">
 
@@ -13,7 +13,7 @@
         android:padding="10dp"
         android:background="@drawable/bg_dialogheader_radiustop"
         android:text="@string/delete_item"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:textSize="22sp"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"/>
@@ -30,7 +30,7 @@
             android:text="Are you sure you want to delete this item?
             Once you delete it you won't be able to restore it"
             android:textSize="18sp"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color"
             android:gravity="center" />
 
         <LinearLayout
@@ -50,6 +50,7 @@
                 android:alpha="0.8"
                 android:background="@drawable/background_cliked_btn"
                 android:text="Cancel"
+                android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
             <Button
@@ -63,6 +64,7 @@
                 android:background="@drawable/bg_grey_corner"
                 android:alpha="0.5"
                 android:text="Delete"
+                android:textColor="@color/text_color"
                 android:textSize="14sp" />
         </LinearLayout>
 

@@ -16,12 +16,12 @@
         android:layout_height="wrap_content"
         android:text="Ho Thinh"
         android:textSize="24sp"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:fontFamily="@font/lobster_regular"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="huuthinh468@gmail.com"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:fontFamily="sans-serif"/>
 </LinearLayout>

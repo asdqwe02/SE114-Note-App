@@ -38,7 +38,8 @@
                 android:layout_height="30dp"
                 android:paddingLeft="5dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_note_book"/>
+                android:src="@drawable/ic_note_book"
+                android:background="@color/transparent_color"/>
 
             <TextView
                 android:id="@+id/item_notebookscreen"
@@ -49,7 +50,7 @@
                 android:paddingLeft="20dp"
                 android:layout_gravity="center_vertical"
                 android:text="Text"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:textSize="20sp"/>
 
             <ImageButton
@@ -58,9 +59,10 @@
                 android:layout_height="30dp"
                 android:layout_toRightOf="@+id/item_notebookscreen"
                 android:backgroundTint="@color/white"
-                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_more_vert"/>
+                android:src="@drawable/ic_more_vert"
+                android:background="@color/transparent_color"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

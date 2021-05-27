@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:backgroundTintMode="screen"
-    app:cardCornerRadius="20dp">
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:hapticFeedbackEnabled="true"
+        android:backgroundTintMode="screen"
+        android:background="@color/bg_white_color"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <View
@@ -29,6 +26,7 @@
             android:drawableLeft="@drawable/ic_share"
             android:padding="10dp"
             android:text="        Share this note"
+            android:textColor="@color/text_color"
             android:textAlignment="textStart" />
 
         <Button
@@ -41,6 +39,7 @@
             android:drawableLeft="@drawable/ic_bookmark_remove"
             android:padding="10dp"
             android:text="        Remove bookmark this note"
+            android:textColor="@color/text_color"
             android:textAlignment="textStart" />
 
         <Button
@@ -53,6 +52,7 @@
             android:drawableLeft="@drawable/ic_file_copy"
             android:padding="10dp"
             android:text="        Make a copy"
+            android:textColor="@color/text_color"
             android:textAlignment="textStart" />
 
         <Button
@@ -65,6 +65,6 @@
             android:drawableLeft="@drawable/ic_delete"
             android:padding="10dp"
             android:text="        Delete"
+            android:textColor="@color/text_color"
             android:textAlignment="textStart" />
     </LinearLayout>
-</androidx.cardview.widget.CardView>

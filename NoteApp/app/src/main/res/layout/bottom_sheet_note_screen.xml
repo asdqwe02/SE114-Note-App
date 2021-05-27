@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="15dp"
-    android:background="@color/white"
+    android:background="@color/bg_white_color"
     android:id="@+id/Open_Bottom_Sheet_Setting">
     <!--android:background="@drawable/rounded_dialog" note: this doesn't work-->
 
@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:background="@color/bg_white_color"
         android:orientation="horizontal"
         >
         <Button
@@ -76,6 +77,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="        Move to notebook"
+        android:textColor="@color/text_color"
         android:textAlignment="textStart"
         android:background="?android:attr/selectableItemBackground"
         android:drawableLeft="@drawable/ic_note_book"
@@ -85,6 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="        Bookmark this note"
+        android:textColor="@color/text_color"
         android:textAlignment="textStart"
         android:background="?android:attr/selectableItemBackground"
         android:drawableLeft="@drawable/ic_bookmark"
@@ -94,6 +97,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="        Add reminder"
+        android:textColor="@color/text_color"
         android:textAlignment="textStart"
         android:background="?android:attr/selectableItemBackground"
         android:drawableLeft="@drawable/ic_reminder"
@@ -104,6 +108,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="        Move to trash"
+        android:textColor="@color/text_color"
         android:textAlignment="textStart"
         android:background="?android:attr/selectableItemBackground"
         android:drawableLeft="@drawable/ic_delete"

@@ -89,12 +89,13 @@
         android:contentDescription="@string/app_name"
         android:padding="@dimen/_4sdp"
         android:src="@drawable/ic_delete"
-        android:tint="@color/white"
         android:layout_alignTop="@id/imageNote"
         android:layout_centerHorizontal="true"
         android:layout_alignParentEnd="true"
         android:visibility="gone"
-        />
+        app:tint="@color/white"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_alignParentRight="true" />
     <!--android:layout_marginTop="@dimen/_45sdp"-->
     <EditText
         android:id="@+id/noteText"
