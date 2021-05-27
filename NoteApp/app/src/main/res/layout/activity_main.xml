@@ -15,7 +15,7 @@
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:headerLayout="@layout/header_menu"
+        app:headerLayout="@menu/header_menu"
         app:menu="@menu/main_menu"
         android:layout_gravity="start"/>
 
@@ -46,8 +46,8 @@
 
             <ImageButton
                 android:id="@+id/imgbtn_menu"
-                android:layout_width="19dp"
-                android:layout_height="19dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@android:color/transparent"
                 android:backgroundTint="@color/black"
                 android:contentDescription="@string/app_label"
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lobster_regular"
                 android:text="@string/app_label"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -99,6 +99,7 @@
             app:tint="@color/black" />
 
         <EditText
+            android:id="@+id/inputSearch"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginLeft="@dimen/_12sdp"
@@ -110,10 +111,11 @@
             android:importantForAutofill="no"
             android:includeFontPadding="false"
             android:inputType="text"
-            android:textColorHint="@color/light_black" />
+            android:textColorHint="@color/text_hint" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/NotesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/_2sdp"

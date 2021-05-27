@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog"
+    android:layout_margin="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/bg_dialogheader_radiustop"
+        android:text="@string/create_a_notebook"
+        android:textColor="@color/text_color"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Enter name of your notebook"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/notebook_name_create"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            android:elevation="20dp"
+            android:hint="Name"
+            android:textColorHint="@color/text_hint"
+            android:background="@drawable/bg_grey_border_radius"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="14sp"
+                android:text="Cancel"
+                android:textColor="@color/text_color"
+                android:background="@drawable/bg_grey_corner"
+                android:alpha="0.5"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="5dp"/>
+            <Button
+                android:id="@+id/btn_create"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="14sp"
+                android:text="Create"
+                android:textColor="@color/text_color"
+                android:background="@drawable/background_cliked_btn"
+                android:alpha="0.8"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="5dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

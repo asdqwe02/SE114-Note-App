@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Main color use in app-->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="blue_light">#3490DA</color>
+    <color name="grey_metal">#656465</color>
+    <color name="pale_white">#D6D4D6</color>
+    <color name="transparent_color">@android:color/transparent</color>
+    <color name ="light_black">#EB5E5E5E</color>
+    <color name ="lighter_black">#80000000</color>
+
+    <!--color for component-->
+    <color name="light_text_color">@color/pale_white</color>
+    <color name="text_color">@color/white</color>
+    <color name="bg_white_color">@color/light_black</color>
+    <color name="text_hint">@color/white</color>
+    <color name="bg_unclicked_btn">@color/lighter_black</color>
+    <color name="bg_clicked_btn">@color/blue_light</color>
+    <color name="bg_dialog">@color/lighter_black</color>
+    <color name="ic_color">@color/black</color>
+</resources>

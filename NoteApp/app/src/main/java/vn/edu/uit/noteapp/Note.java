@@ -27,6 +27,9 @@ public class Note implements Serializable {
     @ColumnInfo(name = "date_time")
     private String dateTime;
 
+    @ColumnInfo(name = "CRI_state")
+    private boolean CRIstate;
+
     public int getId() {
         return id;
     }
@@ -75,9 +78,17 @@ public class Note implements Serializable {
         this.dateTime = dateTime;
     }
 
+    public boolean isCRIstate() {
+        return CRIstate;
+    }
+
+    public void setCRIstate(boolean CRIstate) {
+        this.CRIstate = CRIstate;
+    }
+
     @NonNull
     @Override
     public String toString() {
-        return title + " : " +dateTime;
+        return id + title + " : " + dateTime;
     }
 }

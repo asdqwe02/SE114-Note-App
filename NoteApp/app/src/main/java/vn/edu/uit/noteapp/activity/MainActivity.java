@@ -1,34 +1,58 @@
 package vn.edu.uit.noteapp.activity;
 import android.annotation.SuppressLint;
-
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import vn.edu.uit.noteapp.Note;
+import vn.edu.uit.noteapp.NotesDatabase;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.BookmarkScreen_adapter;
+import vn.edu.uit.noteapp.adapter.NoteAdapter;
+import vn.edu.uit.noteapp.listeners.NotesListener;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener, NotesListener {
 
     //variables
     public static final int REQUEST_CODE_ADD_NOTE = 1;
+    public static final int REQUEST_CODE_UPDATE_NOTE = 2;
+    public static final int REQUEST_CODE_SHOW_NOTES = 3;
     private ImageButton fab_add_note;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ImageButton img_menuBTN;
 
+    private int noteClickedPosition = -1;
+
     private RecyclerView noteRecyclerView;
     private NoteAdapter noteAdapter;
     List<Note> noteList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +89,76 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Make menu clickable
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_home);
+
+        //Note RecyclerView
+        noteRecyclerView = findViewById(R.id.NotesRecyclerView);
+        noteRecyclerView.setLayoutManager(
+                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        );
+
+        noteList = new ArrayList<>();
+        noteAdapter = new NoteAdapter(noteList, this);
+        noteRecyclerView.setAdapter(noteAdapter);
+        getNotes(REQUEST_CODE_SHOW_NOTES, false);
+
+        EditText inputSearch=findViewById(R.id.inputSearch);
+        inputSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                noteAdapter.cancelTimer();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (noteList.size()!=0)
+                    noteAdapter.searchNotes(s.toString());
+            }
+        });
+
+        //Save dark mode state
+    }
+
+    @SuppressLint("StaticFileLeak")
+    public void getNotes(final int requestCode, final boolean isNoteDeleted) {
+        class GetNoteTask extends AsyncTask<Void, Void, List<Note>> {
+            @Override
+            protected List<Note> doInBackground(Void... voids) {
+                return NotesDatabase
+                        .getNotesDatabase(getApplicationContext())
+                        .noteDao().getAllNotes();
+            }
+
+            @Override
+            protected void onPostExecute(List<Note> notes) {
+                super.onPostExecute(notes);
+                Log.d("MY_NOTE", notes.toString());
+                if (requestCode == REQUEST_CODE_SHOW_NOTES) {
+                    noteList.addAll(notes);
+                    noteAdapter.notifyDataSetChanged();
+                } else if (requestCode == REQUEST_CODE_ADD_NOTE) {
+                    noteList.add(0, notes.get(0));
+                    noteAdapter.notifyItemInserted(0);
+                    noteRecyclerView.smoothScrollToPosition(0);
+                } else if (requestCode == REQUEST_CODE_UPDATE_NOTE) {
+                    noteList.remove(noteClickedPosition);
+                    if (isNoteDeleted){
+                        noteAdapter.notifyItemRemoved(noteClickedPosition);
+                    } else{
+                        noteList.add(noteClickedPosition, notes.get(noteClickedPosition));
+                        noteAdapter.notifyItemChanged(noteClickedPosition);
+
+                    }
+
+                }
+
+            }
+        }
+        new GetNoteTask().execute();
     }
 
     @Override
@@ -75,6 +169,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else{
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onNoteClicked(Note note, int position) {
+        noteClickedPosition = position;
+        Intent intent = new Intent(getApplicationContext(), Note_screen.class);
+        intent.putExtra("isViewOrUpdate", true);
+        intent.putExtra("note", note);
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
     }
 
     @Override
@@ -116,5 +219,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_ADD_NOTE && resultCode == RESULT_OK) {
+            getNotes(REQUEST_CODE_ADD_NOTE, false);
+        } else if (requestCode == REQUEST_CODE_UPDATE_NOTE && resultCode == RESULT_OK) {
+            if (data != null)
+                getNotes(REQUEST_CODE_UPDATE_NOTE, data.getBooleanExtra("isNoteDeleted",false));
+        }
     }
 }

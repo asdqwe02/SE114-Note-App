@@ -4,9 +4,10 @@
 
     <item
         android:id="@+id/SaveNote"
-        android:icon="@drawable/ic_baseline_check_circle_outline_24"
+        android:icon="@drawable/ic_check_circle_outline"
         android:title="Saving Note"
         app:showAsAction="always" />
+
     <item
         android:id="@+id/Open_Bottom_Sheet_Setting"
         android:icon="@drawable/ic_more_vert"

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:hapticFeedbackEnabled="true"
+        android:backgroundTintMode="screen"
+        android:background="@color/bg_white_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="70dp"
+            android:layout_height="7dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/blue_light" />
+
+        <Button
+            android:id="@+id/share_this_note_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:drawableLeft="@drawable/ic_share"
+            android:padding="10dp"
+            android:text="        Share this note"
+            android:textColor="@color/text_color"
+            android:textAlignment="textStart" />
+
+        <Button
+            android:id="@+id/remove_bookmark_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginBottom="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:drawableLeft="@drawable/ic_bookmark_remove"
+            android:padding="10dp"
+            android:text="        Remove bookmark this note"
+            android:textColor="@color/text_color"
+            android:textAlignment="textStart" />
+
+        <Button
+            android:id="@+id/copy_file_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginBottom="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:drawableLeft="@drawable/ic_file_copy"
+            android:padding="10dp"
+            android:text="        Make a copy"
+            android:textColor="@color/text_color"
+            android:textAlignment="textStart" />
+
+        <Button
+            android:id="@+id/delete_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginBottom="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:drawableLeft="@drawable/ic_delete"
+            android:padding="10dp"
+            android:text="        Delete"
+            android:textColor="@color/text_color"
+            android:textAlignment="textStart" />
+    </LinearLayout>
