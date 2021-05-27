@@ -26,7 +26,6 @@ public class Setting_Screen extends AppCompatActivity {
         actionBar.setTitle("Settings");
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         actionBar.setDisplayHomeAsUpEnabled(true);
-
         DarkMode_switch = findViewById(R.id.swdarkmode);
         sharedPreferences = getSharedPreferences("night",MODE_PRIVATE);
         Boolean isNightModeOn = sharedPreferences.getBoolean("night mode", true);

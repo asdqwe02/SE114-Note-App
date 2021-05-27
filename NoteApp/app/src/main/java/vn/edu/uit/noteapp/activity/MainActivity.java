@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
-        //Save dark mode state
     }
 
     @SuppressLint("StaticFileLeak")
