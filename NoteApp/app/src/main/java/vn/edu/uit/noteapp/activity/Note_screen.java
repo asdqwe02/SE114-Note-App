@@ -1,9 +1,12 @@
 package vn.edu.uit.noteapp.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +75,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     private AlertDialog dialogDeleteNote;
     private View CRI_View;
     private String selectedImagePath;
+    private Context context;
 
     EditText title_Text, note_Text, Add_CRI_Etext;
     ImageButton show_CheckBox, addImage;
@@ -89,6 +95,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        context = this;
         title_Text = findViewById(R.id.titleText);
         note_Text = findViewById(R.id.noteText);
         show_CheckBox = findViewById(R.id.show_checkbox);
@@ -107,7 +114,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         noteDateTime.setText(
                 new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault()).format(new Date())
         );
-
 
 
         show_CheckBox.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +167,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 imageNote.setVisibility(View.GONE);
                 findViewById(R.id.imageRemoveImage).setVisibility(View.GONE);
                 Formatting_View_To_Fit_Added_Image(false);
-                selectedImagePath="";
+                selectedImagePath = "";
             }
         });
 
@@ -187,11 +193,10 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     public void Sync_EditText_With_CheckBox_RecyclerView() {
         if (note_Text.getVisibility() == View.VISIBLE) {
             checkboxRecyclerviewItems.clear();
-        }
-        else {
+        } else {
             note_Text.setText("");
             ArrayList<Checkbox_recyclerview_items> tempCRI_List = new ArrayList<>();
-            tempCRI_List=mAdapter.getCri_LIST();
+            tempCRI_List = mAdapter.getCri_LIST();
             for (int i = 0; i < tempCRI_List.size(); i++) {
                 //template: String title = ((TextView) recyclerView.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.title)).getText().toString();
                 //String tempE = ((EditText) mRecyclerView.findViewHolderForAdapterPosition(i).itemView.findViewById(R.id.checkbox_edittext)).getText().toString();
@@ -208,8 +213,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         mAdapter = new Checkbox_recyclerview_adapter(checkboxRecyclerviewItems);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-
-
 
 
     }
@@ -315,16 +318,32 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note_Text.setText(alreadyAvailableNote.getNoteText());
         noteDateTime.setText(alreadyAvailableNote.getDateTime());
 
-        note_screen_color = alreadyAvailableNote.getColor();
+
         View view = this.getWindow().getDecorView();
-        view.setBackgroundColor(Color.parseColor(note_screen_color));
+        note_screen_color = alreadyAvailableNote.getColor();
+
+        if (note_screen_color.equals("#FFFFFF") || note_screen_color.equals("#303030")) {
+            int currentNightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            switch (currentNightMode) {
+                case Configuration.UI_MODE_NIGHT_NO:
+                    view.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    break;
+                case Configuration.UI_MODE_NIGHT_YES:
+                    view.setBackgroundColor(Color.parseColor("#303030"));
+                    break;
+            }
+        }
+        else {
+            view.setBackgroundColor(Color.parseColor(note_screen_color));
+        }
+
 
         if (alreadyAvailableNote.getImagePath() != null && !alreadyAvailableNote.getImagePath().trim().isEmpty()) {
             imageNote.setImageBitmap(BitmapFactory.decodeFile(alreadyAvailableNote.getImagePath()));
             imageNote.setVisibility(View.VISIBLE);
             findViewById(R.id.imageRemoveImage).setVisibility(View.VISIBLE);
             Formatting_View_To_Fit_Added_Image(true);
-            selectedImagePath =alreadyAvailableNote.getImagePath();
+            selectedImagePath = alreadyAvailableNote.getImagePath();
 
         } else {
             imageNote.setVisibility(View.GONE);
@@ -335,10 +354,11 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             Sync_EditText_With_CheckBox_RecyclerView();
             mRecyclerView.setVisibility(View.VISIBLE);
             Add_CRI_Views.setVisibility(View.VISIBLE);
-            note_Text.setVisibility(View.INVISIBLE);
+            note_Text.setVisibility(View.GONE);
         } else {
-            mRecyclerView.setVisibility(View.INVISIBLE);
-            Add_CRI_Views.setVisibility(View.INVISIBLE);
+            note_Text.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+            Add_CRI_Views.setVisibility(View.GONE);
         }
     }
 
@@ -418,7 +438,16 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 view.setBackgroundColor(Color.parseColor("#F2994A"));
                 break;
             case "White":
-                view.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+                int currentNightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                switch (currentNightMode) {
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        view.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                        break;
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        view.setBackgroundColor(Color.parseColor("#303030"));
+                        break;
+                }
                 break;
             case "Move To Trash":
                 if (alreadyAvailableNote != null)
@@ -437,7 +466,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         if (b) {
 
             note_textLayoutParams.addRule(RelativeLayout.BELOW, R.id.imageNote);
-            note_Text.setLayoutParams(note_textLayoutParams); //causes layout update
+            note_Text.setLayoutParams(note_textLayoutParams); //causes layout update;
 
             cri_viewLayoutParams.addRule(RelativeLayout.BELOW, R.id.imageNote);
             CRI_View.setLayoutParams(cri_viewLayoutParams);
