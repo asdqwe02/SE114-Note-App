@@ -76,6 +76,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     private View CRI_View;
     private String selectedImagePath;
     private Context context;
+    private boolean bookmark;
 
     EditText title_Text, note_Text, Add_CRI_Etext;
     ImageButton show_CheckBox, addImage;
@@ -103,6 +104,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         addImage = findViewById(R.id.addNoteImage);
         imageNote = findViewById(R.id.imageNote);
         CRI_View = findViewById(R.id.checkbox_recyclerview);
+        bookmark = false;
 
         Add_CRI_Btton = findViewById(R.id.add_Checkbox_RecyclerView_items_Btton);
         Add_CRI_Etext = findViewById(R.id.add_Checkbox_RecyclerView_items_Etext);
@@ -284,6 +286,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note.setTitle(title_Text.getText().toString());
         note.setNoteText(note_Text.getText().toString());
         note.setDateTime(noteDateTime.getText().toString());
+        note.setBookmark(bookmark);
         note.setColor(hexColor);
         note.setImagePath(selectedImagePath);
 
@@ -453,9 +456,26 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 if (alreadyAvailableNote != null)
                     showDeleteNoteDialog();
                 break;
+            case  "Bookmark This Note":
+                if(alreadyAvailableNote != null)
+                    add_to_bookmark();
+                break;
+            case "Move To Notebook":
+                if(alreadyAvailableNote != null)
+                    move_to_notebook();
             default:
                 break;
         }
+    }
+
+    private void move_to_notebook() {
+    }
+
+    private void add_to_bookmark() {
+//        if()
+        bookmark = true;
+        alreadyAvailableNote.setBookmark(bookmark);
+        saveNote_V2();
     }
 
     public void Formatting_View_To_Fit_Added_Image(boolean b) {

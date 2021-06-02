@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -25,7 +23,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import vn.edu.uit.noteapp.R;
-import vn.edu.uit.noteapp.adapter.Model_Item_Notebook_screen;
+import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
 import vn.edu.uit.noteapp.adapter.Notebookscreen_recyclerview_adapter;
 
 public class Notebook_Screen extends AppCompatActivity {

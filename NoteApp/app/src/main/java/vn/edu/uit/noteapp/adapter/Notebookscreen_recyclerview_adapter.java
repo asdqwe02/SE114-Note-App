@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.bottomsheet.Bottom_Sheet_Notebookscreen;
+import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
 
 public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<Notebookscreen_recyclerview_adapter.ViewHolder> {
     Context context;

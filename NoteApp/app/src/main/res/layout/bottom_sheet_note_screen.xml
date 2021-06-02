@@ -73,26 +73,30 @@
             android:paddingLeft="4dp"
             />
         ></LinearLayout>
+
     <Button
+        android:id="@+id/notebook_note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="        Move to notebook"
-        android:textColor="@color/text_color"
-        android:textAlignment="textStart"
+        android:layout_gravity="start"
         android:background="?android:attr/selectableItemBackground"
         android:drawableLeft="@drawable/ic_note_book"
         android:padding="10dp"
-        android:layout_gravity="start"></Button>
+        android:text="        Move to notebook"
+        android:textAlignment="textStart"
+        android:textColor="@color/text_color"></Button>
+
     <Button
+        android:id="@+id/bookmark_note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="        Bookmark this note"
-        android:textColor="@color/text_color"
-        android:textAlignment="textStart"
+        android:layout_gravity="start"
         android:background="?android:attr/selectableItemBackground"
         android:drawableLeft="@drawable/ic_bookmark"
         android:padding="10dp"
-        android:layout_gravity="start"></Button>
+        android:text="        Bookmark this note"
+        android:textAlignment="textStart"
+        android:textColor="@color/text_color"></Button>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
