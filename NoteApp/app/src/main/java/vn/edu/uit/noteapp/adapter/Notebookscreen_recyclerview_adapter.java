@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.bottomsheet.Bottom_Sheet_Notebookscreen;
+import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
 
 public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<Notebookscreen_recyclerview_adapter.ViewHolder> {
     Context context;
@@ -38,7 +39,8 @@ public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<No
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         LayoutInflater inflater = LayoutInflater.from(context);
-        View item_view = inflater.inflate(R.layout.notebookscreen_recyclerview_adapter, parent, false);
+        View item_view = inflater.inflate(R.layout.notebookscreen_recyclerview_adapter,
+                parent, false);
         ViewHolder viewHolder = new ViewHolder(item_view);
         return viewHolder;
     }

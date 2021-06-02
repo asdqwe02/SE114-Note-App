@@ -26,6 +26,7 @@ public class Setting_Screen extends AppCompatActivity {
         actionBar.setTitle("Settings");
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         actionBar.setDisplayHomeAsUpEnabled(true);
+
         DarkMode_switch = findViewById(R.id.swdarkmode);
         sharedPreferences = getSharedPreferences("night",MODE_PRIVATE);
         Boolean isNightModeOn = sharedPreferences.getBoolean("night mode", true);
@@ -36,7 +37,7 @@ public class Setting_Screen extends AppCompatActivity {
 
         DarkMode_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttosnView, boolean isChecked) {
                 if (isChecked){
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     DarkMode_switch.setChecked(true);

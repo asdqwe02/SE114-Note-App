@@ -51,7 +51,6 @@
                 android:layout_gravity="center_vertical"
                 android:text="Text"
                 android:textColor="@color/text_color"
-
                 android:textSize="20sp"/>
 
             <ImageButton
@@ -64,7 +63,6 @@
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_more_vert"
                 android:background="@color/transparent_color"/>
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

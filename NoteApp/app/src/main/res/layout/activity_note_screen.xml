@@ -100,7 +100,7 @@
     <EditText
         android:id="@+id/noteText"
         android:layout_width="match_parent"
-        android:layout_height="match_parent "
+        android:layout_height="match_parent"
         android:layout_below="@+id/titleText"
         android:layout_above="@id/bottom_toolbar"
         android:layout_alignParentStart="true"

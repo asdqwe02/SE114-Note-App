@@ -61,7 +61,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
 
-
     private RecyclerView mRecyclerView;
     private Checkbox_recyclerview_adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -105,7 +104,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         selectedImagePath = "";
 
         noteDateTime.setText(
-                new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault()).format(new Date())
+                new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a",
+                        Locale.getDefault()).format(new Date())
         );
 
 
@@ -115,7 +115,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             public void onClick(View v) {
 
                 Sync_EditText_With_CheckBox_RecyclerView();
-                if (note_Text.getVisibility() == View.VISIBLE && mRecyclerView.getVisibility() == View.GONE) {
+                if (note_Text.getVisibility() == View.VISIBLE
+                        && mRecyclerView.getVisibility() == View.GONE) {
                     note_Text.setVisibility(View.GONE);
                     mRecyclerView.setVisibility(View.VISIBLE);
                     Add_CRI_Views.setVisibility(View.VISIBLE);
@@ -180,8 +181,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             alreadyAvailableNote = (Note) getIntent().getSerializableExtra("note");
             loadNote_V2();
         }
-
-
     }
 
     public void Sync_EditText_With_CheckBox_RecyclerView() {
@@ -261,7 +260,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         int colorID = ((ColorDrawable) background).getColor();
         String hexColor = String.format("#%06X", (0xFFFFFF & colorID));
 
-
         //If title doesn't have text send an alert message
         if (title_Text.getText().toString().trim().isEmpty()) {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -319,7 +317,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(Color.parseColor(note_screen_color));
 
-        if (alreadyAvailableNote.getImagePath() != null && !alreadyAvailableNote.getImagePath().trim().isEmpty()) {
+        if (alreadyAvailableNote.getImagePath() != null && !alreadyAvailableNote
+                .getImagePath().trim().isEmpty()) {
             imageNote.setImageBitmap(BitmapFactory.decodeFile(alreadyAvailableNote.getImagePath()));
             imageNote.setVisibility(View.VISIBLE);
             findViewById(R.id.imageRemoveImage).setVisibility(View.VISIBLE);
@@ -421,8 +420,9 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 view.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 break;
             case "Move To Trash":
-                if (alreadyAvailableNote != null)
+                if (alreadyAvailableNote != null) {
                     showDeleteNoteDialog();
+                } else { finish(); }
                 break;
             default:
                 break;
@@ -432,8 +432,10 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     public void Formatting_View_To_Fit_Added_Image(boolean b) {
 
         //change note text and CRI view to fit in with the image just added
-        RelativeLayout.LayoutParams note_textLayoutParams = (RelativeLayout.LayoutParams) note_Text.getLayoutParams();
-        RelativeLayout.LayoutParams cri_viewLayoutParams = (RelativeLayout.LayoutParams) CRI_View.getLayoutParams();
+        RelativeLayout.LayoutParams note_textLayoutParams
+                = (RelativeLayout.LayoutParams) note_Text.getLayoutParams();
+        RelativeLayout.LayoutParams cri_viewLayoutParams
+                = (RelativeLayout.LayoutParams) CRI_View.getLayoutParams();
         if (b) {
 
             note_textLayoutParams.addRule(RelativeLayout.BELOW, R.id.imageNote);
@@ -469,7 +471,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             } else {
                 Toast.makeText(this, "Permission Denied!", Toast.LENGTH_SHORT).show();
             }
-
         }
     }
 

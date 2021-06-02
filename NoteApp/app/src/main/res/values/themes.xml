@@ -54,4 +54,16 @@
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
+    
+    <style name="datePicker"
+        parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="colorAccent">@color/blue_light</item>
+        <item name="android:textColor">@color/text_color</item>
+    </style>
+
+    <style name="timePicker"
+        parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="colorAccent">@color/blue_light</item>
+        <item name="android:textColor">@color/text_color</item>
+    </style>
 </resources>

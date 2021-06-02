@@ -1,4 +1,4 @@
-package vn.edu.uit.noteapp.adapter;
+package vn.edu.uit.noteapp.data;
 
 public class Model_Item_Notebook_screen {
     private String item_name;
