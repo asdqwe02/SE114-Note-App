@@ -1,9 +1,12 @@
 package vn.edu.uit.noteapp.activity;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -52,6 +55,13 @@ public class MainActivity extends AppCompatActivity implements
     private RecyclerView noteRecyclerView;
     private NoteAdapter noteAdapter;
     List<Note> noteList;
+
+    //call shared preferences
+//    SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("night",
+//            Context.MODE_PRIVATE);
+//    Context context = getApplicationContext();
+    //end of calling
+
 
 
     @Override
@@ -120,6 +130,17 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
+        //Save dark mode state
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("night",
+                Context.MODE_PRIVATE);
+        Context context = getApplicationContext();
+        Boolean isNight = sharedPref.getBoolean("night mode", true);
+        if (isNight){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        //end of edit dark mode
     }
 
     @SuppressLint("StaticFileLeak")
@@ -201,8 +222,8 @@ public class MainActivity extends AppCompatActivity implements
 
                 //link to reminder screen
             case R.id.nav_reminder:
-                //intent = new Intent(MainActivity.this, Reminder_screen.class);
-                //startActivity(intent);
+                intent = new Intent(MainActivity.this, Reminder_screen.class);
+                startActivity(intent);
                 break;
 
                 //link to settings screen

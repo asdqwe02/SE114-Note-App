@@ -97,6 +97,7 @@
         android:textAlignment="textStart"
         android:textColor="@color/text_color"></Button>
     <Button
+        android:id="@+id/btn_reminder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="        Add reminder"

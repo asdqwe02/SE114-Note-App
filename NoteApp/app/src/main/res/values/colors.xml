@@ -23,6 +23,6 @@
     <color name="text_hint">@color/grey_metal</color>
     <color name="bg_unclicked_btn">@color/pale_white</color>
     <color name="bg_clicked_btn">@color/blue_light</color>
-    <color name="bg_dialog">@color/pale_white</color>
+    <color name="bg_dialog">@color/white</color>
     <color name="ic_color">@color/white</color>
 </resources>

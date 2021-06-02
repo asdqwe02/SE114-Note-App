@@ -39,7 +39,8 @@ public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<No
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         LayoutInflater inflater = LayoutInflater.from(context);
-        View item_view = inflater.inflate(R.layout.notebookscreen_recyclerview_adapter, parent, false);
+        View item_view = inflater.inflate(R.layout.notebookscreen_recyclerview_adapter,
+                parent, false);
         ViewHolder viewHolder = new ViewHolder(item_view);
         return viewHolder;
     }
