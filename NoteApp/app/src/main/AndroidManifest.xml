@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NoteApp">
+        <activity android:name=".Notebook_activity"></activity>
         <activity
             android:name=".activity.Reminder_screen"
             android:parentActivityName=".activity.MainActivity">

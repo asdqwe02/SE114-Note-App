@@ -44,6 +44,9 @@ public class Note_Screen_Bottom_Sheet_Setting extends BottomSheetDialogFragment 
     //variable for reminder
     private int mDay,mMonth, mYear, mHour, mMinute;
 
+    Button add_to_bookmark;
+    Button add_to_notebook;
+
     //Bottom Sheet SharedPreferences
     public static final String BOTTOM_SHEET_SHARE_PREFS="shareadPreferences";
     public static final String[] BOTTOM_SHEET_COlOR_BUTTON= new String[6];
@@ -77,6 +80,24 @@ public class Note_Screen_Bottom_Sheet_Setting extends BottomSheetDialogFragment 
         addReminder = v.findViewById(R.id.btn_reminder);
 
 
+        add_to_bookmark = v.findViewById(R.id.bookmark_note);
+        add_to_notebook = v.findViewById(R.id.notebook_note);
+
+        add_to_bookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.OnBottomSheet_ButtonClicked("Bookmark This Note");
+                dismiss();
+            }
+        });
+
+        add_to_notebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.OnBottomSheet_ButtonClicked("Move To Notebook");
+                dismiss();
+            }
+        });
 
         moveNoteToTrashButton.setOnClickListener(new View.OnClickListener() {
             @Override

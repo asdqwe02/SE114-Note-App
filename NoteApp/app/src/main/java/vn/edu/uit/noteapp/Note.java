@@ -30,6 +30,28 @@ public class Note implements Serializable {
     @ColumnInfo(name = "CRI_state")
     private boolean CRIstate;
 
+    @ColumnInfo(name = "Bookmark")
+    private boolean bookmark;
+
+    @ColumnInfo(name = "Notebook")
+    private String notebook;
+
+    public boolean isBookmark() {
+        return bookmark;
+    }
+
+    public void setBookmark(boolean bookmark) {
+        this.bookmark = bookmark;
+    }
+
+    public String getNotebook() {
+        return notebook;
+    }
+
+    public void setNotebook(String notebook) {
+        this.notebook = notebook;
+    }
+
     public int getId() {
         return id;
     }
