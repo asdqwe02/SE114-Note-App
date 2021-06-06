@@ -27,7 +27,9 @@
         android:layout_marginLeft="@dimen/_8sdp"
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginRight="@dimen/_8sdp"
-        android:textSize="@dimen/_13ssp" />
+        android:textSize="@dimen/_13ssp"
+        android:fontFamily="@font/ubuntu_medium"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/noteTextContent"

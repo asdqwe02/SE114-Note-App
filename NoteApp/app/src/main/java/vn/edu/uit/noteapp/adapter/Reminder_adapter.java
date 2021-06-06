@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import vn.edu.uit.noteapp.data.Reminder_item;
 import vn.edu.uit.noteapp.R;
+import vn.edu.uit.noteapp.entities.Reminders;
 
 public class Reminder_adapter extends RecyclerView.Adapter<Reminder_adapter.ViewHolder> {
     Context context;
@@ -23,15 +24,20 @@ public class Reminder_adapter extends RecyclerView.Adapter<Reminder_adapter.View
         this.Reminder_items = items;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView tv_name;
+    static class ViewHolder extends RecyclerView.ViewHolder{
+        private TextView tv_title;
         private TextView tv_date;
         private TextView tv_time;
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_name = itemView.findViewById(R.id.item_name);
+            tv_title = itemView.findViewById(R.id.item_name);
             tv_date = itemView.findViewById(R.id.tv_date);
             tv_time = itemView.findViewById(R.id.tv_time);
+        }
+
+        void setReminder (Reminders reminders) {
+            tv_title.setText(reminders.getTitle());
+            
         }
     }
 
@@ -48,7 +54,7 @@ public class Reminder_adapter extends RecyclerView.Adapter<Reminder_adapter.View
     @Override
     public void onBindViewHolder(@NonNull Reminder_adapter.ViewHolder holder, int position) {
         Reminder_item item = Reminder_items.get(position);
-        holder.tv_name.setText(item.getItem_name());
+        holder.tv_title.setText(item.getItem_name());
         holder.tv_date.setText(item.getiDate());
         holder.tv_time.setText(item.getiTime());
     }

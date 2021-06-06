@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,7 +16,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +28,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,8 +48,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import vn.edu.uit.noteapp.Checkbox_recyclerview_items;
-import vn.edu.uit.noteapp.Note;
-import vn.edu.uit.noteapp.NotesDatabase;
+import vn.edu.uit.noteapp.entities.Note;
+import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.Checkbox_recyclerview_adapter;
 import vn.edu.uit.noteapp.bottomsheet.Note_Screen_Bottom_Sheet_Setting;
@@ -324,7 +321,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note_screen_color = alreadyAvailableNote.getColor();
 
         if (note_screen_color.equals("#FFFFFF") || note_screen_color.equals("#303030")) {
-            int currentNightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            int currentNightMode = context.getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK;
             switch (currentNightMode) {
                 case Configuration.UI_MODE_NIGHT_NO:
                     view.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -493,10 +491,10 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             cri_viewLayoutParams.addRule(RelativeLayout.BELOW, R.id.imageNote);
             CRI_View.setLayoutParams(cri_viewLayoutParams);
         } else {
-            note_textLayoutParams.addRule(RelativeLayout.BELOW, R.id.titleText);
+            note_textLayoutParams.addRule(RelativeLayout.BELOW, R.id.normal_view);
             note_Text.setLayoutParams(note_textLayoutParams); //causes layout update
 
-            cri_viewLayoutParams.addRule(RelativeLayout.BELOW, R.id.titleText);
+            cri_viewLayoutParams.addRule(RelativeLayout.BELOW, R.id.normal_view);
             CRI_View.setLayoutParams(cri_viewLayoutParams);
         }
     }

@@ -1,4 +1,4 @@
-package vn.edu.uit.noteapp;
+package vn.edu.uit.noteapp.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

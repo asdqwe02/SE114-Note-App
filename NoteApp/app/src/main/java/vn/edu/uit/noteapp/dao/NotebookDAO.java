@@ -1,4 +1,4 @@
-package vn.edu.uit.noteapp;
+package vn.edu.uit.noteapp.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

@@ -3,7 +3,6 @@ package vn.edu.uit.noteapp.activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -18,12 +17,11 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.uit.noteapp.Note;
-import vn.edu.uit.noteapp.NotesDatabase;
+import vn.edu.uit.noteapp.entities.Note;
+import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.BookmarkScreen_adapter;
 import vn.edu.uit.noteapp.adapter.NoteAdapter;
-import vn.edu.uit.noteapp.data.Data_model_bookmark;
 import vn.edu.uit.noteapp.listeners.NotesListener;
 
 public class Bookmark_screen_activity extends AppCompatActivity implements NotesListener {

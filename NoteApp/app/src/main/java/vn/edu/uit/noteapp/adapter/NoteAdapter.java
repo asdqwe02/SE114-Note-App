@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import vn.edu.uit.noteapp.Note;
+import vn.edu.uit.noteapp.entities.Note;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.listeners.NotesListener;
 
