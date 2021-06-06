@@ -5,17 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,10 +27,9 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.uit.noteapp.Note;
-import vn.edu.uit.noteapp.NotesDatabase;
+import vn.edu.uit.noteapp.entities.Note;
+import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.R;
-import vn.edu.uit.noteapp.adapter.BookmarkScreen_adapter;
 import vn.edu.uit.noteapp.adapter.NoteAdapter;
 import vn.edu.uit.noteapp.listeners.NotesListener;
 
@@ -55,13 +50,6 @@ public class MainActivity extends AppCompatActivity implements
     private RecyclerView noteRecyclerView;
     private NoteAdapter noteAdapter;
     List<Note> noteList;
-
-    //call shared preferences
-//    SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("night",
-//            Context.MODE_PRIVATE);
-//    Context context = getApplicationContext();
-    //end of calling
-
 
 
     @Override
@@ -111,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements
         noteRecyclerView.setAdapter(noteAdapter);
         getNotes(REQUEST_CODE_SHOW_NOTES, false);
 
+        //search function
         EditText inputSearch=findViewById(R.id.inputSearch);
         inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
