@@ -224,16 +224,20 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
 
         /*Reuse code in Sync_EditText_With_CheckBox_RecyclerView() to update the recycler view
          this shit is dumb as fuck but it work, it does make the file bloated tho*/
-        note_Text.setText("");
         ArrayList<Checkbox_recyclerview_items> tempCRI_List = new ArrayList<>();
         tempCRI_List = mAdapter.getCri_LIST();
+        String lines[] = new String[tempCRI_List.size()];
         for (int i = 0; i < tempCRI_List.size(); i++) {
-            String tempE = tempCRI_List.get(i).get_checkbox_edittext();
-            note_Text.setText(note_Text.getText() + tempE + "\n");
+           lines[i] = tempCRI_List.get(i).get_checkbox_edittext();
         }
-        note_Text.setVisibility(View.VISIBLE);
-        Sync_EditText_With_CheckBox_RecyclerView();
-        note_Text.setVisibility(View.GONE);
+        checkboxRecyclerviewItems.clear();
+        for (int i = 0; i < lines.length; i++)
+            checkboxRecyclerviewItems.add(new Checkbox_recyclerview_items(lines[i], false));
+        mLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new Checkbox_recyclerview_adapter(checkboxRecyclerviewItems);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
     }
 
     public void Open_Bottom_Sheet_Setting() {
