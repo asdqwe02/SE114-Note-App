@@ -31,7 +31,6 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
     RecyclerView recyclerView;
 
     private int noteClickedPosition = -1;
-    public static final int REQUEST_CODE_ADD_NOTE = 1;
     public static final int REQUEST_CODE_UPDATE_NOTE = 2;
     public static final int REQUEST_CODE_SHOW_NOTES = 3;
 
@@ -40,7 +39,7 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmark_screen);
 
-        ActionBar actionBar=getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Bookmarks");
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -56,6 +55,7 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
         );
         getNotes(REQUEST_CODE_SHOW_NOTES, false);
     }
+
     @SuppressLint("StaticFileLeak")
     public void getNotes(final int requestCode, final boolean isNoteDeleted) {
         class GetNoteTask extends AsyncTask<Void, Void, List<Note>> {
@@ -73,15 +73,11 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
                 if (requestCode == REQUEST_CODE_SHOW_NOTES) {
                     notelist.addAll(notes);
                     note_adapter.notifyDataSetChanged();
-                } else if (requestCode == REQUEST_CODE_ADD_NOTE) {
-                    notelist.add(0, notes.get(0));
-                    note_adapter.notifyItemInserted(0);
-                    recyclerView.smoothScrollToPosition(0);
                 } else if (requestCode == REQUEST_CODE_UPDATE_NOTE) {
                     notelist.remove(noteClickedPosition);
-                    if (isNoteDeleted){
+                    if (isNoteDeleted) {
                         note_adapter.notifyItemRemoved(noteClickedPosition);
-                    } else{
+                    } else {
                         notelist.add(noteClickedPosition, notes.get(noteClickedPosition));
                         note_adapter.notifyItemChanged(noteClickedPosition);
 
@@ -97,11 +93,9 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_ADD_NOTE && resultCode == RESULT_OK) {
-            getNotes(REQUEST_CODE_ADD_NOTE, false);
-        } else if (requestCode == REQUEST_CODE_UPDATE_NOTE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_UPDATE_NOTE && resultCode == RESULT_OK) {
             if (data != null)
-                getNotes(REQUEST_CODE_UPDATE_NOTE, data.getBooleanExtra("isNoteDeleted",false));
+                getNotes(REQUEST_CODE_UPDATE_NOTE, data.getBooleanExtra("isNoteDeleted", false));
         }
     }
 

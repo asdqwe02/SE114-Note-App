@@ -3,21 +3,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
+
     android:id="@+id/noteScreen"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
-
-
-
     <include
         android:id="@+id/bottom_toolbar"
         layout="@layout/note_screen_bottom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
-
     <LinearLayout
         android:id="@+id/add_CRI_views"
         android:layout_width="match_parent"
@@ -26,7 +24,6 @@
         android:layout_marginHorizontal="12dp"
         android:background="@android:color/transparent"
         android:gravity="center">
-
         <Button
             android:id="@+id/add_Checkbox_RecyclerView_items_Btton"
             android:layout_width="25dp"
@@ -42,7 +39,7 @@
     </LinearLayout>
 
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/add_CRI_views"
@@ -83,10 +80,9 @@
                 android:background="@android:color/transparent"
                 android:gravity="left"
                 android:hint="Title"
+                android:inputType="text"
                 android:textSize="30sp"
                 tools:ignore="HardcodedText" />
-
-
             <ImageView
                 android:id="@+id/imageNote"
                 android:layout_width="match_parent"
@@ -119,6 +115,7 @@
             <!--android:layout_marginTop="@dimen/_45sdp"-->
 
             <include
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:id="@+id/checkbox_recyclerview"
                 layout="@layout/checkbox_recyclerview"
                 android:layout_width="wrap_content"
@@ -142,5 +139,5 @@
                 android:hint="Add a note..."
                 tools:ignore="HardcodedText" />
         </RelativeLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>
