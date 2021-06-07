@@ -73,7 +73,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     private String selectedImagePath;
     private Context context;
     private boolean bookmark;
-
+    public static String notebookname;
+    public static boolean check_add_notebook;
     EditText title_Text, note_Text, Add_CRI_Etext;
     ImageButton show_CheckBox, addImage;
     Button Add_CRI_Btton;
@@ -101,6 +102,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         imageNote = findViewById(R.id.imageNote);
         CRI_View = findViewById(R.id.checkbox_recyclerview);
         bookmark = false;
+        check_add_notebook = false;
 
         Add_CRI_Btton = findViewById(R.id.add_Checkbox_RecyclerView_items_Btton);
         Add_CRI_Etext = findViewById(R.id.add_Checkbox_RecyclerView_items_Etext);
@@ -479,19 +481,33 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             case "Move To Notebook":
                 if(alreadyAvailableNote != null)
                     move_to_notebook();
+
             default:
                 break;
         }
     }
 
     private void move_to_notebook() {
+        check_add_notebook = true;
+        Intent intent = new Intent(Note_screen.this,Notebook_Screen.class);
+        startActivity(intent);
+
     }
 
     private void add_to_bookmark() {
-//        if()
-        bookmark = true;
-        alreadyAvailableNote.setBookmark(bookmark);
-        saveNote_V2();
+        if(alreadyAvailableNote.isBookmark() == false)
+        {
+            bookmark = true;
+            alreadyAvailableNote.setBookmark(bookmark);
+            saveNote_V2();
+        }
+       else if(alreadyAvailableNote.isBookmark()==true)
+        {
+            bookmark = false;
+            alreadyAvailableNote.setBookmark(bookmark);
+            saveNote_V2();
+        }
+
     }
 
     public void Formatting_View_To_Fit_Added_Image(boolean b) {
@@ -586,4 +602,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         saveNote_V2();
         super.onBackPressed();
     }
+
+
 }

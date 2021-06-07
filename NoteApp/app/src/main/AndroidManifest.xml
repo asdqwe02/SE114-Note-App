@@ -2,12 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="vn.edu.uit.noteapp">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-sdk
+        android:maxSdkVersion="30"
         android:minSdkVersion="24"
-        android:targetSdkVersion="26"
-        android:maxSdkVersion="30"/>
+        android:targetSdkVersion="26" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,11 +17,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NoteApp">
-        <activity android:name=".Notebook_activity"></activity>
+        <activity android:name=".bottomsheet.Bottomsheet_add_notebook"></activity>
+        <activity android:name=".Notebook_activity" />
         <activity
             android:name=".activity.Reminder_screen"
-            android:parentActivityName=".activity.MainActivity">
-        </activity>
+            android:parentActivityName=".activity.MainActivity"></activity>
         <activity
             android:name=".activity.Bookmark_screen_activity"
             android:parentActivityName=".activity.MainActivity" />
