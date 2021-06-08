@@ -80,7 +80,6 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
                     } else {
                         notelist.add(noteClickedPosition, notes.get(noteClickedPosition));
                         note_adapter.notifyItemChanged(noteClickedPosition);
-
                     }
 
                 }
