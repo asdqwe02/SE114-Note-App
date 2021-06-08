@@ -59,7 +59,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     private String note_screen_color;
     private boolean CRI_visibility = false;
 
-    public static final String SHARE_PREFS = "sharedPrefs";
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
 
@@ -212,9 +211,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         String lines[] = temp.split("\\r?\\n");
         for (int i = 0; i < lines.length; i++)
             checkboxRecyclerviewItems.add(new Checkbox_recyclerview_items(lines[i], false));
-        mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new Checkbox_recyclerview_adapter(checkboxRecyclerviewItems);
-        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -235,9 +232,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         checkboxRecyclerviewItems.clear();
         for (int i = 0; i < lines.length; i++)
             checkboxRecyclerviewItems.add(new Checkbox_recyclerview_items(lines[i], false));
-        mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new Checkbox_recyclerview_adapter(checkboxRecyclerviewItems);
-        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
     }

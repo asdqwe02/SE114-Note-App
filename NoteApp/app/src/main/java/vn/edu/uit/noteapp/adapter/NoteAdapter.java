@@ -1,5 +1,8 @@
 package vn.edu.uit.noteapp.adapter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import vn.edu.uit.noteapp.entities.Note;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.listeners.NotesListener;
@@ -95,12 +99,24 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
             GradientDrawable gradientDrawable = (GradientDrawable) NoteContainerLayout.getBackground();
             if (note.getColor() != null) {
-                gradientDrawable.setColor(Color.parseColor(note.getColor()));
+                String note_screen_color = note.getColor();
+                if (note_screen_color.equals("#FFFFFF") || note_screen_color.equals("#303030")) {
+                    int currentNightMode = noteContentText.getContext().getResources().getConfiguration().uiMode
+                            & Configuration.UI_MODE_NIGHT_MASK;
+                    switch (currentNightMode) {
+                        case Configuration.UI_MODE_NIGHT_NO:
+                            gradientDrawable.setColor(Color.parseColor("#FFFFFF"));
+                            break;
+                        case Configuration.UI_MODE_NIGHT_YES:
+                            gradientDrawable.setColor(Color.parseColor("#303030"));
+                            break;
+                    }
+                } else gradientDrawable.setColor(Color.parseColor(note.getColor()));
             } else {
-                gradientDrawable.setColor(Color.parseColor("#a9a9a9"));
+                gradientDrawable.setColor(Color.parseColor("#00FFFFFF"));
             }
 
-            if (note.getImagePath()!=null){
+            if (note.getImagePath() != null) {
                 imageNoteContainer.setImageBitmap(BitmapFactory.decodeFile(note.getImagePath()));
                 imageNoteContainer.setVisibility(View.VISIBLE);
             } else {
@@ -135,7 +151,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             }
         }, 500);
     }
-    public void cancelTimer(){
+
+    public void cancelTimer() {
         if (timer == null)
             timer.cancel();
     }
