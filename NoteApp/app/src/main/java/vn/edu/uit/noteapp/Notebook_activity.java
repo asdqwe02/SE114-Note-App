@@ -47,7 +47,7 @@ public class Notebook_activity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewNotebook);
         notelist = new ArrayList<>();
-        note_adapter = new NoteAdapter(notelist, (NotesListener) this);
+        note_adapter = new NoteAdapter(notelist, (NotesListener) this, 2); // 2 la bien Int nhan biet Notebook_Activity su dung Note_adapter
         recyclerView.setAdapter(note_adapter);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
