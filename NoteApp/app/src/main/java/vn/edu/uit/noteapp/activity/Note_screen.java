@@ -100,7 +100,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         addImage = findViewById(R.id.addNoteImage);
         imageNote = findViewById(R.id.imageNote);
         CRI_View = findViewById(R.id.checkbox_recyclerview);
-//        bookmark = false;
+        bookmark = false;
         check_add_notebook = false;
 
         Add_CRI_Btton = findViewById(R.id.add_Checkbox_RecyclerView_items_Btton);
@@ -296,7 +296,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note.setTitle(title_Text.getText().toString());
         note.setNoteText(note_Text.getText().toString());
         note.setDateTime(noteDateTime.getText().toString());
-        bookmark = alreadyAvailableNote.isBookmark();
+        if (alreadyAvailableNote!=null)
+            bookmark = alreadyAvailableNote.isBookmark();
         note.setBookmark(bookmark);
         note.setColor(hexColor);
         note.setImagePath(selectedImagePath);
