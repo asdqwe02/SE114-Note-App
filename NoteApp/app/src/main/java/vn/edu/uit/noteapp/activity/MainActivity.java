@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements
                     noteList.remove(noteClickedPosition);
                     if (isNoteDeleted){
                         noteAdapter.notifyItemRemoved(noteClickedPosition);
+
                     } else{
                         noteList.add(noteClickedPosition, notes.get(noteClickedPosition));
                         noteAdapter.notifyItemChanged(noteClickedPosition);

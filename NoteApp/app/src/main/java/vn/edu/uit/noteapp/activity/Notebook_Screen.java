@@ -28,10 +28,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import vn.edu.uit.noteapp.Notebook_activity;
 import vn.edu.uit.noteapp.listeners.NotebooksDatabase;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
 import vn.edu.uit.noteapp.adapter.Notebookscreen_recyclerview_adapter;
+import vn.edu.uit.noteapp.listeners.NotebooksListener;
+
+import static vn.edu.uit.noteapp.activity.MainActivity.REQUEST_CODE_UPDATE_NOTE;
 
 public class Notebook_Screen extends AppCompatActivity {
     public static final int REQUEST_CODE_ADD_NOTEBOOK = 1;
@@ -42,6 +46,7 @@ public class Notebook_Screen extends AppCompatActivity {
 
     ArrayList<Model_Item_Notebook_screen> item_model;
     Notebookscreen_recyclerview_adapter recycler_adapter;
+    NotebooksListener listener;
     RecyclerView recyclerView;
     ImageButton addbutton;
     public String name;
@@ -105,6 +110,7 @@ public class Notebook_Screen extends AppCompatActivity {
                             SaveNotebook();
                             dialog.dismiss();
                             Toast.makeText(Notebook_Screen.this, "Create success", Toast.LENGTH_SHORT).show();
+                            startActivity(getIntent());
                         }
                     }
                 });
@@ -114,10 +120,21 @@ public class Notebook_Screen extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycle_main);
         item_model = new ArrayList<>();
 //        CreateItem();
-        recycler_adapter = new Notebookscreen_recyclerview_adapter(this, item_model);
+        //Click Item in Notebook
+        recycler_adapter = new Notebookscreen_recyclerview_adapter(this, item_model, new NotebooksListener() {
+            @Override
+            public void OnNotebookClicked(Model_Item_Notebook_screen notebook, int position) {
+                notebookClickedPosition = position;
+                Intent intent = new Intent(getApplicationContext(), Notebook_activity.class);
+                intent.putExtra("notebook", notebook.getItem_name());
+                startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTEBOOK);
+            }
+        });
         recyclerView.setAdapter(recycler_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         getNotebooks(REQUEST_CODE_SHOW_NOTEBOOKS, false);
+
     }
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
