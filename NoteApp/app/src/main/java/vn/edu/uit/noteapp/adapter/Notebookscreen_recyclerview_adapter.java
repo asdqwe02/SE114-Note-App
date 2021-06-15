@@ -28,7 +28,8 @@ public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<No
     ArrayList<Model_Item_Notebook_screen> item_model;
 
     Model_Item_Notebook_screen item;
-    public static String title_text;
+    public String title_text;
+    public static int id;
     NotebooksListener listener;
 
     public Notebookscreen_recyclerview_adapter(Context context, ArrayList<Model_Item_Notebook_screen> item_model, NotebooksListener listener)
@@ -63,10 +64,12 @@ public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<No
         holder.imgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // truyen vi tri va lay du lieu tu adpater
+                item = item_model.get(position);
                 Bottom_Sheet_Notebookscreen bottom_sheet_notebookscreen = new Bottom_Sheet_Notebookscreen(position,Notebookscreen_recyclerview_adapter.this);
                 bottom_sheet_notebookscreen.show(((FragmentActivity)context).getSupportFragmentManager(),"example");
             }
         });
+
         holder.itemtext_name.setText(item.getItem_name());
         holder.itemtext_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,5 +104,10 @@ public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<No
         new DeleteNoteBookTask().execute();
     }
 
+    public void deleteNotebook(int position)
+    {
+        item_model.remove(position);
+        notifyItemRemoved(position);
+    }
 
 }

@@ -14,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 
+import vn.edu.uit.noteapp.activity.Notebook_Screen;
 import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.Notebookscreen_recyclerview_adapter;
@@ -37,15 +38,17 @@ public class Bottom_Sheet_Notebookscreen extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 adapter.remove();
+                adapter.deleteNotebook(position);
                 Bottom_Sheet_Notebookscreen.this.dismiss();
                 }
             });
         return v;
     }
+
+
     public Bottom_Sheet_Notebookscreen(int position, Notebookscreen_recyclerview_adapter adapter)
     {
         this.position = position;
         this.adapter = adapter;
     }
-
 }

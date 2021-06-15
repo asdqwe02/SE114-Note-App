@@ -41,11 +41,11 @@ public class Notebook_activity extends AppCompatActivity implements NotesListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notebook);
         ActionBar actionBar=getSupportActionBar();
-        actionBar.setTitle("Notebook");
+        title_notebook = getIntent().getStringExtra("notebook");
+        actionBar.setTitle(title_notebook);
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        title_notebook = getIntent().getStringExtra("notebook");
         recyclerView = findViewById(R.id.recyclerViewNotebook);
         notelist = new ArrayList<>();
         note_adapter = new NoteAdapter(notelist, (NotesListener) this, 2); // 2 la bien Int nhan biet Notebook_Activity su dung Note_adapter
