@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements
     private RecyclerView noteRecyclerView;
     private NoteAdapter noteAdapter;
     List<Note> noteList;
-
+    boolean refreshMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements
                     noteList.remove(noteClickedPosition);
                     if (isNoteDeleted){
                         noteAdapter.notifyItemRemoved(noteClickedPosition);
+
                     } else{
                         noteList.add(noteClickedPosition, notes.get(noteClickedPosition));
                         noteAdapter.notifyItemChanged(noteClickedPosition);
@@ -234,9 +235,28 @@ public class MainActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ADD_NOTE && resultCode == RESULT_OK) {
             getNotes(REQUEST_CODE_ADD_NOTE, false);
+            refreshMain =false;
         } else if (requestCode == REQUEST_CODE_UPDATE_NOTE && resultCode == RESULT_OK) {
             if (data != null)
                 getNotes(REQUEST_CODE_UPDATE_NOTE, data.getBooleanExtra("isNoteDeleted",false));
+            refreshMain =false;
         }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        refreshMain =true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (refreshMain){
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
+        }
+
     }
 }

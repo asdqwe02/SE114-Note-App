@@ -24,7 +24,7 @@ import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.entities.Note;
 import vn.edu.uit.noteapp.listeners.NotesListener;
 
-public class Notebook_activity extends AppCompatActivity {
+public class Notebook_activity extends AppCompatActivity implements NotesListener {
     ArrayList<Note> notelist;
 
     NoteAdapter note_adapter;
@@ -41,7 +41,8 @@ public class Notebook_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notebook);
         ActionBar actionBar=getSupportActionBar();
-        actionBar.setTitle("Notebook");
+        title_notebook = getIntent().getStringExtra("notebook");
+        actionBar.setTitle(title_notebook);
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -53,6 +54,7 @@ public class Notebook_activity extends AppCompatActivity {
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         );
         getNotes(REQUEST_CODE_SHOW_NOTES, false);
+
     }
     @SuppressLint("StaticFileLeak")
     public void getNotes(final int requestCode, final boolean isNoteDeleted) {
@@ -102,12 +104,18 @@ public class Notebook_activity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    public void onNoteClicked(Note note, int position) {
-//        noteClickedPosition = position;
-//        Intent intent = new Intent(getApplicationContext(), Note_screen.class);
-//        intent.putExtra("isViewOrUpdate", true);
-//        intent.putExtra("note", note);
-//        startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
-//    }
+    @Override
+    public void onNoteClicked(Note note, int position) {
+        noteClickedPosition = position;
+        Intent intent = new Intent(getApplicationContext(), Note_screen.class);
+        intent.putExtra("isViewOrUpdate", true);
+        intent.putExtra("note", note);
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // your code.
+        super.onBackPressed();
+    }
 }

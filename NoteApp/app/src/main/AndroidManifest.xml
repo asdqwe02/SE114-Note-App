@@ -18,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NoteApp">
         <activity android:name=".bottomsheet.Bottomsheet_add_notebook"></activity>
-        <activity android:name=".Notebook_activity" />
+        <activity android:name=".Notebook_activity"
+            android:parentActivityName=".activity.Notebook_Screen"/>
         <activity
             android:name=".activity.Reminder_screen"
             android:parentActivityName=".activity.MainActivity"></activity>

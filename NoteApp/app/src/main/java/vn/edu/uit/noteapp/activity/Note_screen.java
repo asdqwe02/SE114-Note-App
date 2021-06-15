@@ -48,11 +48,16 @@ import java.util.Date;
 import java.util.Locale;
 
 import vn.edu.uit.noteapp.Checkbox_recyclerview_items;
+import vn.edu.uit.noteapp.adapter.NoteAdapter;
+import vn.edu.uit.noteapp.adapter.Notebookscreen_recyclerview_adapter;
+import vn.edu.uit.noteapp.bottomsheet.Bottom_Sheet_Add_Notebook;
+import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
 import vn.edu.uit.noteapp.entities.Note;
 import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.Checkbox_recyclerview_adapter;
 import vn.edu.uit.noteapp.bottomsheet.Note_Screen_Bottom_Sheet_Setting;
+import vn.edu.uit.noteapp.listeners.NotebooksListener;
 
 public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom_Sheet_Setting.BottomSheetListener {
 
@@ -72,8 +77,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     private String selectedImagePath;
     private Context context;
     private boolean bookmark;
-    public static String notebookname;
-    public static boolean check_add_notebook;
+    public String notebookname;
+    private NoteAdapter adapternote;
     EditText title_Text, note_Text, Add_CRI_Etext;
     ImageButton show_CheckBox, addImage;
     Button Add_CRI_Btton;
@@ -101,7 +106,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         imageNote = findViewById(R.id.imageNote);
         CRI_View = findViewById(R.id.checkbox_recyclerview);
         bookmark = false;
-        check_add_notebook = false;
+        notebookname = "";
 
         Add_CRI_Btton = findViewById(R.id.add_Checkbox_RecyclerView_items_Btton);
         Add_CRI_Etext = findViewById(R.id.add_Checkbox_RecyclerView_items_Etext);
@@ -296,9 +301,12 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note.setTitle(title_Text.getText().toString());
         note.setNoteText(note_Text.getText().toString());
         note.setDateTime(noteDateTime.getText().toString());
-        if (alreadyAvailableNote!=null)
+        if (alreadyAvailableNote!=null) {
             bookmark = alreadyAvailableNote.isBookmark();
+            notebookname = alreadyAvailableNote.getNotebook();
+        }
         note.setBookmark(bookmark);
+        note.setNotebook(notebookname);
         note.setColor(hexColor);
         note.setImagePath(selectedImagePath);
 
@@ -478,17 +486,50 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             case "Move To Notebook":
                 if(alreadyAvailableNote != null)
                     move_to_notebook();
-
             default:
                 break;
         }
     }
 
     private void move_to_notebook() {
-        check_add_notebook = true;
-        Intent intent = new Intent(Note_screen.this,Notebook_Screen.class);
-        startActivity(intent);
+        ArrayList<Model_Item_Notebook_screen> item_model = new ArrayList<>();
+        NotebooksListener listener;
+        Notebookscreen_recyclerview_adapter adapter;
+        RecyclerView recyclerView;
+        //open bottomsheet add notebook
+        Bottom_Sheet_Add_Notebook bottomsheet = new Bottom_Sheet_Add_Notebook(item_model, new NotebooksListener() {
+            @Override
+            public void OnNotebookClicked(Model_Item_Notebook_screen notebook, int position) {
+                if(alreadyAvailableNote.getNotebook().equals("")) {
+                    Toast.makeText(Note_screen.this, notebook.getItem_name(), Toast.LENGTH_SHORT).show();
+                    alreadyAvailableNote.setNotebook(notebook.getItem_name());
+                    saveNote_V2();
+                }
+                else if(!alreadyAvailableNote.getNotebook().equals(notebook.getItem_name())){
+                        Toast.makeText(Note_screen.this, notebook.getItem_name(), Toast.LENGTH_SHORT).show();
+                        alreadyAvailableNote.setNotebook(notebook.getItem_name());
+                        Intent intent = new Intent(Note_screen.this, MainActivity.class);
+                        intent.putExtra("isNoteDeleted", true);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                        saveNote_V2();
+                        startActivity(intent);
+                    }
+                else if(alreadyAvailableNote.getNotebook().equals(notebook.getItem_name())) {
+                        Toast.makeText(Note_screen.this, "Remove complete!", Toast.LENGTH_SHORT).show();
+                        alreadyAvailableNote.setNotebook("");
+                        Intent intent = new Intent(Note_screen.this, MainActivity.class);
+                        intent.putExtra("isNoteDeleted", true);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                        saveNote_V2();
+                        startActivity(intent);
+                    }
 
+                }
+
+        });
+        bottomsheet.show(getSupportFragmentManager(),bottomsheet.getTag());
     }
 
     private void add_to_bookmark() {
