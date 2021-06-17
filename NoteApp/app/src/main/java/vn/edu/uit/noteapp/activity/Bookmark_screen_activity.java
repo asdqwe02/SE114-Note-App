@@ -46,6 +46,7 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
         notelist = new ArrayList<>();
         note_adapter = new NoteAdapter(notelist, (NotesListener) this, 1);
         // 1 la bien Int nhan biet Bookmark_Activity su dung Note_adapter
+      
         recyclerView.setAdapter(note_adapter);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)

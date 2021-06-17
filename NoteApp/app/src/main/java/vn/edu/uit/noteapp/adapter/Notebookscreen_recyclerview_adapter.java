@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,18 +21,24 @@ import vn.edu.uit.noteapp.bottomsheet.Bottom_Sheet_Notebookscreen;
 import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
 import vn.edu.uit.noteapp.listeners.NotebooksDatabase;
 
+import vn.edu.uit.noteapp.listeners.NotebooksListener;
+
 public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<Notebookscreen_recyclerview_adapter.ViewHolder> {
 
     Context context;
     ArrayList<Model_Item_Notebook_screen> item_model;
 
     Model_Item_Notebook_screen item;
-    public static String title_text;
 
-    public Notebookscreen_recyclerview_adapter(Context context, ArrayList<Model_Item_Notebook_screen> item_model)
+    public String title_text;
+    public static int id;
+    NotebooksListener listener;
+
+    public Notebookscreen_recyclerview_adapter(Context context, ArrayList<Model_Item_Notebook_screen> item_model, NotebooksListener listener)
     {
         this.context = context;
         this.item_model = item_model;
+        this.listener = listener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView itemtext_name;
@@ -59,23 +66,18 @@ public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<No
         holder.imgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // truyen vi tri va lay du lieu tu adpater
+                item = item_model.get(position);
                 Bottom_Sheet_Notebookscreen bottom_sheet_notebookscreen = new Bottom_Sheet_Notebookscreen(position,Notebookscreen_recyclerview_adapter.this);
                 bottom_sheet_notebookscreen.show(((FragmentActivity)context).getSupportFragmentManager(),"example");
             }
         });
+
         holder.itemtext_name.setText(item.getItem_name());
         holder.itemtext_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Note_screen.check_add_notebook == true)
-                {
                     title_text = item.getItem_name();
-                }
-                else
-                {
-
-                }
-
+                    listener.OnNotebookClicked(item_model.get(position),position);
             }
         });
     }
@@ -85,6 +87,7 @@ public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<No
     }
 
     public void remove()
+
     {
         class DeleteNoteBookTask extends AsyncTask<Void, Void, Void> {
             @Override
@@ -104,5 +107,24 @@ public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<No
         new DeleteNoteBookTask().execute();
     }
 
+    public void deleteNotebook(int position)
+    {
+        class DeleteNoteBookTask extends AsyncTask<Void, Void, Void> {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                NotebooksDatabase.getNotebooksDatabase(context.getApplicationContext()).notebookDAO()
+                        .deleteNote(item);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                Intent intent = new Intent();
+                intent.putExtra("isNoteDeleted", true);
+            }
+        }
+        new DeleteNoteBookTask().execute();
+    }
 
 }
