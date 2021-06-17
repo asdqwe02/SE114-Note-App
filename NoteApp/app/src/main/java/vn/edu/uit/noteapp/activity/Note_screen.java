@@ -1,6 +1,10 @@
 package vn.edu.uit.noteapp.activity;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +19,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,12 +28,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,11 +49,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import vn.edu.uit.noteapp.AlarmReceiver;
 import vn.edu.uit.noteapp.Checkbox_recyclerview_items;
 import vn.edu.uit.noteapp.entities.Note;
 import vn.edu.uit.noteapp.database.NotesDatabase;
@@ -59,7 +69,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     private String note_screen_color;
     private boolean CRI_visibility = false;
 
-    public static final String SHARE_PREFS = "sharedPrefs";
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
 
@@ -73,12 +82,19 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     private String selectedImagePath;
     private Context context;
     private boolean bookmark;
-
+    private boolean reminder;
+    private int mDay,mMonth, mYear, mHour, mMinute;
+    public static String notebookname;
+    public static boolean check_add_notebook;
     EditText title_Text, note_Text, Add_CRI_Etext;
     ImageButton show_CheckBox, addImage;
     Button Add_CRI_Btton;
     LinearLayout Add_CRI_Views;
-    TextView noteDateTime;
+    TextView noteDateTime, timeReminder, dateReminder;
+
+    //alarm manager
+    AlarmManager alarmManager;
+    PendingIntent pendingIntent;
 
     public ArrayList<Checkbox_recyclerview_items> checkboxRecyclerviewItems = new ArrayList<>();
 
@@ -101,6 +117,14 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         imageNote = findViewById(R.id.imageNote);
         CRI_View = findViewById(R.id.checkbox_recyclerview);
         bookmark = false;
+        /**/
+        timeReminder = findViewById(R.id.timeReminder);
+        dateReminder = findViewById(R.id.dateReminder);
+        reminder = false;
+        alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        //
+        check_add_notebook = false;
 
         Add_CRI_Btton = findViewById(R.id.add_Checkbox_RecyclerView_items_Btton);
         Add_CRI_Etext = findViewById(R.id.add_Checkbox_RecyclerView_items_Etext);
@@ -188,10 +212,70 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         }
     }
 
+    /*--------------------function to call date picker dialog--------------------------*/
+
+    private void pickDate (){
+        final Calendar calendar = Calendar.getInstance();
+        mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        mMonth=calendar.get(Calendar.MONTH);
+        mYear = calendar.get(Calendar.YEAR);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                context,
+                R.style.datePicker,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        calendar.set(year,month,dayOfMonth);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                        dateReminder.setText(simpleDateFormat.format(calendar.getTime()));
+                        pickTime();
+                    }
+                }, mYear, mMonth,mDay);
+        datePickerDialog.show();
+    }
+    //end
+
+    /*--------------------function to call time picker dialog--------------------------*/
+
+    public void pickTime(){
+
+        Calendar calendar = Calendar.getInstance();
+        mMinute = calendar.get(Calendar.MINUTE);
+        mHour = calendar.get(Calendar.HOUR_OF_DAY);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                context,
+                R.style.timePicker,
+                new TimePickerDialog.OnTimeSetListener() {
+                    Intent intent = new Intent(Note_screen.this, AlarmReceiver.class);
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        SimpleDateFormat simpleDateFormat =
+                                new SimpleDateFormat("HH:mm");
+                        calendar.set(0,0,0, hourOfDay,minute);
+                        timeReminder.setText(simpleDateFormat.format(calendar.getTime()));
+                        reminder = true;
+                        pendingIntent = PendingIntent.getBroadcast(
+                                context,100,
+                                intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis()
+                                ,AlarmManager.INTERVAL_DAY,pendingIntent);
+                        if (pendingIntent != null && alarmManager != null){
+                            alarmManager.cancel(pendingIntent);
+                        }
+                        saveNote_V2();
+                    }
+                }, mHour,mMinute,true);
+        timePickerDialog.show();
+    }
+    //end
     public void Sync_EditText_With_CheckBox_RecyclerView() {
+
         if (note_Text.getVisibility() == View.VISIBLE) {
             checkboxRecyclerviewItems.clear();
         } else {
+            //sync for note text
             note_Text.setText("");
             ArrayList<Checkbox_recyclerview_items> tempCRI_List = new ArrayList<>();
             tempCRI_List = mAdapter.getCri_LIST();
@@ -203,16 +287,13 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             }
 
         }
+        //sync for checkbox
         String temp = note_Text.getText().toString();
         String lines[] = temp.split("\\r?\\n");
         for (int i = 0; i < lines.length; i++)
             checkboxRecyclerviewItems.add(new Checkbox_recyclerview_items(lines[i], false));
-        mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new Checkbox_recyclerview_adapter(checkboxRecyclerviewItems);
-        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-
-
     }
 
     public void Add_CRI() {
@@ -220,6 +301,21 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         checkboxRecyclerviewItems.add(position, new Checkbox_recyclerview_items(Add_CRI_Etext.getText().toString(), false));
         Add_CRI_Etext.setText("");
         mAdapter.notifyItemInserted(position);
+
+        /*Reuse code in Sync_EditText_With_CheckBox_RecyclerView() to update the recycler view
+         this shit is dumb as fuck but it work, it does make the file bloated tho*/
+        ArrayList<Checkbox_recyclerview_items> tempCRI_List = new ArrayList<>();
+        tempCRI_List = mAdapter.getCri_LIST();
+        String lines[] = new String[tempCRI_List.size()];
+        for (int i = 0; i < tempCRI_List.size(); i++) {
+           lines[i] = tempCRI_List.get(i).get_checkbox_edittext();
+        }
+        checkboxRecyclerviewItems.clear();
+        for (int i = 0; i < lines.length; i++)
+            checkboxRecyclerviewItems.add(new Checkbox_recyclerview_items(lines[i], false));
+        mAdapter = new Checkbox_recyclerview_adapter(checkboxRecyclerviewItems);
+        mRecyclerView.setAdapter(mAdapter);
+
     }
 
     public void Open_Bottom_Sheet_Setting() {
@@ -281,7 +377,22 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note.setTitle(title_Text.getText().toString());
         note.setNoteText(note_Text.getText().toString());
         note.setDateTime(noteDateTime.getText().toString());
+
+        //
+        note.setReminderDate(dateReminder.getText().toString());
+        note.setReminderTime(timeReminder.getText().toString());
+        //
+
+        if (alreadyAvailableNote!=null)
+            bookmark = alreadyAvailableNote.isBookmark();
         note.setBookmark(bookmark);
+        /**/
+        if (alreadyAvailableNote != null){
+            if(alreadyAvailableNote.getTitle() == null)
+                reminder = alreadyAvailableNote.isReminder();
+        }
+        note.setReminder(reminder);
+        //
         note.setColor(hexColor);
         note.setImagePath(selectedImagePath);
 
@@ -311,10 +422,13 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         new SaveNoteTask().execute();
     }
 
+
     private void loadNote_V2() {
         title_Text.setText(alreadyAvailableNote.getTitle());
         note_Text.setText(alreadyAvailableNote.getNoteText());
         noteDateTime.setText(alreadyAvailableNote.getDateTime());
+        dateReminder.setText(alreadyAvailableNote.getReminderDate());
+        timeReminder.setText(alreadyAvailableNote.getReminderTime());
 
 
         View view = this.getWindow().getDecorView();
@@ -461,19 +575,67 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             case "Move To Notebook":
                 if(alreadyAvailableNote != null)
                     move_to_notebook();
+                break;
+            case "Add reminder":
+                if (alreadyAvailableNote != null) {
+                    add_to_reminder();
+                }
+                break;
             default:
                 break;
         }
     }
 
+    /**/
+    private void add_to_reminder() {
+        if (alreadyAvailableNote.isReminder() == false){
+            alreadyAvailableNote.setReminder(reminder);
+            pickDate();
+        }
+        else if(alreadyAvailableNote.isReminder()){
+            reminder = false;
+            alreadyAvailableNote.setReminder(reminder);
+            Intent intent = new Intent(Note_screen.this, MainActivity.class);
+            intent.putExtra("isNoteDeleted", true);
+            setResult(RESULT_OK, intent);
+            dateReminder.setText("no");
+            timeReminder.setText("");
+            saveNote_V2();
+            loadNote_V2();
+            startActivity(intent);
+        }
+    }
+
+    private void editReminder() {
+
+    }
+    //
+
     private void move_to_notebook() {
+        check_add_notebook = true;
+        Intent intent = new Intent(Note_screen.this,Notebook_Screen.class);
+        startActivity(intent);
+
     }
 
     private void add_to_bookmark() {
-//        if()
-        bookmark = true;
-        alreadyAvailableNote.setBookmark(bookmark);
-        saveNote_V2();
+        if(alreadyAvailableNote.isBookmark() == false)
+        {
+            bookmark = true;
+            alreadyAvailableNote.setBookmark(bookmark);
+            saveNote_V2();
+        }
+       else if(alreadyAvailableNote.isBookmark()==true)
+        {
+            bookmark = false;
+            alreadyAvailableNote.setBookmark(bookmark);
+            Intent intent = new Intent(Note_screen.this,Bookmark_screen_activity.class);
+            intent.putExtra("isNoteDeleted", true);
+            setResult(RESULT_OK, intent);
+            saveNote_V2();
+            startActivity(intent);
+        }
+
     }
 
     public void Formatting_View_To_Fit_Added_Image(boolean b) {
@@ -568,4 +730,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         saveNote_V2();
         super.onBackPressed();
     }
+
+
 }

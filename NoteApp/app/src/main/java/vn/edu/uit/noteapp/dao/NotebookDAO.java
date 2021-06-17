@@ -12,6 +12,10 @@ import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
 
 @Dao
 public interface NotebookDAO {
+
+    @Query("SELECT * FROM notebook ORDER BY id DESC")
+    List<Model_Item_Notebook_screen> getNotebook();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNote(Model_Item_Notebook_screen notebook);
 
