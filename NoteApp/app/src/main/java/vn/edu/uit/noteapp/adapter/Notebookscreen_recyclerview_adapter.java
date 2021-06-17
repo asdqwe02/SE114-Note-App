@@ -20,6 +20,7 @@ import vn.edu.uit.noteapp.activity.Note_screen;
 import vn.edu.uit.noteapp.bottomsheet.Bottom_Sheet_Notebookscreen;
 import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
 import vn.edu.uit.noteapp.listeners.NotebooksDatabase;
+
 import vn.edu.uit.noteapp.listeners.NotebooksListener;
 
 public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<Notebookscreen_recyclerview_adapter.ViewHolder> {
@@ -28,6 +29,7 @@ public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<No
     ArrayList<Model_Item_Notebook_screen> item_model;
 
     Model_Item_Notebook_screen item;
+
     public String title_text;
     public static int id;
     NotebooksListener listener;
@@ -85,6 +87,7 @@ public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<No
     }
 
     public void remove()
+
     {
         class DeleteNoteBookTask extends AsyncTask<Void, Void, Void> {
             @Override
@@ -106,8 +109,22 @@ public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<No
 
     public void deleteNotebook(int position)
     {
-        item_model.remove(position);
-        notifyItemRemoved(position);
+        class DeleteNoteBookTask extends AsyncTask<Void, Void, Void> {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                NotebooksDatabase.getNotebooksDatabase(context.getApplicationContext()).notebookDAO()
+                        .deleteNote(item);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                Intent intent = new Intent();
+                intent.putExtra("isNoteDeleted", true);
+            }
+        }
+        new DeleteNoteBookTask().execute();
     }
 
 }

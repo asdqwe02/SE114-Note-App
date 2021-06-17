@@ -8,6 +8,9 @@
         android:targetSdkVersion="26" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+
 
     <application
         android:allowBackup="true"
@@ -17,12 +20,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NoteApp">
+
+        <activity android:name=".activity.Repeating_activity"></activity>
+    
         <activity android:name=".bottomsheet.Bottomsheet_add_notebook"></activity>
         <activity android:name=".Notebook_activity"
             android:parentActivityName=".activity.Notebook_Screen"/>
         <activity
             android:name=".activity.Reminder_screen"
             android:parentActivityName=".activity.MainActivity"></activity>
+
         <activity
             android:name=".activity.Bookmark_screen_activity"
             android:parentActivityName=".activity.MainActivity" />
@@ -49,6 +56,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".AlarmReceiver"/>
+
     </application>
 
 </manifest>
