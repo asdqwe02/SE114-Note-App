@@ -83,8 +83,7 @@
         android:padding="10dp"
         android:text="        Move to notebook"
         android:textAlignment="textStart"
-        android:textColor="@color/text_color">
-    </Button>
+        android:textColor="@color/text_color"></Button>
 
     <Button
         android:id="@+id/bookmark_note"
@@ -96,8 +95,7 @@
         android:padding="10dp"
         android:text="        Bookmark this note"
         android:textAlignment="textStart"
-        android:textColor="@color/text_color">
-    </Button>
+        android:textColor="@color/text_color"></Button>
     <Button
         android:id="@+id/btn_reminder"
         android:layout_width="match_parent"
@@ -108,8 +106,7 @@
         android:background="?android:attr/selectableItemBackground"
         android:drawableLeft="@drawable/ic_reminder"
         android:padding="10dp"
-        android:layout_gravity="start">
-    </Button>
+        android:layout_gravity="start"></Button>
     <Button
         android:id="@+id/move_to_trash_button"
         android:layout_width="match_parent"
@@ -120,6 +117,6 @@
         android:background="?android:attr/selectableItemBackground"
         android:drawableLeft="@drawable/ic_delete"
         android:padding="10dp"
-        android:layout_gravity="start">
-    </Button>
+        android:layout_gravity="start"
+        ></Button>
 </LinearLayout>
