@@ -20,11 +20,13 @@ import java.util.List;
 import vn.edu.uit.noteapp.entities.Note;
 import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.R;
+import vn.edu.uit.noteapp.adapter.BookmarkScreen_adapter;
 import vn.edu.uit.noteapp.adapter.NoteAdapter;
 import vn.edu.uit.noteapp.listeners.NotesListener;
 
 public class Bookmark_screen_activity extends AppCompatActivity implements NotesListener {
     ArrayList<Note> notelist;
+    BookmarkScreen_adapter bookmarkAdapter;
     NoteAdapter note_adapter;
     RecyclerView recyclerView;
 
@@ -43,10 +45,10 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         recyclerView = findViewById(R.id.recyclerView);
+//        Data = new ArrayList<>();
+//        CreateBookmark();
         notelist = new ArrayList<>();
-        note_adapter = new NoteAdapter(notelist, (NotesListener) this, 1);
-        // 1 la bien Int nhan biet Bookmark_Activity su dung Note_adapter
-      
+        note_adapter = new NoteAdapter(notelist, (NotesListener) this, 1); // 1 la bien Int nhan biet Bookmark_Activity su dung Note_adapter
         recyclerView.setAdapter(note_adapter);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
@@ -104,5 +106,11 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
         intent.putExtra("note", note);
         startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
     }
-
+    //Create some bookmark
+//    public void CreateBookmark()
+//    {
+//        Data.add(new Data_model_bookmark("Work"));
+//        Data.add(new Data_model_bookmark("Personal"));
+//        Data.add(new Data_model_bookmark("Study"));
+//    }
 }

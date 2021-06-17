@@ -65,7 +65,6 @@
                 android:alpha="0.5"
                 android:text="Delete"
                 android:textColor="@color/text_color"
-                android:textStyle="bold"
                 android:textSize="14sp" />
         </LinearLayout>
 
