@@ -102,7 +102,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             GradientDrawable gradientDrawable = (GradientDrawable) NoteContainerLayout.getBackground();
             if (note.getColor() != null) {
                 String note_screen_color = note.getColor();
-                if (note_screen_color.equals("#FFFFFF") || note_screen_color.equals("#303030")) {
+                if (  note_screen_color.equals("#FAFAFA")
+                        || note_screen_color.equals("#303030")
+                        ||note_screen_color.equals("#FFFFFF")) {
                     int currentNightMode = noteContentText.getContext().getResources().getConfiguration().uiMode
                             & Configuration.UI_MODE_NIGHT_MASK;
                     switch (currentNightMode) {
@@ -116,6 +118,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 } else gradientDrawable.setColor(Color.parseColor(note.getColor()));
             } else {
                 gradientDrawable.setColor(Color.parseColor("#00FFFFFF"));
+//                gradientDrawable.setColor(Color.parseColor("#FFFFFF"));
             }
 
             if (note.getImagePath() != null) {

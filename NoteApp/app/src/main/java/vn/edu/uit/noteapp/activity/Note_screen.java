@@ -261,8 +261,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 Open_Bottom_Sheet_Setting();
                 return true;
             case android.R.id.home:
-                Sync_EditText_With_CheckBox_RecyclerView();
-                saveNote_V2();
+                finish();
                 return true;
             case R.id.SaveNote:
                 Sync_EditText_With_CheckBox_RecyclerView();
@@ -464,7 +463,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 view.setBackgroundColor(Color.parseColor("#F2994A"));
                 break;
             case "White":
-
                 int currentNightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
                 switch (currentNightMode) {
                     case Configuration.UI_MODE_NIGHT_NO:
