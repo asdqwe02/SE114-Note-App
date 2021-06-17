@@ -345,7 +345,9 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         View view = this.getWindow().getDecorView();
         note_screen_color = alreadyAvailableNote.getColor();
 
-        if (note_screen_color.equals("#FFFFFF") || note_screen_color.equals("#303030")) {
+        if (note_screen_color.equals("#FAFAFA")
+                || note_screen_color.equals("#FFFFFF")
+                || note_screen_color.equals("#303030")) {
             int currentNightMode = context.getResources().getConfiguration().uiMode
                     & Configuration.UI_MODE_NIGHT_MASK;
             switch (currentNightMode) {

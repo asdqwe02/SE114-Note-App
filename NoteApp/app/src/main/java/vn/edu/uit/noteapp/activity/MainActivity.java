@@ -252,10 +252,18 @@ public class MainActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         if (refreshMain){
-            finish();
-            overridePendingTransition(0, 0);
-            startActivity(getIntent());
-            overridePendingTransition(0, 0);
+//            finish();
+//            overridePendingTransition(0, 0);
+//            startActivity(getIntent());
+//            overridePendingTransition(0, 0);
+
+
+            //refresh main screen data
+            noteList.clear();
+            noteAdapter = new NoteAdapter(noteList, this, 0);
+            noteRecyclerView.setAdapter(noteAdapter);
+            getNotes(REQUEST_CODE_SHOW_NOTES, false);
+            noteAdapter.notifyDataSetChanged();
         }
 
     }
