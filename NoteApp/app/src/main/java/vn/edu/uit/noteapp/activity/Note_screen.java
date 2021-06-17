@@ -261,7 +261,8 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 Open_Bottom_Sheet_Setting();
                 return true;
             case android.R.id.home:
-                finish();
+                Sync_EditText_With_CheckBox_RecyclerView();
+                saveNote_V2();
                 return true;
             case R.id.SaveNote:
                 Sync_EditText_With_CheckBox_RecyclerView();
