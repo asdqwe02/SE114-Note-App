@@ -52,10 +52,10 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
         note_adapter = new NoteAdapter(notelist, (NotesListener) this, 1); // 1 la bien Int nhan biet Bookmark_Activity su dung Note_adapter
 
         /**/
-        ItemTouchHelper.Callback callback = new MyItemTouchHelper(note_adapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        note_adapter.setTouchHelper(itemTouchHelper);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+//        ItemTouchHelper.Callback callback = new MyItemTouchHelper(note_adapter);
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+//        note_adapter.setTouchHelper(itemTouchHelper);
+//        itemTouchHelper.attachToRecyclerView(recyclerView);
         //
         recyclerView.setAdapter(note_adapter);
         recyclerView.setLayoutManager(

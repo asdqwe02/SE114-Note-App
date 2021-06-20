@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.os.Handler;
@@ -24,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -39,19 +42,16 @@ import vn.edu.uit.noteapp.listeners.NotesListener;
 import vn.edu.uit.noteapp.util.ItemTouchHelperAdapter;
 import vn.edu.uit.noteapp.util.MyItemTouchHelper;
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder>
-                        implements ItemTouchHelperAdapter {
+public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder>{
     List<Note> notes;
     NotesListener notesListener;
     private Timer timer = new Timer();
     private List<Note> notesSource;
     public int title;
-    Note note;
+
 
     /**/
-    MyItemTouchHelper myItemTouchHelper;
-    Note_screen noteScreen;
-    Reminder_screen reminderScreen;
+    private ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
 
     private ItemTouchHelper itemTouchHelper;
 
@@ -84,6 +84,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 notes.get(position).getId();
             }
         });
+
+        viewBinderHelper.bind(holder.swipeRevealLayout, String.valueOf(notes.get(position).getId()));
+
+        holder.LayoutDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notes.remove(holder.getAdapterPosition());
+                notifyItemRemoved(holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -96,61 +106,17 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         return position;
     }
 
-    //edit touch helper from here
-    @Override
-    public void onItemMove(int fromPosition, int toPosition) {
-        Note fromNote = notes.get(fromPosition);
-        notes.remove(fromNote);
-        notes.add(toPosition, fromNote);
-        notifyItemMoved(fromPosition, toPosition);
-    }
-
-    @Override
-    public void onItemSwiped(int position) {
-//        notes.remove(position);
-//        notifyItemRemoved(position);
-
-        /**/
-//        try {
-//            if (NoteAdapter.this.title == 2
-//                    &&notes.get(position).getId()   == reminderScreen.getId(position))
-//            {
-//                noteScreen.showDeleteNoteDialog();
-//            }
-//            else {
-//                notes.remove(position);
-//                notifyItemRemoved(position);
-//            }
-//        } catch (Exception e){ }
-
-        if (NoteAdapter.this.title == 2)
-        {
-            //get id of the note
-            reminderScreen = new Reminder_screen();
-            reminderScreen.getId(position);
-
-            //delete the note
-            noteScreen = new Note_screen(note);
-
-            noteScreen.showDeleteNoteDialog();
-        }
-    }
-
-
-    public void setTouchHelper(ItemTouchHelper itemTouchHelper){
-        this.itemTouchHelper = itemTouchHelper;
-    }
-    //end
 
     public class NoteViewHolder extends RecyclerView.ViewHolder
-                                implements View.OnTouchListener, GestureDetector.OnGestureListener
     {
         TextView tilteText, noteContentText, noteDateTimeText, rDate, rTime;
         LinearLayout NoteContainerLayout;
         RoundedImageView imageNoteContainer;
 
         /**/
-        GestureDetector gestureDetector;
+        SwipeRevealLayout swipeRevealLayout;
+        LinearLayout LayoutDelete;
+
 
 
         public NoteViewHolder(@NonNull View itemView) {
@@ -164,8 +130,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             rTime = itemView.findViewById(R.id.remindTime);
 
             /**/
-            gestureDetector = new GestureDetector(itemView.getContext(),this);
-            itemView.setOnTouchListener(this);
+            swipeRevealLayout = itemView.findViewById(R.id.swipeRevealLayout);
+            LayoutDelete = itemView.findViewById(R.id.layout_delete);
 
         }
 
@@ -218,44 +184,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             }
         }
 
-        /**/
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public void onShowPress(MotionEvent e) {
-
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            notesListener.onNoteClicked(notes.get(getAdapterPosition()), getAdapterPosition());
-            return false;
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            return false;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-            itemTouchHelper.startDrag(this);
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            return false;
-        }
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            gestureDetector.onTouchEvent(event);
-            return true;
-        }
-        //
     }
 
     public void searchNotes(final String searchKeyword) {
