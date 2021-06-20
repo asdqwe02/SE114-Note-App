@@ -1,6 +1,10 @@
 package vn.edu.uit.noteapp.activity;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,12 +27,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,6 +50,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -58,11 +65,14 @@ import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.Checkbox_recyclerview_adapter;
 import vn.edu.uit.noteapp.bottomsheet.Note_Screen_Bottom_Sheet_Setting;
 import vn.edu.uit.noteapp.listeners.NotebooksListener;
+import vn.edu.uit.noteapp.listeners.NotesListener;
+import vn.edu.uit.noteapp.util.ItemTouchHelperAdapter;
+import vn.edu.uit.noteapp.util.MyItemTouchHelper;
 
-public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom_Sheet_Setting.BottomSheetListener {
+public class Note_screen extends AppCompatActivity implements
+        Note_Screen_Bottom_Sheet_Setting.BottomSheetListener {
 
     private String note_screen_color;
-    private boolean CRI_visibility = false;
 
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
@@ -78,12 +88,15 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     private Context context;
     private boolean bookmark;
     public String notebookname;
-    private NoteAdapter adapternote;
     EditText title_Text, note_Text, Add_CRI_Etext;
     ImageButton show_CheckBox, addImage;
     Button Add_CRI_Btton;
     LinearLayout Add_CRI_Views;
-    TextView noteDateTime;
+    TextView noteDateTime, timeReminder, dateReminder;
+    /**--**/
+    private boolean reminder;
+    private int mDay,mMonth, mYear, mHour, mMinute;
+
 
     public ArrayList<Checkbox_recyclerview_items> checkboxRecyclerviewItems = new ArrayList<>();
 
@@ -92,7 +105,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_screen);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("");
+        actionBar.setTitle("Note");
 
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -107,6 +120,12 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         CRI_View = findViewById(R.id.checkbox_recyclerview);
         bookmark = false;
         notebookname = "";
+
+        /**/
+        timeReminder = findViewById(R.id.timeReminder);
+        dateReminder = findViewById(R.id.dateReminder);
+        reminder = false;
+        //
 
         Add_CRI_Btton = findViewById(R.id.add_Checkbox_RecyclerView_items_Btton);
         Add_CRI_Etext = findViewById(R.id.add_Checkbox_RecyclerView_items_Etext);
@@ -194,6 +213,57 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         }
     }
 
+    /*--------------------function to call date picker dialog--------------------------*/
+
+    private void pickDate (){
+        final Calendar calendar = Calendar.getInstance();
+        mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        mMonth=calendar.get(Calendar.MONTH);
+        mYear = calendar.get(Calendar.YEAR);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                context,
+                R.style.datePicker,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        calendar.set(year,month,dayOfMonth);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                        dateReminder.setText(simpleDateFormat.format(calendar.getTime()));
+                        pickTime();
+                    }
+                }, mYear, mMonth,mDay);
+        datePickerDialog.show();
+    }
+    //end
+
+    /*--------------------function to call time picker dialog--------------------------*/
+
+    public void pickTime(){
+
+        Calendar calendar = Calendar.getInstance();
+        mMinute = calendar.get(Calendar.MINUTE);
+        mHour = calendar.get(Calendar.HOUR_OF_DAY);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                context,
+                R.style.timePicker,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        SimpleDateFormat simpleDateFormat =
+                                new SimpleDateFormat("HH:mm");
+                        calendar.set(0,0,0, hourOfDay,minute);
+                        timeReminder.setText(simpleDateFormat.format(calendar.getTime()));
+                        reminder = true;
+                        alreadyAvailableNote.setReminder(reminder);
+                        saveNote_V2();
+                    }
+                }, mHour,mMinute,true);
+        timePickerDialog.show();
+    }
+    //end
+
     public void Sync_EditText_With_CheckBox_RecyclerView() {
 
         if (note_Text.getVisibility() == View.VISIBLE) {
@@ -204,8 +274,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
             ArrayList<Checkbox_recyclerview_items> tempCRI_List = new ArrayList<>();
             tempCRI_List = mAdapter.getCri_LIST();
             for (int i = 0; i < tempCRI_List.size(); i++) {
-                //template: String title = ((TextView) recyclerView.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.title)).getText().toString();
-                //String tempE = ((EditText) mRecyclerView.findViewHolderForAdapterPosition(i).itemView.findViewById(R.id.checkbox_edittext)).getText().toString();
                 String tempE = tempCRI_List.get(i).get_checkbox_edittext();
                 note_Text.setText(note_Text.getText() + tempE + "\n");
             }
@@ -265,7 +333,6 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 return true;
             case R.id.SaveNote:
                 Sync_EditText_With_CheckBox_RecyclerView();
-                //saveData();
                 saveNote_V2();
                 return true;
 
@@ -301,6 +368,12 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note.setTitle(title_Text.getText().toString());
         note.setNoteText(note_Text.getText().toString());
         note.setDateTime(noteDateTime.getText().toString());
+
+        /**/
+        note.setReminderDate(dateReminder.getText().toString());
+        note.setReminderTime(timeReminder.getText().toString());
+        //
+
         if (alreadyAvailableNote!=null) {
             bookmark = alreadyAvailableNote.isBookmark();
             notebookname = alreadyAvailableNote.getNotebook();
@@ -309,6 +382,13 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note.setNotebook(notebookname);
         note.setColor(hexColor);
         note.setImagePath(selectedImagePath);
+
+        /**/
+        if (alreadyAvailableNote != null){
+            reminder = alreadyAvailableNote.isReminder();
+        }
+        note.setReminder(reminder);
+        //
 
         if (note_Text.getVisibility() == View.VISIBLE && mRecyclerView.getVisibility() == View.GONE)
             note.setCRIstate(false);
@@ -341,6 +421,10 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         note_Text.setText(alreadyAvailableNote.getNoteText());
         noteDateTime.setText(alreadyAvailableNote.getDateTime());
 
+        /**/
+        dateReminder.setText(alreadyAvailableNote.getReminderDate());
+        timeReminder.setText(alreadyAvailableNote.getReminderTime());
+        //
 
         View view = this.getWindow().getDecorView();
         note_screen_color = alreadyAvailableNote.getColor();
@@ -389,7 +473,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         }
     }
 
-    private void showDeleteNoteDialog() {
+    public void showDeleteNoteDialog() {
         if (dialogDeleteNote == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(Note_screen.this);
             View view = LayoutInflater.from(this).inflate(
@@ -437,9 +521,9 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
     }
 
 
-    public void deleteNote() {
-        finish();
-    }
+//    public void deleteNote() {
+//        finish();
+//    }
 
     @Override
     public void OnBottomSheet_ButtonClicked(String text) {
@@ -482,11 +566,18 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
                 break;
             case  "Bookmark This Note":
                 if(alreadyAvailableNote != null)
+                {
                     add_to_bookmark();
+                }
                 break;
             case "Move To Notebook":
-                if(alreadyAvailableNote != null)
-                    move_to_notebook();
+                if(alreadyAvailableNote != null) {move_to_notebook();}
+                break;
+            case "Add reminder":
+                if (alreadyAvailableNote != null) {
+                    add_to_reminder();
+                }
+                break;
             default:
                 break;
         }
@@ -494,9 +585,7 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
 
     private void move_to_notebook() {
         ArrayList<Model_Item_Notebook_screen> item_model = new ArrayList<>();
-        NotebooksListener listener;
-        Notebookscreen_recyclerview_adapter adapter;
-        RecyclerView recyclerView;
+
         //open bottomsheet add notebook
         Bottom_Sheet_Add_Notebook bottomsheet = new Bottom_Sheet_Add_Notebook(item_model, new NotebooksListener() {
             @Override
@@ -553,6 +642,26 @@ public class Note_screen extends AppCompatActivity implements Note_Screen_Bottom
         }
 
     }
+
+    /**/
+    private void add_to_reminder() {
+        if (alreadyAvailableNote.isReminder() == false){
+            pickDate();
+        }
+        else if(alreadyAvailableNote.isReminder()){
+            reminder = false;
+            alreadyAvailableNote.setReminder(reminder);
+            Intent intent = new Intent(Note_screen.this, MainActivity.class);
+            intent.putExtra("isNoteDeleted", true);
+            setResult(RESULT_OK, intent);
+            dateReminder.setText("no");
+            timeReminder.setText("");
+            saveNote_V2();
+            loadNote_V2();
+            startActivity(intent);
+        }
+    }
+    //
 
     public void Formatting_View_To_Fit_Added_Image(boolean b) {
 

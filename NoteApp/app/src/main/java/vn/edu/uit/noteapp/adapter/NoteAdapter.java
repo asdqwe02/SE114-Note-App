@@ -4,18 +4,24 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Looper;
+import android.provider.ContactsContract;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.os.Handler;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -25,16 +31,28 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import vn.edu.uit.noteapp.activity.Note_screen;
+import vn.edu.uit.noteapp.activity.Reminder_screen;
 import vn.edu.uit.noteapp.entities.Note;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.listeners.NotesListener;
+import vn.edu.uit.noteapp.util.ItemTouchHelperAdapter;
+import vn.edu.uit.noteapp.util.MyItemTouchHelper;
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
+public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder>
+                        implements ItemTouchHelperAdapter {
     List<Note> notes;
     NotesListener notesListener;
     private Timer timer = new Timer();
     private List<Note> notesSource;
     public int title;
+
+    /**/
+    MyItemTouchHelper myItemTouchHelper;
+    Note_screen noteScreen;
+    Reminder_screen reminderScreen;
+
+    private ItemTouchHelper itemTouchHelper;
 
     public NoteAdapter(List<Note> notes, NotesListener noteListener,int title_screen) {
         this.notes = notes;
@@ -62,6 +80,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             @Override
             public void onClick(View v) {
                 notesListener.onNoteClicked(notes.get(position), position);
+                notes.get(position).getId();
             }
         });
     }
@@ -76,10 +95,65 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         return position;
     }
 
-    static class NoteViewHolder extends RecyclerView.ViewHolder {
-        TextView tilteText, noteContentText, noteDateTimeText;
+    //edit touch helper from here
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        Note fromNote = notes.get(fromPosition);
+        notes.remove(fromNote);
+        notes.add(toPosition, fromNote);
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onItemSwiped(int position) {
+//        notes.remove(position);
+//        notifyItemRemoved(position);
+
+        /**/
+//        try {
+//            if (NoteAdapter.this.title == 2
+//                    &&notes.get(position).getId()   == reminderScreen.getId(position))
+//            {
+//                noteScreen.showDeleteNoteDialog();
+//            }
+//            else {
+//                notes.remove(position);
+//                notifyItemRemoved(position);
+//            }
+//        } catch (Exception e){ }
+
+        if (NoteAdapter.this.title == 2)
+        {
+            //get id of the note
+            reminderScreen = new Reminder_screen();
+            reminderScreen.getId(position);
+
+            //delete the note
+            noteScreen = new Note_screen();
+            noteScreen.showDeleteNoteDialog();
+        }
+    }
+
+    @Override
+    public long getNoteId(long noteID) {
+        return noteID;
+    }
+
+    public void setTouchHelper(ItemTouchHelper itemTouchHelper){
+        this.itemTouchHelper = itemTouchHelper;
+    }
+    //end
+
+    public class NoteViewHolder extends RecyclerView.ViewHolder
+                                implements View.OnTouchListener, GestureDetector.OnGestureListener
+    {
+        TextView tilteText, noteContentText, noteDateTimeText, rDate, rTime;
         LinearLayout NoteContainerLayout;
         RoundedImageView imageNoteContainer;
+
+        /**/
+        GestureDetector gestureDetector;
+
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,16 +162,30 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             noteDateTimeText = itemView.findViewById(R.id.noteDateTimeText);
             NoteContainerLayout = itemView.findViewById(R.id.note_container_layout);
             imageNoteContainer = itemView.findViewById(R.id.imageNoteContainer);
+            rDate = itemView.findViewById(R.id.remindDate);
+            rTime = itemView.findViewById(R.id.remindTime);
+
+            /**/
+            gestureDetector = new GestureDetector(itemView.getContext(),this);
+            itemView.setOnTouchListener(this);
+
         }
 
         public void setNote(Note note) {
             tilteText.setText(note.getTitle());
             if (note.getNoteText().trim().isEmpty()) {
                 noteContentText.setVisibility(itemView.GONE);
-            } else {
+            } else if(note.getNoteText().trim().isEmpty() == false
+                && (NoteAdapter.this.title == 1|| NoteAdapter.this.title==2)){
+                noteContentText.setVisibility(itemView.GONE);
+            }
+            else {
                 noteContentText.setText(note.getNoteText());
             }
             noteDateTimeText.setText(note.getDateTime());
+            /*----*/
+            rDate.setText(note.getReminderDate());
+            rTime.setText(note.getReminderTime());
 
             GradientDrawable gradientDrawable = (GradientDrawable) NoteContainerLayout.getBackground();
             if (note.getColor() != null) {
@@ -118,16 +206,58 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 } else gradientDrawable.setColor(Color.parseColor(note.getColor()));
             } else {
                 gradientDrawable.setColor(Color.parseColor("#00FFFFFF"));
-//                gradientDrawable.setColor(Color.parseColor("#FFFFFF"));
             }
 
-            if (note.getImagePath() != null) {
+            /**/
+            if (note.getImagePath() != null && NoteAdapter.this.title == 0) {
                 imageNoteContainer.setImageBitmap(BitmapFactory.decodeFile(note.getImagePath()));
                 imageNoteContainer.setVisibility(View.VISIBLE);
-            } else {
+            } else if (note.getImagePath() != null && (note.isBookmark() == true || note.isReminder() == true)) {
+                imageNoteContainer.setVisibility(View.GONE);
+            }
+            else {
                 imageNoteContainer.setVisibility(View.GONE);
             }
         }
+
+        /**/
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            notesListener.onNoteClicked(notes.get(getAdapterPosition()), getAdapterPosition());
+            return false;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            return false;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+            itemTouchHelper.startDrag(this);
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            return false;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            gestureDetector.onTouchEvent(event);
+            return true;
+        }
+        //
     }
 
     public void searchNotes(final String searchKeyword) {
@@ -169,4 +299,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public List<Note> getNotes() {
         return notes;
     }
+
+    int getID (int position){
+        return notes.get(position).getId();
+    }
+
 }

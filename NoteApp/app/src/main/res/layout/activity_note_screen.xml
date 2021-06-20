@@ -55,9 +55,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/titleText"
                 android:layout_alignParentStart="true"
-                android:layout_marginHorizontal="12dp"
+                android:layout_marginHorizontal="13.5dp"
                 android:layout_marginTop="5dp"
                 android:text="date time"
+                android:fontFamily="@font/ubuntu_medium"
                 android:textColor="@color/blue_light" />
             <View
                 android:id="@+id/normal_view"
@@ -122,7 +123,8 @@
                 android:layout_below="@id/normal_view"
                 android:layout_marginHorizontal="12dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="@dimen/_30sdp" />
+                android:layout_marginBottom="@dimen/_30sdp"
+                tools:ignore="NotSibling" />
 
             <EditText
                 android:id="@+id/noteText"
@@ -135,7 +137,7 @@
                 android:background="@android:color/transparent"
                 android:gravity="start|top"
                 android:hint="Add a note..."
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,NotSibling" />
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

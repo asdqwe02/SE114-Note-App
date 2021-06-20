@@ -57,7 +57,7 @@
                 android:textSize="14sp"
                 android:text="Cancel"
                 android:textColor="@color/text_color"
-                android:background="@drawable/bg_grey_corner"
+                android:background="@drawable/background_button"
                 android:alpha="0.5"
                 android:layout_marginLeft="20dp"
                 android:layout_marginBottom="20dp"

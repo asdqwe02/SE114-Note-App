@@ -3,6 +3,7 @@ package vn.edu.uit.noteapp.activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -23,6 +24,7 @@ import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.BookmarkScreen_adapter;
 import vn.edu.uit.noteapp.adapter.NoteAdapter;
 import vn.edu.uit.noteapp.listeners.NotesListener;
+import vn.edu.uit.noteapp.util.MyItemTouchHelper;
 
 public class Bookmark_screen_activity extends AppCompatActivity implements NotesListener {
     ArrayList<Note> notelist;
@@ -45,10 +47,16 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         recyclerView = findViewById(R.id.recyclerView);
-//        Data = new ArrayList<>();
-//        CreateBookmark();
+
         notelist = new ArrayList<>();
         note_adapter = new NoteAdapter(notelist, (NotesListener) this, 1); // 1 la bien Int nhan biet Bookmark_Activity su dung Note_adapter
+
+        /**/
+        ItemTouchHelper.Callback callback = new MyItemTouchHelper(note_adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        note_adapter.setTouchHelper(itemTouchHelper);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+        //
         recyclerView.setAdapter(note_adapter);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
@@ -106,11 +114,5 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
         intent.putExtra("note", note);
         startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
     }
-    //Create some bookmark
-//    public void CreateBookmark()
-//    {
-//        Data.add(new Data_model_bookmark("Work"));
-//        Data.add(new Data_model_bookmark("Personal"));
-//        Data.add(new Data_model_bookmark("Study"));
-//    }
+
 }

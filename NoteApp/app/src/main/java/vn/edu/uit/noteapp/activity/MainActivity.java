@@ -94,7 +94,8 @@ public class MainActivity extends AppCompatActivity implements
         );
 
         noteList = new ArrayList<>();
-        noteAdapter = new NoteAdapter(noteList, this, 0); // 0 la bien Int nhan biet Main_Activity su dung Note_adapter
+        noteAdapter = new NoteAdapter(noteList, this, 0);
+        // 0 la bien Int nhan biet Main_Activity su dung Note_adapter
         noteRecyclerView.setAdapter(noteAdapter);
         getNotes(REQUEST_CODE_SHOW_NOTES, false);
 

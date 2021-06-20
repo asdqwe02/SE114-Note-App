@@ -167,7 +167,6 @@ public class Note_Screen_Bottom_Sheet_Setting extends BottomSheetDialogFragment 
             @Override
             public void onClick(View v) {
                 mListener.OnBottomSheet_ButtonClicked("Add reminder");
-                pickDate();
             }
         });
         //end of edit
@@ -175,58 +174,6 @@ public class Note_Screen_Bottom_Sheet_Setting extends BottomSheetDialogFragment 
         sync_bottomSheet_colorButton_With_noteScreen();
         return v;
     }
-
-    /*--------------------function to call date picker dialog--------------------------*/
-
-    private void pickDate (){
-        final Calendar calendar = Calendar.getInstance();
-        mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        mMonth=calendar.get(Calendar.MONTH);
-        mYear = calendar.get(Calendar.YEAR);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                Note_Screen_Bottom_Sheet_Setting.super.getContext(),
-                R.style.datePicker,
-                new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                calendar.set(year,month,dayOfMonth);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                addReminder.setText("        remind on: " +
-                        simpleDateFormat.format(calendar.getTime()));
-                pickTime();
-            }
-        }, mYear, mMonth,mDay);
-        datePickerDialog.show();
-    }
-    //end
-
-
-
-    /*--------------------function to call time picker dialog--------------------------*/
-
-    public void pickTime(){
-
-        Calendar calendar = Calendar.getInstance();
-        mMinute = calendar.get(Calendar.MINUTE);
-        mHour = calendar.get(Calendar.HOUR_OF_DAY);
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(
-                Note_Screen_Bottom_Sheet_Setting.super.getContext(),
-                R.style.timePicker,
-                new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                SimpleDateFormat simpleDateFormat =
-                        new SimpleDateFormat("HH:mm:");
-                calendar.set(0,0,0, hourOfDay,minute);
-                //this line is use to set text in the reminder screen
-            }
-        }, mHour,mMinute,true);
-        timePickerDialog.show();
-    }
-    //end
-
 
 
     public void deleteSharePrefs()
@@ -353,6 +300,7 @@ public class Note_Screen_Bottom_Sheet_Setting extends BottomSheetDialogFragment 
 
     public interface BottomSheetListener{
         void OnBottomSheet_ButtonClicked(String text);
+
     }
 
     @Override
