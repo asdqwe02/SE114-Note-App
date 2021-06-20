@@ -97,6 +97,9 @@ public class Note_screen extends AppCompatActivity implements
     private boolean reminder;
     private int mDay,mMonth, mYear, mHour, mMinute;
 
+    public Note_screen(Note alreadyAvailableNote) {
+        this.alreadyAvailableNote = alreadyAvailableNote;
+    }
 
     public ArrayList<Checkbox_recyclerview_items> checkboxRecyclerviewItems = new ArrayList<>();
 

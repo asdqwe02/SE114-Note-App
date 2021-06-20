@@ -46,6 +46,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     private Timer timer = new Timer();
     private List<Note> notesSource;
     public int title;
+    Note note;
 
     /**/
     MyItemTouchHelper myItemTouchHelper;
@@ -129,15 +130,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             reminderScreen.getId(position);
 
             //delete the note
-            noteScreen = new Note_screen();
+            noteScreen = new Note_screen(note);
+
             noteScreen.showDeleteNoteDialog();
         }
     }
 
-    @Override
-    public long getNoteId(long noteID) {
-        return noteID;
-    }
 
     public void setTouchHelper(ItemTouchHelper itemTouchHelper){
         this.itemTouchHelper = itemTouchHelper;

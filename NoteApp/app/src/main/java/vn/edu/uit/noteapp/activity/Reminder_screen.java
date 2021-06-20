@@ -41,6 +41,8 @@ public class Reminder_screen extends AppCompatActivity implements NotesListener{
     public static final int REQUEST_CODE_UPDATE_NOTE = 2;
     public static final int REQUEST_CODE_SHOW_NOTES = 3;
 
+    public Reminder_screen() {}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
