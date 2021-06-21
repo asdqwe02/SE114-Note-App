@@ -36,7 +36,7 @@ public class Reminder_screen extends AppCompatActivity implements NotesListener{
     ArrayList<Note> notesList;
     NoteAdapter noteAdapter;
     RecyclerView recyclerView;
-
+    boolean refresh;
     private int noteClickedPosition = -1;
     public static final int REQUEST_CODE_UPDATE_NOTE = 2;
     public static final int REQUEST_CODE_SHOW_NOTES = 3;
@@ -58,7 +58,7 @@ public class Reminder_screen extends AppCompatActivity implements NotesListener{
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        noteAdapter = new NoteAdapter(notesList,  this, 2);
+        noteAdapter = new NoteAdapter(notesList,  this, 2,this);
         //2 là biến để biết reminder screen đang dùng note adapter
 
         /**/
@@ -114,6 +114,7 @@ public class Reminder_screen extends AppCompatActivity implements NotesListener{
         if (requestCode == REQUEST_CODE_UPDATE_NOTE && resultCode == RESULT_OK) {
             if (data != null)
                 getNotes(REQUEST_CODE_UPDATE_NOTE, data.getBooleanExtra("isNoteDeleted", false));
+            refresh=false;
         }
     }
 
@@ -129,5 +130,23 @@ public class Reminder_screen extends AppCompatActivity implements NotesListener{
     /**/
     public int getId(int position){
         return notesList.get(position).getId();
+    }
+
+    protected void onPause() {
+        super.onPause();
+        refresh =true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (refresh){
+            notesList.clear();
+            noteAdapter = new NoteAdapter(notesList, this, 0,this);
+            recyclerView.setAdapter(noteAdapter);
+            getNotes(REQUEST_CODE_SHOW_NOTES, false);
+            noteAdapter.notifyDataSetChanged();
+        }
+
     }
 }

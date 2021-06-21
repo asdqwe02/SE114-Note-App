@@ -29,7 +29,7 @@ public class Notebook_activity extends AppCompatActivity implements NotesListene
 
     NoteAdapter note_adapter;
     RecyclerView recyclerView;
-
+    boolean refresh;
     private int noteClickedPosition = -1;
     public static final int REQUEST_CODE_ADD_NOTE = 1;
     public static final int REQUEST_CODE_UPDATE_NOTE = 2;
@@ -48,7 +48,7 @@ public class Notebook_activity extends AppCompatActivity implements NotesListene
 
         recyclerView = findViewById(R.id.recyclerViewNotebook);
         notelist = new ArrayList<>();
-        note_adapter = new NoteAdapter(notelist, (NotesListener) this, 2); // 2 la bien Int nhan biet Notebook_Activity su dung Note_adapter
+        note_adapter = new NoteAdapter(notelist, (NotesListener) this, 2,this); // 2 la bien Int nhan biet Notebook_Activity su dung Note_adapter
         recyclerView.setAdapter(note_adapter);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
@@ -101,6 +101,7 @@ public class Notebook_activity extends AppCompatActivity implements NotesListene
         } else if (requestCode == REQUEST_CODE_UPDATE_NOTE && resultCode == RESULT_OK) {
             if (data != null)
                 getNotes(REQUEST_CODE_UPDATE_NOTE, data.getBooleanExtra("isNoteDeleted",false));
+            refresh=false;
         }
     }
 
@@ -117,5 +118,22 @@ public class Notebook_activity extends AppCompatActivity implements NotesListene
     public void onBackPressed() {
         // your code.
         super.onBackPressed();
+    }
+    protected void onPause() {
+        super.onPause();
+        refresh =true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (refresh){
+            notelist.clear();
+            note_adapter = new NoteAdapter(notelist, this, 0,this);
+            recyclerView.setAdapter(note_adapter);
+            getNotes(REQUEST_CODE_SHOW_NOTES, false);
+            note_adapter.notifyDataSetChanged();
+        }
+
     }
 }

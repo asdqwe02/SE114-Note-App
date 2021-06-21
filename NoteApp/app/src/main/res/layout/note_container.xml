@@ -44,7 +44,8 @@
             android:layout_height="wrap_content"
             android:background="@color/transparent_color"
             android:orientation="horizontal"
-            android:layout_marginTop="@dimen/_12sdp">
+            android:layout_marginTop="@dimen/_12sdp"
+            >
 
             <ImageView
                 android:layout_width="wrap_content"

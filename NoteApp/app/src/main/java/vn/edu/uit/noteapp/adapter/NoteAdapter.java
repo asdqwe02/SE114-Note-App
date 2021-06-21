@@ -1,14 +1,19 @@
 package vn.edu.uit.noteapp.adapter;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.AsyncTask;
 import android.os.Looper;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,11 +27,13 @@ import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
+
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -34,20 +41,24 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import vn.edu.uit.noteapp.activity.MainActivity;
 import vn.edu.uit.noteapp.activity.Note_screen;
 import vn.edu.uit.noteapp.activity.Reminder_screen;
+import vn.edu.uit.noteapp.bottomsheet.Note_Screen_Bottom_Sheet_Setting;
+import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.entities.Note;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.listeners.NotesListener;
 import vn.edu.uit.noteapp.util.ItemTouchHelperAdapter;
 import vn.edu.uit.noteapp.util.MyItemTouchHelper;
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder>{
+public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
     List<Note> notes;
     NotesListener notesListener;
     private Timer timer = new Timer();
     private List<Note> notesSource;
     public int title;
+    private Context context;
 
 
     /**/
@@ -55,11 +66,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     private ItemTouchHelper itemTouchHelper;
 
-    public NoteAdapter(List<Note> notes, NotesListener noteListener,int title_screen) {
+    public NoteAdapter(List<Note> notes, NotesListener noteListener, int title_screen, Context context) {
         this.notes = notes;
         this.notesListener = noteListener;
         notesSource = notes;
         this.title = title_screen;
+        this.context = context;
     }
 
     @NonNull
@@ -76,6 +88,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
+//        Context context = holder.itemView.getContext();
         holder.setNote(notes.get(position));
         holder.NoteContainerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,14 +97,18 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 notes.get(position).getId();
             }
         });
-
+        viewBinderHelper.setOpenOnlyOne(true);
         viewBinderHelper.bind(holder.swipeRevealLayout, String.valueOf(notes.get(position).getId()));
 
+        //demo delete note in main with swipe; note: main and bookmark should have the same delete
         holder.LayoutDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notes.remove(holder.getAdapterPosition());
-                notifyItemRemoved(holder.getAdapterPosition());
+                Intent intent=new Intent(context, Note_screen.class);
+                intent.putExtra("isViewOrUpdate", true);
+                intent.putExtra("note", notes.get(position));
+                intent.putExtra("deleteWithSwipe",true);
+                context.startActivity(intent);
             }
         });
     }
@@ -107,8 +124,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
 
 
-    public class NoteViewHolder extends RecyclerView.ViewHolder
-    {
+    public class NoteViewHolder extends RecyclerView.ViewHolder {
         TextView tilteText, noteContentText, noteDateTimeText, rDate, rTime;
         LinearLayout NoteContainerLayout;
         RoundedImageView imageNoteContainer;
@@ -116,7 +132,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         /**/
         SwipeRevealLayout swipeRevealLayout;
         LinearLayout LayoutDelete;
-
 
 
         public NoteViewHolder(@NonNull View itemView) {
@@ -139,11 +154,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             tilteText.setText(note.getTitle());
             if (note.getNoteText().trim().isEmpty()) {
                 noteContentText.setVisibility(itemView.GONE);
-            } else if(note.getNoteText().trim().isEmpty() == false
-                && (NoteAdapter.this.title == 1|| NoteAdapter.this.title==2)){
+            } else if (note.getNoteText().trim().isEmpty() == false
+                    && (NoteAdapter.this.title == 1 || NoteAdapter.this.title == 2)) {
                 noteContentText.setVisibility(itemView.GONE);
-            }
-            else {
+            } else {
                 noteContentText.setText(note.getNoteText());
             }
             noteDateTimeText.setText(note.getDateTime());
@@ -154,9 +168,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             GradientDrawable gradientDrawable = (GradientDrawable) NoteContainerLayout.getBackground();
             if (note.getColor() != null) {
                 String note_screen_color = note.getColor();
-                if (  note_screen_color.equals("#FAFAFA")
+                if (note_screen_color.equals("#FAFAFA")
                         || note_screen_color.equals("#303030")
-                        ||note_screen_color.equals("#FFFFFF")) {
+                        || note_screen_color.equals("#FFFFFF")) {
                     int currentNightMode = noteContentText.getContext().getResources().getConfiguration().uiMode
                             & Configuration.UI_MODE_NIGHT_MASK;
                     switch (currentNightMode) {
@@ -178,8 +192,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 imageNoteContainer.setVisibility(View.VISIBLE);
             } else if (note.getImagePath() != null && (note.isBookmark() == true || note.isReminder() == true)) {
                 imageNoteContainer.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 imageNoteContainer.setVisibility(View.GONE);
             }
         }
@@ -226,7 +239,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         return notes;
     }
 
-    int getID (int position){
+    int getID(int position) {
         return notes.get(position).getId();
     }
 
