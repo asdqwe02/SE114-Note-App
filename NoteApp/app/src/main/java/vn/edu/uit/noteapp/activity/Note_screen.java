@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -76,7 +77,6 @@ public class Note_screen extends AppCompatActivity implements
 
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
-
     private RecyclerView mRecyclerView;
     private Checkbox_recyclerview_adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -93,13 +93,22 @@ public class Note_screen extends AppCompatActivity implements
     Button Add_CRI_Btton;
     LinearLayout Add_CRI_Views;
     TextView noteDateTime, timeReminder, dateReminder;
-    /**--**/
+    /**
+     * --
+     **/
     private boolean reminder;
-    private int mDay,mMonth, mYear, mHour, mMinute;
+    private int mDay, mMonth, mYear, mHour, mMinute;
 
-    public Note_screen() { }
 
     public ArrayList<Checkbox_recyclerview_items> checkboxRecyclerviewItems = new ArrayList<>();
+
+    public Note_screen(Note alreadyAvailableNote) {
+        this.alreadyAvailableNote = alreadyAvailableNote;
+    }
+
+    public Note_screen() {
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,15 +220,18 @@ public class Note_screen extends AppCompatActivity implements
         if (getIntent().getBooleanExtra("isViewOrUpdate", false)) {
             alreadyAvailableNote = (Note) getIntent().getSerializableExtra("note");
             loadNote_V2();
+            if (getIntent().getBooleanExtra("deleteWithSwipe", false)) {
+                showDeleteNoteDialog(Note_screen.this, dialogDeleteNote);//0 mean delete from note screen
+            }
         }
     }
 
     /*--------------------function to call date picker dialog--------------------------*/
 
-    private void pickDate (){
+    private void pickDate() {
         final Calendar calendar = Calendar.getInstance();
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        mMonth=calendar.get(Calendar.MONTH);
+        mMonth = calendar.get(Calendar.MONTH);
         mYear = calendar.get(Calendar.YEAR);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
@@ -228,19 +240,19 @@ public class Note_screen extends AppCompatActivity implements
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        calendar.set(year,month,dayOfMonth);
+                        calendar.set(year, month, dayOfMonth);
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                         dateReminder.setText(simpleDateFormat.format(calendar.getTime()));
                         pickTime();
                     }
-                }, mYear, mMonth,mDay);
+                }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
     //end
 
     /*--------------------function to call time picker dialog--------------------------*/
 
-    public void pickTime(){
+    public void pickTime() {
 
         Calendar calendar = Calendar.getInstance();
         mMinute = calendar.get(Calendar.MINUTE);
@@ -254,13 +266,13 @@ public class Note_screen extends AppCompatActivity implements
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         SimpleDateFormat simpleDateFormat =
                                 new SimpleDateFormat("HH:mm");
-                        calendar.set(0,0,0, hourOfDay,minute);
+                        calendar.set(0, 0, 0, hourOfDay, minute);
                         timeReminder.setText(simpleDateFormat.format(calendar.getTime()));
                         reminder = true;
                         alreadyAvailableNote.setReminder(reminder);
                         saveNote_V2();
                     }
-                }, mHour,mMinute,true);
+                }, mHour, mMinute, true);
         timePickerDialog.show();
     }
     //end
@@ -301,7 +313,7 @@ public class Note_screen extends AppCompatActivity implements
         tempCRI_List = mAdapter.getCri_LIST();
         String lines[] = new String[tempCRI_List.size()];
         for (int i = 0; i < tempCRI_List.size(); i++) {
-           lines[i] = tempCRI_List.get(i).get_checkbox_edittext();
+            lines[i] = tempCRI_List.get(i).get_checkbox_edittext();
         }
         checkboxRecyclerviewItems.clear();
         for (int i = 0; i < lines.length; i++)
@@ -375,7 +387,7 @@ public class Note_screen extends AppCompatActivity implements
         note.setReminderTime(timeReminder.getText().toString());
         //
 
-        if (alreadyAvailableNote!=null) {
+        if (alreadyAvailableNote != null) {
             bookmark = alreadyAvailableNote.isBookmark();
             notebookname = alreadyAvailableNote.getNotebook();
         }
@@ -385,7 +397,7 @@ public class Note_screen extends AppCompatActivity implements
         note.setImagePath(selectedImagePath);
 
         /**/
-        if (alreadyAvailableNote != null){
+        if (alreadyAvailableNote != null) {
             reminder = alreadyAvailableNote.isReminder();
         }
         note.setReminder(reminder);
@@ -443,8 +455,7 @@ public class Note_screen extends AppCompatActivity implements
                     view.setBackgroundColor(Color.parseColor("#303030"));
                     break;
             }
-        }
-        else {
+        } else {
             view.setBackgroundColor(Color.parseColor(note_screen_color));
         }
 
@@ -474,26 +485,29 @@ public class Note_screen extends AppCompatActivity implements
         }
     }
 
-    public void showDeleteNoteDialog() {
-        if (dialogDeleteNote == null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(Note_screen.this);
-            View view = LayoutInflater.from(this).inflate(
+    public void showDeleteNoteDialog(Context deleteContextFrom, AlertDialog dialogDeleteNoteFrom) {
+        if (dialogDeleteNoteFrom == null) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(deleteContextFrom);
+            View view = LayoutInflater.from(deleteContextFrom).inflate(
                     R.layout.delete_dialog,
-                    (ViewGroup) findViewById(R.id.DeleteNoteContainer)
+                    //(ViewGroup) findViewById(R.id.DeleteNoteContainer)(deleteContextFrom)
+                    null
             );
+            view.findViewById(R.id.DeleteNoteContainer);
             builder.setView(view);
-            dialogDeleteNote = builder.create();
-            if (dialogDeleteNote.getWindow() != null) {
-                dialogDeleteNote.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            dialogDeleteNoteFrom = builder.create();
+            if (dialogDeleteNoteFrom.getWindow() != null) {
+                dialogDeleteNoteFrom.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
+            AlertDialog finalDialogDeleteNoteFrom = dialogDeleteNoteFrom;
             view.findViewById(R.id.btn_delete).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
-
                         @Override
                         protected Void doInBackground(Void... voids) {
-                            NotesDatabase.getNotesDatabase(getApplicationContext()).noteDao()
+                            NotesDatabase.getNotesDatabase(deleteContextFrom).noteDao()
                                     .deleteNote(alreadyAvailableNote);
                             return null;
                         }
@@ -507,24 +521,26 @@ public class Note_screen extends AppCompatActivity implements
                             finish();
                         }
                     }
-
                     new DeleteNoteTask().execute();
                 }
             });
             view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dialogDeleteNote.dismiss();
+                    finalDialogDeleteNoteFrom.dismiss();
+                    if (getIntent().getBooleanExtra("deleteWithSwipe", false))
+                        finish();
                 }
             });
         }
-        dialogDeleteNote.show();
+        dialogDeleteNoteFrom.show();
     }
 
 
-//    public void deleteNote() {
-//        finish();
-//    }
+    public void deleteNote(boolean delete) {
+        delete = true;
+        Log.d("isDeleted with swipe boolean", "isDeleted: " + delete);
+    }
 
     @Override
     public void OnBottomSheet_ButtonClicked(String text) {
@@ -562,17 +578,20 @@ public class Note_screen extends AppCompatActivity implements
                 break;
             case "Move To Trash":
                 if (alreadyAvailableNote != null) {
-                    showDeleteNoteDialog();
-                } else { finish(); }
+                    showDeleteNoteDialog(Note_screen.this, dialogDeleteNote);
+                } else {
+                    finish();
+                }
                 break;
-            case  "Bookmark This Note":
-                if(alreadyAvailableNote != null)
-                {
+            case "Bookmark This Note":
+                if (alreadyAvailableNote != null) {
                     add_to_bookmark();
                 }
                 break;
             case "Move To Notebook":
-                if(alreadyAvailableNote != null) {move_to_notebook();}
+                if (alreadyAvailableNote != null) {
+                    move_to_notebook();
+                }
                 break;
             case "Add reminder":
                 if (alreadyAvailableNote != null) {
@@ -591,47 +610,42 @@ public class Note_screen extends AppCompatActivity implements
         Bottom_Sheet_Add_Notebook bottomsheet = new Bottom_Sheet_Add_Notebook(item_model, new NotebooksListener() {
             @Override
             public void OnNotebookClicked(Model_Item_Notebook_screen notebook, int position) {
-                if(alreadyAvailableNote.getNotebook().equals("")) {
+                if (alreadyAvailableNote.getNotebook().equals("")) {
                     Toast.makeText(Note_screen.this, notebook.getItem_name(), Toast.LENGTH_SHORT).show();
                     alreadyAvailableNote.setNotebook(notebook.getItem_name());
                     saveNote_V2();
+                } else if (!alreadyAvailableNote.getNotebook().equals(notebook.getItem_name())) {
+                    Toast.makeText(Note_screen.this, notebook.getItem_name(), Toast.LENGTH_SHORT).show();
+                    alreadyAvailableNote.setNotebook(notebook.getItem_name());
+                    Intent intent = new Intent(Note_screen.this, MainActivity.class);
+                    intent.putExtra("isNoteDeleted", true);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                    saveNote_V2();
+                    startActivity(intent);
+                } else if (alreadyAvailableNote.getNotebook().equals(notebook.getItem_name())) {
+                    Toast.makeText(Note_screen.this, "Remove complete!", Toast.LENGTH_SHORT).show();
+                    alreadyAvailableNote.setNotebook("");
+                    Intent intent = new Intent(Note_screen.this, MainActivity.class);
+                    intent.putExtra("isNoteDeleted", true);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                    saveNote_V2();
+                    startActivity(intent);
                 }
-                else if(!alreadyAvailableNote.getNotebook().equals(notebook.getItem_name())){
-                        Toast.makeText(Note_screen.this, notebook.getItem_name(), Toast.LENGTH_SHORT).show();
-                        alreadyAvailableNote.setNotebook(notebook.getItem_name());
-                        Intent intent = new Intent(Note_screen.this, MainActivity.class);
-                        intent.putExtra("isNoteDeleted", true);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                        saveNote_V2();
-                        startActivity(intent);
-                    }
-                else if(alreadyAvailableNote.getNotebook().equals(notebook.getItem_name())) {
-                        Toast.makeText(Note_screen.this, "Remove complete!", Toast.LENGTH_SHORT).show();
-                        alreadyAvailableNote.setNotebook("");
-                        Intent intent = new Intent(Note_screen.this, MainActivity.class);
-                        intent.putExtra("isNoteDeleted", true);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                        saveNote_V2();
-                        startActivity(intent);
-                    }
 
-                }
+            }
 
         });
-        bottomsheet.show(getSupportFragmentManager(),bottomsheet.getTag());
+        bottomsheet.show(getSupportFragmentManager(), bottomsheet.getTag());
     }
 
     private void add_to_bookmark() {
-        if(alreadyAvailableNote.isBookmark() == false)
-        {
+        if (alreadyAvailableNote.isBookmark() == false) {
             bookmark = true;
             alreadyAvailableNote.setBookmark(bookmark);
             saveNote_V2();
-        }
-       else if(alreadyAvailableNote.isBookmark()==true)
-        {
+        } else if (alreadyAvailableNote.isBookmark() == true) {
             bookmark = false;
             alreadyAvailableNote.setBookmark(bookmark);
             Intent intent = new Intent(Note_screen.this, MainActivity.class);
@@ -646,10 +660,9 @@ public class Note_screen extends AppCompatActivity implements
 
     /**/
     private void add_to_reminder() {
-        if (alreadyAvailableNote.isReminder() == false){
+        if (alreadyAvailableNote.isReminder() == false) {
             pickDate();
-        }
-        else if(alreadyAvailableNote.isReminder()){
+        } else if (alreadyAvailableNote.isReminder()) {
             reminder = false;
             alreadyAvailableNote.setReminder(reminder);
             Intent intent = new Intent(Note_screen.this, MainActivity.class);

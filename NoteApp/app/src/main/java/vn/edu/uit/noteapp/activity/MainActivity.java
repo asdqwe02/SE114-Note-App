@@ -1,5 +1,6 @@
 package vn.edu.uit.noteapp.activity;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements
         );
 
         noteList = new ArrayList<>();
-        noteAdapter = new NoteAdapter(noteList, this, 0);
+        noteAdapter = new NoteAdapter(noteList, this, 0,this);
         // 0 la bien Int nhan biet Main_Activity su dung Note_adapter
         noteRecyclerView.setAdapter(noteAdapter);
         getNotes(REQUEST_CODE_SHOW_NOTES, false);
@@ -189,7 +190,6 @@ public class MainActivity extends AppCompatActivity implements
         intent.putExtra("note", note);
         startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
@@ -261,11 +261,12 @@ public class MainActivity extends AppCompatActivity implements
 
             //refresh main screen data
             noteList.clear();
-            noteAdapter = new NoteAdapter(noteList, this, 0);
+            noteAdapter = new NoteAdapter(noteList, this, 0,this);
             noteRecyclerView.setAdapter(noteAdapter);
             getNotes(REQUEST_CODE_SHOW_NOTES, false);
             noteAdapter.notifyDataSetChanged();
         }
 
     }
+
 }
