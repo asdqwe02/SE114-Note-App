@@ -42,7 +42,8 @@
             android:elevation="20dp"
             android:hint="Name"
             android:textColorHint="@color/text_hint"
-            android:background="@drawable/bg_grey_border_radius"/>
+            android:background="@drawable/bg_grey_border_radius"
+            android:singleLine="true"/>
 
         <LinearLayout
             android:layout_width="match_parent"

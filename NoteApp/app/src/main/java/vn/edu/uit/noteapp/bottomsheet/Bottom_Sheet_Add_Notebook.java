@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +41,8 @@ public class Bottom_Sheet_Add_Notebook  extends BottomSheetDialogFragment {
     NotebooksListener listener;
     Adapter_For_AddNotebook adapter;
     RecyclerView recyclerView;
+    //tẽtview show No Notebook
+    TextView No_Noteebook;
     public Bottom_Sheet_Add_Notebook(ArrayList<Model_Item_Notebook_screen> item_model, NotebooksListener listener){
         this.item_model = item_model;
         this.listener = listener;
@@ -52,6 +56,8 @@ public class Bottom_Sheet_Add_Notebook  extends BottomSheetDialogFragment {
         View v = LayoutInflater.from(getContext()).inflate(R.layout.bottomsheet_addnotebook,null);
         bottomSheetDialog.setContentView(v);
         RecyclerView recyclerView = v.findViewById(R.id.bottomsheet_addnotebook);
+        No_Noteebook = v.findViewById(R.id.No_Noteebook_view);
+        No_Noteebook.setVisibility(View.GONE);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -64,6 +70,11 @@ public class Bottom_Sheet_Add_Notebook  extends BottomSheetDialogFragment {
         });
         recyclerView.setAdapter(adapter);
         getNotebooks(REQUEST_CODE_SHOW_NOTEBOOKS, false);
+        //Show textview
+        if(adapter.getItemCount() == 0)
+        {
+            No_Noteebook.setVisibility(View.VISIBLE);
+        }
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
         return bottomSheetDialog;

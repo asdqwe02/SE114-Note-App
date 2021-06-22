@@ -12,6 +12,14 @@
         android:background="@color/blue_light"
         android:layout_gravity="center_horizontal"/>
 
+    <TextView
+        android:id="@+id/No_Noteebook_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="No notebook(s) have found!"
+        android:textSize="@dimen/_13sdp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bottomsheet_addnotebook"
         android:layout_width="match_parent"
