@@ -221,7 +221,7 @@ public class Note_screen extends AppCompatActivity implements
             alreadyAvailableNote = (Note) getIntent().getSerializableExtra("note");
             loadNote_V2();
             if (getIntent().getBooleanExtra("deleteWithSwipe", false)) {
-                showDeleteNoteDialog(Note_screen.this, dialogDeleteNote);//0 mean delete from note screen
+                showDeleteNoteDialog(Note_screen.this, dialogDeleteNote);
             }
         }
     }
@@ -295,8 +295,9 @@ public class Note_screen extends AppCompatActivity implements
         //sync for checkbox
         String temp = note_Text.getText().toString();
         String lines[] = temp.split("\\r?\\n");
-        for (int i = 0; i < lines.length; i++)
-            checkboxRecyclerviewItems.add(new Checkbox_recyclerview_items(lines[i], false));
+        if (!temp.isEmpty())
+            for (int i = 0; i < lines.length; i++)
+                checkboxRecyclerviewItems.add(new Checkbox_recyclerview_items(lines[i], false));
         mAdapter = new Checkbox_recyclerview_adapter(checkboxRecyclerviewItems);
         mRecyclerView.setAdapter(mAdapter);
     }
