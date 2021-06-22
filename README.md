@@ -10,7 +10,7 @@
  thêm hình ở đây nếu muốn
 ## Mô tả
 ### Mô tả tổng thể 
-thêm hình biểu đồ
+![image](https://user-images.githubusercontent.com/62055305/122958196-d6696880-d3ac-11eb-9236-400770708f7f.png)
 ### Mô tả người dùng
 thêm hình nếu muốn
 ## Thiết kế
