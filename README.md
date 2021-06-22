@@ -11,7 +11,7 @@
 ## Mô tả
 ### Mô tả tổng thể 
 ![image](https://user-images.githubusercontent.com/62055305/122958388-ff89f900-d3ac-11eb-8850-16749d12fb0b.jpg)
-![image](https://user-images.githubusercontent.com/62055305/122960629-c8681780-d3ad-11eb-9482-2b9ef6794478.png)
+![Mô tả tổng thể Note App SE114 non transparent jpg](https://user-images.githubusercontent.com/62055305/122960706-dfa70500-d3ad-11eb-8284-d5e27fdf5188.png)
 ### Mô tả người dùng
 thêm hình nếu muốn
 ## Thiết kế
