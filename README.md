@@ -10,7 +10,7 @@
  thêm hình ở đây nếu muốn
 ## Mô tả
 ### Mô tả tổng thể 
-![image](https://user-images.githubusercontent.com/62055305/122961130-4e845e00-d3ae-11eb-9e42-aae7a7dfa899.png)
+![image](https://user-images.githubusercontent.com/62055305/122961307-783d8500-d3ae-11eb-9e17-893342d96a7e.png)
 ### Mô tả người dùng
 thêm hình nếu muốn
 ## Thiết kế
