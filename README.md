@@ -1,7 +1,7 @@
 # SE114-Note-App
 ## Giới thiệu
 ### Tên đề tài 
-Ứng dụng ghi chú EasyNote
+Ứng dụng ghi chú EasyNote\
 ![image](https://user-images.githubusercontent.com/62055305/122946806-de70da80-d3a3-11eb-9b47-0b9b41b901ed.png)
 ### Thông tin nhóm
 * Hồ Hữu Thịnh-19522275 
