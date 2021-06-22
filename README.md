@@ -6,7 +6,7 @@
 ### Thông tin nhóm
 * Hồ Hữu Thịnh-19522275 
 * Trần Thành Trung-19522436 
-* Nguyễn Minh Thiện-19522262 
+* Nguyễn Minh Thiện-19522262\ 
  thêm hình ở đây nếu muốn
 ## Mô tả
 ### Mô tả tổng thể 
