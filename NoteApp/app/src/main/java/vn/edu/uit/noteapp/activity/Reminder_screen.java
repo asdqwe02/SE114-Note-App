@@ -58,15 +58,9 @@ public class Reminder_screen extends AppCompatActivity implements NotesListener{
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        noteAdapter = new NoteAdapter(notesList,  this, 2,this);
-        //2 là biến để biết reminder screen đang dùng note adapter
+        noteAdapter = new NoteAdapter(notesList,  this, 3,this);
+        //3 là biến để biết reminder screen đang dùng note adapter
 
-        /**/
-//        ItemTouchHelper.Callback callback = new MyItemTouchHelper(noteAdapter);
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-//        noteAdapter.setTouchHelper(itemTouchHelper);
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
-        //
         recyclerView.setAdapter(noteAdapter);
 
         getNotes(REQUEST_CODE_SHOW_NOTES, false);

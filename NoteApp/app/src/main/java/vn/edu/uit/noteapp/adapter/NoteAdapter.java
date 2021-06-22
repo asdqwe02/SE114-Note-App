@@ -64,7 +64,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     /**/
     private ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
 
-    private ItemTouchHelper itemTouchHelper;
 
     public NoteAdapter(List<Note> notes, NotesListener noteListener, int title_screen, Context context) {
         this.notes = notes;
@@ -88,7 +87,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
-//        Context context = holder.itemView.getContext();
         holder.setNote(notes.get(position));
         holder.NoteContainerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,14 +98,39 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         viewBinderHelper.setOpenOnlyOne(true);
         viewBinderHelper.bind(holder.swipeRevealLayout, String.valueOf(notes.get(position).getId()));
 
-        //demo delete note in main with swipe; note: main and bookmark should have the same delete
+        //demo delete note in main with swipe;
+        // note: main and bookmark should have the same delete
         holder.LayoutDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(context, Note_screen.class);
-                intent.putExtra("isViewOrUpdate", true);
-                intent.putExtra("note", notes.get(position));
-                intent.putExtra("deleteWithSwipe",true);
+                if(NoteAdapter.this.title == 0) {
+                    Intent intent = new Intent(context, Note_screen.class);
+                    intent.putExtra("isViewOrUpdate", true);
+                    intent.putExtra("note", notes.get(position));
+                    intent.putExtra("deleteWithSwipe", true);
+                    context.startActivity(intent);
+                }
+
+
+                if (NoteAdapter.this.title == 3){
+                    Intent intent = new Intent(context, Note_screen.class);
+                    intent.putExtra("Delete Reminder", true);
+                    intent.putExtra("note",notes.get(position));
+                    intent.putExtra("SwipeToDelete", true);
+                    context.startActivity(intent);
+                }
+            }
+
+        });
+
+        //
+        holder.LayoutEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Note_screen.class);
+                intent.putExtra("Edit Reminder", true);
+                intent.putExtra("note",notes.get(position));
+                intent.putExtra("SwipeToEdit", true);
                 context.startActivity(intent);
             }
         });
@@ -132,6 +155,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         /**/
         SwipeRevealLayout swipeRevealLayout;
         LinearLayout LayoutDelete;
+        LinearLayout LayoutEdit;
 
 
         public NoteViewHolder(@NonNull View itemView) {
@@ -147,7 +171,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             /**/
             swipeRevealLayout = itemView.findViewById(R.id.swipeRevealLayout);
             LayoutDelete = itemView.findViewById(R.id.layout_delete);
-
+            LayoutEdit = itemView.findViewById(R.id.layout_edit);
         }
 
         public void setNote(Note note) {
@@ -195,6 +219,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             } else {
                 imageNoteContainer.setVisibility(View.GONE);
             }
+
+            /**/
+            if(NoteAdapter.this.title == 3){
+                LayoutEdit.setVisibility(View.VISIBLE);
+            } else {
+                LayoutEdit.setVisibility(View.GONE);
+            }
         }
 
     }
@@ -237,10 +268,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     public List<Note> getNotes() {
         return notes;
-    }
-
-    int getID(int position) {
-        return notes.get(position).getId();
     }
 
 }

@@ -1,5 +1,7 @@
 package vn.edu.uit.noteapp.activity;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,12 +28,14 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import vn.edu.uit.noteapp.entities.Note;
 import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.NoteAdapter;
+import vn.edu.uit.noteapp.listeners.AlarmReceiver;
 import vn.edu.uit.noteapp.listeners.NotesListener;
 
 public class MainActivity extends AppCompatActivity implements
