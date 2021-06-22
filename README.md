@@ -10,8 +10,7 @@
  thêm hình ở đây nếu muốn
 ## Mô tả
 ### Mô tả tổng thể 
-![image](https://user-images.githubusercontent.com/62055305/122958388-ff89f900-d3ac-11eb-8850-16749d12fb0b.jpg)
-![Mô tả tổng thể Note App SE114 non transparent jpg](https://user-images.githubusercontent.com/62055305/122960706-dfa70500-d3ad-11eb-8284-d5e27fdf5188.png)
+![image](https://user-images.githubusercontent.com/62055305/122961130-4e845e00-d3ae-11eb-9e42-aae7a7dfa899.png)
 ### Mô tả người dùng
 thêm hình nếu muốn
 ## Thiết kế
