@@ -3,6 +3,8 @@ package vn.edu.uit.noteapp.activity;
 import android.Manifest;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -26,7 +28,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -56,8 +57,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import vn.edu.uit.noteapp.Checkbox_recyclerview_items;
-import vn.edu.uit.noteapp.adapter.NoteAdapter;
-import vn.edu.uit.noteapp.adapter.Notebookscreen_recyclerview_adapter;
 import vn.edu.uit.noteapp.bottomsheet.Bottom_Sheet_Add_Notebook;
 import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
 import vn.edu.uit.noteapp.entities.Note;
@@ -65,10 +64,8 @@ import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.Checkbox_recyclerview_adapter;
 import vn.edu.uit.noteapp.bottomsheet.Note_Screen_Bottom_Sheet_Setting;
+import vn.edu.uit.noteapp.listeners.AlarmReceiver;
 import vn.edu.uit.noteapp.listeners.NotebooksListener;
-import vn.edu.uit.noteapp.listeners.NotesListener;
-import vn.edu.uit.noteapp.util.ItemTouchHelperAdapter;
-import vn.edu.uit.noteapp.util.MyItemTouchHelper;
 
 public class Note_screen extends AppCompatActivity implements
         Note_Screen_Bottom_Sheet_Setting.BottomSheetListener {
@@ -93,9 +90,9 @@ public class Note_screen extends AppCompatActivity implements
     Button Add_CRI_Btton;
     LinearLayout Add_CRI_Views;
     TextView noteDateTime, timeReminder, dateReminder;
-    /**
-     * --
-     **/
+    /****/
+    private static final int NOTIFICATION_ID = 100;
+    //
     private boolean reminder;
     private int mDay, mMonth, mYear, mHour, mMinute;
 
@@ -130,12 +127,9 @@ public class Note_screen extends AppCompatActivity implements
         CRI_View = findViewById(R.id.checkbox_recyclerview);
         bookmark = false;
         notebookname = "";
-
-        /**/
         timeReminder = findViewById(R.id.timeReminder);
         dateReminder = findViewById(R.id.dateReminder);
         reminder = false;
-        //
 
         Add_CRI_Btton = findViewById(R.id.add_Checkbox_RecyclerView_items_Btton);
         Add_CRI_Etext = findViewById(R.id.add_Checkbox_RecyclerView_items_Etext);
@@ -224,6 +218,27 @@ public class Note_screen extends AppCompatActivity implements
                 showDeleteNoteDialog(Note_screen.this, dialogDeleteNote);
             }
         }
+
+        if(getIntent().getBooleanExtra("Delete Reminder", false)){
+            alreadyAvailableNote = (Note)getIntent().getSerializableExtra("note");
+            loadNote_V2();
+            if (getIntent().getBooleanExtra("SwipeToDelete",false)){
+                deleteReminder();
+            }
+        }
+
+        if(getIntent().getBooleanExtra("Edit Reminder", false)){
+            alreadyAvailableNote = (Note)getIntent().getSerializableExtra("note");
+            loadNote_V2();
+            if (getIntent().getBooleanExtra("SwipeToEdit",false)){
+                pickDate();
+            }
+        }
+
+
+        //
+        createNotificationChannel();
+
     }
 
     /*--------------------function to call date picker dialog--------------------------*/
@@ -248,7 +263,6 @@ public class Note_screen extends AppCompatActivity implements
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
-    //end
 
     /*--------------------function to call time picker dialog--------------------------*/
 
@@ -266,16 +280,49 @@ public class Note_screen extends AppCompatActivity implements
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         SimpleDateFormat simpleDateFormat =
                                 new SimpleDateFormat("HH:mm");
-                        calendar.set(0, 0, 0, hourOfDay, minute);
+                        //calendar.set(0, 0, 0, hourOfDay, minute);
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+
                         timeReminder.setText(simpleDateFormat.format(calendar.getTime()));
                         reminder = true;
                         alreadyAvailableNote.setReminder(reminder);
                         saveNote_V2();
+
+                        /**/
+                        createNotificationChannel();
+                        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                                getApplicationContext(),
+                                NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        alarmManager.setRepeating(
+                                AlarmManager.RTC_WAKEUP,
+                                calendar.getTimeInMillis(),
+                                AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                                pendingIntent);
                     }
                 }, mHour, mMinute, true);
         timePickerDialog.show();
     }
-    //end
+
+    /**/
+
+    private void createNotificationChannel(){
+        CharSequence name = "reminder channel";
+        String description = "Easy note";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "reminderNotify", name, NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+    }
+
+    //
 
     public void Sync_EditText_With_CheckBox_RecyclerView() {
 
@@ -492,7 +539,6 @@ public class Note_screen extends AppCompatActivity implements
             AlertDialog.Builder builder = new AlertDialog.Builder(deleteContextFrom);
             View view = LayoutInflater.from(deleteContextFrom).inflate(
                     R.layout.delete_dialog,
-                    //(ViewGroup) findViewById(R.id.DeleteNoteContainer)(deleteContextFrom)
                     null
             );
             view.findViewById(R.id.DeleteNoteContainer);
@@ -535,6 +581,22 @@ public class Note_screen extends AppCompatActivity implements
             });
         }
         dialogDeleteNoteFrom.show();
+    }
+
+    /**/
+    public void deleteReminder(){
+        if (alreadyAvailableNote.isReminder()==true){
+            reminder = false;
+            alreadyAvailableNote.setReminder(reminder);
+            Intent intent = new Intent(Note_screen.this, Reminder_screen.class);
+            intent.putExtra("isNoteDeleted", true);
+            setResult(RESULT_OK, intent);
+            dateReminder.setText("no");
+            timeReminder.setText("");
+            saveNote_V2();
+            loadNote_V2();
+            startActivity(intent);
+        }
     }
 
 
@@ -770,6 +832,5 @@ public class Note_screen extends AppCompatActivity implements
         saveNote_V2();
         super.onBackPressed();
     }
-
 
 }
