@@ -1,5 +1,8 @@
 package vn.edu.uit.noteapp.activity;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,12 +28,14 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import vn.edu.uit.noteapp.entities.Note;
 import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.NoteAdapter;
+import vn.edu.uit.noteapp.listeners.AlarmReceiver;
 import vn.edu.uit.noteapp.listeners.NotesListener;
 
 public class MainActivity extends AppCompatActivity implements
@@ -94,7 +99,8 @@ public class MainActivity extends AppCompatActivity implements
         );
 
         noteList = new ArrayList<>();
-        noteAdapter = new NoteAdapter(noteList, this, 0); // 0 la bien Int nhan biet Main_Activity su dung Note_adapter
+        noteAdapter = new NoteAdapter(noteList, this, 0,this);
+        // 0 la bien Int nhan biet Main_Activity su dung Note_adapter
         noteRecyclerView.setAdapter(noteAdapter);
         getNotes(REQUEST_CODE_SHOW_NOTES, false);
 
@@ -188,7 +194,6 @@ public class MainActivity extends AppCompatActivity implements
         intent.putExtra("note", note);
         startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
@@ -260,11 +265,12 @@ public class MainActivity extends AppCompatActivity implements
 
             //refresh main screen data
             noteList.clear();
-            noteAdapter = new NoteAdapter(noteList, this, 0);
+            noteAdapter = new NoteAdapter(noteList, this, 0,this);
             noteRecyclerView.setAdapter(noteAdapter);
             getNotes(REQUEST_CODE_SHOW_NOTES, false);
             noteAdapter.notifyDataSetChanged();
         }
 
     }
+
 }

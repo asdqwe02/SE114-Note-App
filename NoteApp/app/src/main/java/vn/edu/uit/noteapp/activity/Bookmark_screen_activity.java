@@ -3,6 +3,7 @@ package vn.edu.uit.noteapp.activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -23,12 +24,14 @@ import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.BookmarkScreen_adapter;
 import vn.edu.uit.noteapp.adapter.NoteAdapter;
 import vn.edu.uit.noteapp.listeners.NotesListener;
+import vn.edu.uit.noteapp.util.MyItemTouchHelper;
 
 public class Bookmark_screen_activity extends AppCompatActivity implements NotesListener {
     ArrayList<Note> notelist;
     BookmarkScreen_adapter bookmarkAdapter;
     NoteAdapter note_adapter;
     RecyclerView recyclerView;
+    boolean refresh;
 
     private int noteClickedPosition = -1;
     public static final int REQUEST_CODE_UPDATE_NOTE = 2;
@@ -45,10 +48,16 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         recyclerView = findViewById(R.id.recyclerView);
-//        Data = new ArrayList<>();
-//        CreateBookmark();
+
         notelist = new ArrayList<>();
-        note_adapter = new NoteAdapter(notelist, (NotesListener) this, 1); // 1 la bien Int nhan biet Bookmark_Activity su dung Note_adapter
+        note_adapter = new NoteAdapter(notelist, (NotesListener) this, 1,this); // 1 la bien Int nhan biet Bookmark_Activity su dung Note_adapter
+
+        /**/
+//        ItemTouchHelper.Callback callback = new MyItemTouchHelper(note_adapter);
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+//        note_adapter.setTouchHelper(itemTouchHelper);
+//        itemTouchHelper.attachToRecyclerView(recyclerView);
+        //
         recyclerView.setAdapter(note_adapter);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
@@ -95,6 +104,7 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
         if (requestCode == REQUEST_CODE_UPDATE_NOTE && resultCode == RESULT_OK) {
             if (data != null)
                 getNotes(REQUEST_CODE_UPDATE_NOTE, data.getBooleanExtra("isNoteDeleted", false));
+            refresh=false;
         }
     }
 
@@ -106,11 +116,22 @@ public class Bookmark_screen_activity extends AppCompatActivity implements Notes
         intent.putExtra("note", note);
         startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
     }
-    //Create some bookmark
-//    public void CreateBookmark()
-//    {
-//        Data.add(new Data_model_bookmark("Work"));
-//        Data.add(new Data_model_bookmark("Personal"));
-//        Data.add(new Data_model_bookmark("Study"));
-//    }
+    protected void onPause() {
+        super.onPause();
+        refresh =true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (refresh){
+            notelist.clear();
+            note_adapter = new NoteAdapter(notelist, this, 0,this);
+            recyclerView.setAdapter(note_adapter);
+            getNotes(REQUEST_CODE_SHOW_NOTES, false);
+            note_adapter.notifyDataSetChanged();
+        }
+
+    }
+
 }

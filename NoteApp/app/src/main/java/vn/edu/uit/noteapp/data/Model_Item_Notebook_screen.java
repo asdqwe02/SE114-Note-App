@@ -31,9 +31,4 @@ public class Model_Item_Notebook_screen implements Serializable {
         this.item_name = item_name;
     }
 
-    //
-//    public Model_Item_Notebook_screen(String name)
-//    {
-//        this.item_name = name;
-//    }
 }

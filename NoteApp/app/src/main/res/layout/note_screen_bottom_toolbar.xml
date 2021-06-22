@@ -20,7 +20,8 @@
             android:layout_gravity="left"
             android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_image"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"></ImageButton>
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+        </ImageButton>
 
         <ImageButton
             android:id="@+id/show_checkbox"
@@ -28,17 +29,36 @@
             android:layout_height="match_parent"
             android:src="@drawable/ic_crop_square"
             android:background="?android:attr/selectableItemBackground"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-
-           ></ImageButton>
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+        </ImageButton>
 
         <TextView
-            android:id="@+id/noteReminder"
+            android:id="@+id/Reminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Reminder"
+            android:text="Reminder on: "
             android:textColor="@color/text_hint"/>
+
+        <TextView
+            android:id="@+id/dateReminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(date)"
+            android:textColor="@color/blue_light"/>
+
+        <TextView
+            android:id="@+id/comma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=", "
+            android:textColor="@color/text_hint"/>
+
+        <TextView
+            android:id="@+id/timeReminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(time)"
+            android:textColor="@color/blue_light"/>
 
     </LinearLayout>
 </Toolbar>

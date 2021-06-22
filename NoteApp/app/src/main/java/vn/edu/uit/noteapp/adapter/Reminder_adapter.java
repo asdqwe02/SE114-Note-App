@@ -13,15 +13,20 @@ import java.util.ArrayList;
 
 import vn.edu.uit.noteapp.data.Reminder_item;
 import vn.edu.uit.noteapp.R;
+import vn.edu.uit.noteapp.entities.Note;
 import vn.edu.uit.noteapp.entities.Reminders;
 
 public class Reminder_adapter extends RecyclerView.Adapter<Reminder_adapter.ViewHolder> {
     Context context;
     ArrayList<Reminder_item> Reminder_items;
 
-    public Reminder_adapter(Context ct, ArrayList<Reminder_item> items){
+    /*--Add a test with note adapter--*/
+    ArrayList<Note> noteList;
+
+    public Reminder_adapter(Context ct, ArrayList<Note> noteslist){
         this.context = ct;
-        this.Reminder_items = items;
+        //this.Reminder_items = items;
+        this.noteList = noteslist;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
@@ -37,7 +42,7 @@ public class Reminder_adapter extends RecyclerView.Adapter<Reminder_adapter.View
 
         void setReminder (Reminders reminders) {
             tv_title.setText(reminders.getTitle());
-            
+
         }
     }
 

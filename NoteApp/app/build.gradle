@@ -54,4 +54,8 @@ dependencies {
 
     //Rounded imageview
     implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    //lib for reyccler view swipe đecor
+    implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
+
 }
