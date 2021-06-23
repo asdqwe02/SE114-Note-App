@@ -20,7 +20,6 @@ public class Reminders implements Serializable {
 
     @ColumnInfo(name = "Time")
     private  String time;
-
     public int getId() {
         return id;
     }
