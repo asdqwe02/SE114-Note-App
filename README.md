@@ -22,15 +22,24 @@ thêm hình sơ đồ lớp
 ![Mô hình liên kết các màn hình](https://user-images.githubusercontent.com/62055305/123029216-fa5b9700-d40a-11eb-811b-5224de121f3c.png)
 #### Danh sách các màn hình
 ##### Màn hình chính
-thêm hình màn hình chính
+![main light](https://user-images.githubusercontent.com/62055305/123032297-e8302780-d40f-11eb-82c6-a1505f0816e4.JPG)
+![main dark](https://user-images.githubusercontent.com/62055305/123032302-ea928180-d40f-11eb-8233-07542783c9cb.JPG)
 ##### Màn hình tìm kiếm
-thêm hình
+![Search Note Screen](https://user-images.githubusercontent.com/62055305/123032317-f2eabc80-d40f-11eb-855d-d7f363a06dbf.JPG)
 ##### Màn hình Note và các customization của note
-thêm hình với các màu note khác nhau với bottomsheet của note
+![Normal note](https://user-images.githubusercontent.com/62055305/123032588-5f65bb80-d410-11eb-956c-47fb254e32d6.JPG)
+![Note Bottomsheet](https://user-images.githubusercontent.com/62055305/123032372-072eb980-d410-11eb-8169-1e6df86cac51.JPG) \
+![Note info with checbox](https://user-images.githubusercontent.com/62055305/123032390-10b82180-d410-11eb-9ff6-ed0798dba410.JPG)
+![note info with no checkbox](https://user-images.githubusercontent.com/62055305/123032656-815f3e00-d410-11eb-914e-a801e697347c.JPG)
 ##### Màn hình Notebook
-thêm hình
+![notebook screen](https://user-images.githubusercontent.com/62055305/123032673-8e7c2d00-d410-11eb-9d8d-736b0650401b.JPG)
+![Adding note to notebook](https://user-images.githubusercontent.com/62055305/123032838-e4e96b80-d410-11eb-8346-cefc674f8f00.JPG)
+![Inside 1 Notebook](https://user-images.githubusercontent.com/62055305/123032774-bf5c6200-d410-11eb-999a-cea2054f3029.JPG)
 ##### Màn hình Bookmark
-thêm hình
+![Bookmark screen](https://user-images.githubusercontent.com/62055305/123032699-9b991c00-d410-11eb-9425-1f3324332e3d.JPG)
+##### Màn hình Setting
+![Setting screen](https://user-images.githubusercontent.com/62055305/123032786-c4211600-d410-11eb-895f-36e34f2c128a.JPG)
+![Setting screen dark](https://user-images.githubusercontent.com/62055305/123032814-d733e600-d410-11eb-9253-67b57102e718.JPG)
 ## Môi trường phát triển và triển khai
 ### Môi trường phát triển
 * Hệ điều hành: Microsoft Windows 10
