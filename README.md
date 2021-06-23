@@ -1,4 +1,5 @@
 # SE114-Note-App
+![banner_0](https://user-images.githubusercontent.com/62055305/123108672-d036c300-d464-11eb-887a-abccf8068ebe.png)
 ## Giới thiệu
 ### Tên đề tài 
 Ứng dụng ghi chú EasyNote\
