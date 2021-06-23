@@ -6,7 +6,7 @@
 ### Thông tin nhóm
 * Hồ Hữu Thịnh-19522275 
 * Trần Thành Trung-19522436 
-* Nguyễn Minh Thiện-19522262\ 
+* Nguyễn Minh Thiện-19522262 \ 
  thêm hình ở đây nếu muốn
 ## Mô tả
 ### Mô tả tổng thể 
@@ -37,7 +37,7 @@ thêm hình
 * Hệ quản trị cơ sở dữ liệu: SQLite thông qua Room database
 * Công cụ xây dựng ứng dụng: Android Studio
 ### Môi trường triển khai
-*Nền tảng: android
+* Nền tảng: android
 ## Tài liệu tham khảo
 * Java\
 https://www.w3schools.com/java/
