@@ -19,7 +19,7 @@ Hệ quản trị cơ sở dữ liệu: SQLite thông qua Room Database
 thêm hình sơ đồ lớp
 ### Thiết kế giao diện
 #### Sơ đồ liên kết các màn hình
-thêm hình sơ đồ các màn hình
+![Mô hình liên kết các màn hình](https://user-images.githubusercontent.com/62055305/123029216-fa5b9700-d40a-11eb-811b-5224de121f3c.png)
 #### Danh sách các màn hình
 ##### Màn hình chính
 thêm hình màn hình chính
