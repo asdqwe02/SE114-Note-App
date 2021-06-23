@@ -15,7 +15,7 @@
 ## Thiết kế
 ### Thiết kế dữ liệu
 Hệ quản trị cơ sở dữ liệu: SQLite thông qua Room Database
-thêm hình sơ đồ lớp
+![ERD Note App](https://user-images.githubusercontent.com/62055305/123108031-4129ab00-d464-11eb-9b12-b72a4693438b.png)
 ### Thiết kế giao diện
 #### Sơ đồ liên kết các màn hình
 ![Mô hình liên kết các màn hình](https://user-images.githubusercontent.com/62055305/123029216-fa5b9700-d40a-11eb-811b-5224de121f3c.png)
