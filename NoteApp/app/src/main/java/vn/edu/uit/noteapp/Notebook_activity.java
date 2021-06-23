@@ -129,7 +129,7 @@ public class Notebook_activity extends AppCompatActivity implements NotesListene
         super.onResume();
         if (refresh){
             notelist.clear();
-            note_adapter = new NoteAdapter(notelist, this, 0,this);
+            note_adapter = new NoteAdapter(notelist, this, 2,this);
             recyclerView.setAdapter(note_adapter);
             getNotes(REQUEST_CODE_SHOW_NOTES, false);
             note_adapter.notifyDataSetChanged();

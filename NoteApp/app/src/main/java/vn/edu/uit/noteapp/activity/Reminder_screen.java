@@ -136,7 +136,7 @@ public class Reminder_screen extends AppCompatActivity implements NotesListener{
         super.onResume();
         if (refresh){
             notesList.clear();
-            noteAdapter = new NoteAdapter(notesList, this, 0,this);
+            noteAdapter = new NoteAdapter(notesList, this, 3,this);
             recyclerView.setAdapter(noteAdapter);
             getNotes(REQUEST_CODE_SHOW_NOTES, false);
             noteAdapter.notifyDataSetChanged();
