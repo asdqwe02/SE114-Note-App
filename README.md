@@ -39,10 +39,10 @@ thêm hình
 ### Môi trường triển khai
 *Nền tảng: android
 ## Tài liệu tham khảo
-* Java
+* Java\
 https://www.w3schools.com/java/
-*Android Studio
+*Android Studio\
 https://www.tutorialspoint.com/android/index.htm
 https://developer.android.com/guide
-* Thư viện sử dụng
+* Thư viện sử dụng\
 https://github.com/chthai64/SwipeRevealLayout
