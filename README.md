@@ -40,9 +40,9 @@ thêm hình
 *Nền tảng: android
 ## Tài liệu tham khảo
 * Java\
-https://www.w3schools.com/java/
+https://www.w3schools.com/java/ \
 *Android Studio\
-https://www.tutorialspoint.com/android/index.htm
-https://developer.android.com/guide
+https://www.tutorialspoint.com/android/index.htm \
+https://developer.android.com/guide \
 * Thư viện sử dụng\
 https://github.com/chthai64/SwipeRevealLayout
