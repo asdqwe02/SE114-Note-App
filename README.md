@@ -6,8 +6,7 @@
 ### Thông tin nhóm
 * Hồ Hữu Thịnh-19522275 
 * Trần Thành Trung-19522436 
-* Nguyễn Minh Thiện-19522262 \ 
- thêm hình ở đây nếu muốn
+* Nguyễn Minh Thiện-19522262
 ## Mô tả
 ### Mô tả tổng thể 
 ![image](https://user-images.githubusercontent.com/62055305/123021505-684d9180-d3fe-11eb-8ccb-c773dc528992.png)
