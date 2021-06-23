@@ -26,6 +26,8 @@ thêm hình sơ đồ lớp
 ![main dark](https://user-images.githubusercontent.com/62055305/123032302-ea928180-d40f-11eb-8233-07542783c9cb.JPG)
 ##### Màn hình tìm kiếm
 ![Search Note Screen](https://user-images.githubusercontent.com/62055305/123032317-f2eabc80-d40f-11eb-855d-d7f363a06dbf.JPG)
+##### Màn hình Navigation
+![navigate screen](https://user-images.githubusercontent.com/62055305/123032965-21b56280-d411-11eb-8a78-7de5395fa468.JPG)
 ##### Màn hình Note và các customization của note
 ![Normal note](https://user-images.githubusercontent.com/62055305/123032588-5f65bb80-d410-11eb-956c-47fb254e32d6.JPG)
 ![Note Bottomsheet](https://user-images.githubusercontent.com/62055305/123032372-072eb980-d410-11eb-8169-1e6df86cac51.JPG) \
