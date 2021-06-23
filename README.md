@@ -12,7 +12,7 @@
 ### Mô tả tổng thể 
 ![image](https://user-images.githubusercontent.com/62055305/123021505-684d9180-d3fe-11eb-8ccb-c773dc528992.png)
 ### Mô tả người dùng
-![Use case](https://user-images.githubusercontent.com/62055305/123023486-a7c9ad00-d401-11eb-94e6-94fb59b9adb1.png)
+![Use case](https://user-images.githubusercontent.com/62055305/123023742-1f97d780-d402-11eb-872d-f08030e53b47.png)
 ## Thiết kế
 ### Thiết kế dữ liệu
 Hệ quản trị cơ sở dữ liệu: SQLite thông qua Room Database
