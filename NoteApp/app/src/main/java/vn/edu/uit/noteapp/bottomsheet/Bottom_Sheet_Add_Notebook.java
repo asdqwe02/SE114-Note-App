@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +25,7 @@ import java.util.List;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.Adapter_For_AddNotebook;
 import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
-import vn.edu.uit.noteapp.listeners.NotebooksDatabase;
+import vn.edu.uit.noteapp.entities.NotebooksDatabase;
 import vn.edu.uit.noteapp.listeners.NotebooksListener;
 
 import static android.app.Activity.RESULT_OK;
@@ -62,8 +61,8 @@ public class Bottom_Sheet_Add_Notebook  extends BottomSheetDialogFragment {
 
         adapter = new Adapter_For_AddNotebook(getContext(), item_model, new NotebooksListener() {
             @Override
-            public void OnNotebookClicked(Model_Item_Notebook_screen notebook, int position) {
-                listener.OnNotebookClicked(notebook , position);
+            public void OnNotebookClicked(Model_Item_Notebook_screen notebook, int position,boolean update) {
+                listener.OnNotebookClicked(notebook , position,false);
             }
 
         });

@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -23,23 +25,22 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import vn.edu.uit.noteapp.Notebook_activity;
-import vn.edu.uit.noteapp.adapter.NoteAdapter;
-import vn.edu.uit.noteapp.bottomsheet.Bottom_Sheet_Notebookscreen;
-import vn.edu.uit.noteapp.listeners.NotebooksDatabase;
+import vn.edu.uit.noteapp.database.NotesDatabase;
+import vn.edu.uit.noteapp.entities.Note;
+import vn.edu.uit.noteapp.entities.NotebooksDatabase;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
 import vn.edu.uit.noteapp.adapter.Notebookscreen_recyclerview_adapter;
 import vn.edu.uit.noteapp.listeners.NotebooksListener;
 
-import static vn.edu.uit.noteapp.activity.MainActivity.REQUEST_CODE_UPDATE_NOTE;
-
-public class Notebook_Screen extends AppCompatActivity {
+public class Notebook_Screen extends AppCompatActivity implements NotebooksListener {
     public static final int REQUEST_CODE_ADD_NOTEBOOK = 1;
     public static final int REQUEST_CODE_UPDATE_NOTEBOOK = 2;
     public static final int REQUEST_CODE_SHOW_NOTEBOOKS = 3;
@@ -48,10 +49,11 @@ public class Notebook_Screen extends AppCompatActivity {
 
     ArrayList<Model_Item_Notebook_screen> item_model;
     Notebookscreen_recyclerview_adapter recycler_adapter;
-    NotebooksListener listener;
+    //NotebooksListener listener;
     RecyclerView recyclerView;
     ImageButton addbutton;
     public String name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +77,7 @@ public class Notebook_Screen extends AppCompatActivity {
                 dialog.setContentView(R.layout.add_notebook_dialog);
 
                 Window window = dialog.getWindow();
-                if (window == null){
+                if (window == null) {
                     return;
                 }
 
@@ -103,16 +105,15 @@ public class Notebook_Screen extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         name = editName.getText().toString();
-                        if (name.matches("")){
+                        if (name.matches("")) {
                             Toast.makeText(Notebook_Screen.this, "Please enter your notebook name", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        } else {
 //                            item_model.add(new Model_Item_Notebook_screen(editName.getText().toString()));
                             //save Notebook
-                            SaveNotebook();
+                            SaveNotebook(null);
                             dialog.dismiss();
                             Toast.makeText(Notebook_Screen.this, "Create success", Toast.LENGTH_SHORT).show();
-                            startActivity(getIntent());
+                            getNotebooks(REQUEST_CODE_ADD_NOTEBOOK, false);
                         }
                     }
                 });
@@ -123,15 +124,7 @@ public class Notebook_Screen extends AppCompatActivity {
         item_model = new ArrayList<>();
 //        CreateItem();
         //Click Item in Notebook
-        recycler_adapter = new Notebookscreen_recyclerview_adapter(this, item_model, new NotebooksListener() {
-            @Override
-            public void OnNotebookClicked(Model_Item_Notebook_screen notebook, int position) {
-                notebookClickedPosition = position;
-                Intent intent = new Intent(getApplicationContext(), Notebook_activity.class);
-                intent.putExtra("notebook", notebook.getItem_name());
-                startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTEBOOK);
-            }
-        });
+        recycler_adapter = new Notebookscreen_recyclerview_adapter(this, item_model, this);
         recyclerView.setAdapter(recycler_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -147,9 +140,11 @@ public class Notebook_Screen extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void SaveNotebook()
-    {
+
+    private void SaveNotebook(Model_Item_Notebook_screen updateMoteBook) {
         final Model_Item_Notebook_screen notebook = new Model_Item_Notebook_screen();
+        if (updateMoteBook != null)
+            notebook.setId(updateMoteBook.getId());
         notebook.setItem_name(name);
         class SaveNoteTask extends AsyncTask<Void, Void, Void> {
             @Override
@@ -157,16 +152,17 @@ public class Notebook_Screen extends AppCompatActivity {
                 NotebooksDatabase.getNotebooksDatabase(getApplicationContext()).notebookDAO().insertNote(notebook);
                 return null;
             }
+
             @Override
             protected void onPostExecute(Void aVoids) {
                 super.onPostExecute(aVoids);
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent); //return ra result code after activity end by saving
-                finish();
             }
         }
         new SaveNoteTask().execute();
     }
+
     @SuppressLint("StaticFileLeak")
     public void getNotebooks(final int requestCode, final boolean isNotebookDeleted) {
         class GetNotebookTask extends AsyncTask<Void, Void, List<Model_Item_Notebook_screen>> {
@@ -190,9 +186,9 @@ public class Notebook_Screen extends AppCompatActivity {
                     recyclerView.smoothScrollToPosition(0);
                 } else if (requestCode == REQUEST_CODE_UPDATE_NOTEBOOK) {
                     item_model.remove(notebookClickedPosition);
-                    if (isNotebookDeleted){
+                    if (isNotebookDeleted) {
                         recycler_adapter.notifyItemRemoved(notebookClickedPosition);
-                    } else{
+                    } else {
                         item_model.add(notebookClickedPosition, notebook.get(notebookClickedPosition));
                         recycler_adapter.notifyItemChanged(notebookClickedPosition);
 
@@ -204,6 +200,7 @@ public class Notebook_Screen extends AppCompatActivity {
         }
         new GetNotebookTask().execute();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -211,8 +208,99 @@ public class Notebook_Screen extends AppCompatActivity {
             getNotebooks(REQUEST_CODE_ADD_NOTEBOOK, false);
         } else if (requestCode == REQUEST_CODE_UPDATE_NOTEBOOK && resultCode == RESULT_OK) {
             if (data != null)
-                getNotebooks(REQUEST_CODE_UPDATE_NOTEBOOK, data.getBooleanExtra("isNotebookDeleted",false));
+                getNotebooks(REQUEST_CODE_UPDATE_NOTEBOOK, data.getBooleanExtra("isNotebookDeleted", false));
         }
+    }
+
+    @Override
+    public void OnNotebookClicked(Model_Item_Notebook_screen notebook, int position,
+                                  boolean update) {
+        notebookClickedPosition = position;
+        if (!update) {
+            Intent intent = new Intent(getApplicationContext(), Notebook_activity.class);
+            intent.putExtra("notebook", notebook.getItem_name());
+            startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTEBOOK);
+        } else {
+            final Dialog dialog;
+            dialog = new Dialog(Notebook_Screen.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.add_notebook_dialog);
+
+            Window window = dialog.getWindow();
+            if (window == null) {
+                return;
+            }
+
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            WindowManager.LayoutParams windowAttributes = window.getAttributes();
+            windowAttributes.gravity = Gravity.BOTTOM;
+            window.setAttributes(windowAttributes);
+
+            dialog.setCancelable(true);
+
+            EditText editName = dialog.findViewById(R.id.notebook_name_create);
+            Button btn_Cancel = dialog.findViewById(R.id.btn_cancel);
+            Button btn_Create = dialog.findViewById(R.id.btn_create);
+            TextView dialogTilte = dialog.findViewById(R.id.processNotebookTitle);
+            dialogTilte.setText("Rename Notebook?");
+            btn_Create.setText("Rename");
+
+            btn_Cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            btn_Create.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    name = editName.getText().toString();
+                    if (name.matches("")) {
+                        Toast.makeText(Notebook_Screen.this, "Please enter your notebook name", Toast.LENGTH_SHORT).show();
+                    } else {
+//                            item_model.add(new Model_Item_Notebook_screen(editName.getText().toString()));
+                        //save Notebook
+                        SaveNotebook(notebook);
+                        dialog.dismiss();
+                        Toast.makeText(Notebook_Screen.this, "Rename Success", Toast.LENGTH_SHORT).show();
+                        getNotebooks(REQUEST_CODE_UPDATE_NOTEBOOK, false);
+
+                       /*Rename every note that have notebook.getItem_name() in it and
+                        change it into the new notebook name*/
+                        final Context notebookContext=getApplicationContext();
+                        class RenameNoteBookInNoteTask extends AsyncTask<Void, Void, List<Note>> {
+                            @Override
+                            protected List<Note> doInBackground(Void... voids) {
+                                return NotesDatabase
+                                        .getNotesDatabase(getApplicationContext())
+                                        .noteDao().getNotebookNote(notebook.getItem_name());
+                            }
+                            @Override
+                            protected void onPostExecute(List<Note> notes) {
+                                super.onPostExecute(notes);
+                                for (int i = 0; i < notes.size(); i++) {
+                                    notes.get(i).setNotebook(name);
+                                    Note_screen temp = new Note_screen(notes.get(i));
+                                    temp.saveNote_V2_FromOutside(notebookContext);
+                                }
+                            }
+                        }
+                        new RenameNoteBookInNoteTask().execute();
+                    }
+                }
+            });
+            dialog.show();
+        }
+    }
+
+
+    private void refreshNotebookData() {
+        item_model.clear();
+        recycler_adapter = new Notebookscreen_recyclerview_adapter(this, item_model, this);
+        recyclerView.setAdapter(recycler_adapter);
+        getNotebooks(REQUEST_CODE_ADD_NOTEBOOK, false);
     }
 
 }
