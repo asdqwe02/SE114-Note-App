@@ -12,7 +12,7 @@
 ### Mô tả tổng thể 
 ![Mô tả tổng thể Note App SE114](https://user-images.githubusercontent.com/62055305/123195416-576e5000-d4d2-11eb-826b-f232c5e08dc2.png)
 ### Mô tả người dùng
-![Use case](https://user-images.githubusercontent.com/62055305/123023742-1f97d780-d402-11eb-872d-f08030e53b47.png)
+![Use case](https://user-images.githubusercontent.com/62055305/123274017-56b6d780-d52d-11eb-8ef5-6b769f488ece.png)
 ## Thiết kế
 ### Thiết kế dữ liệu
 Hệ quản trị cơ sở dữ liệu: SQLite thông qua Room Database
