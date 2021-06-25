@@ -1,6 +1,8 @@
 package vn.edu.uit.noteapp.activity;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements
     private NoteAdapter noteAdapter;
     List<Note> noteList;
     boolean refreshMain;
+    public static final String CHANNEL_ID = "ChannelID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
-        //end of edit dark mode
+
     }
 
     @SuppressLint("StaticFileLeak")
@@ -168,9 +171,7 @@ public class MainActivity extends AppCompatActivity implements
                         noteAdapter.notifyItemChanged(noteClickedPosition);
 
                     }
-
                 }
-
             }
         }
         new GetNoteTask().execute();
@@ -200,6 +201,8 @@ public class MainActivity extends AppCompatActivity implements
         switch (menuItem.getItemId()) {
                 //Link notes screen (home screen)
             case R.id.nav_home:
+                Intent i = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(i);
                 break; //because we are already in note screen
 
                 //link to bookmark screen
@@ -257,11 +260,6 @@ public class MainActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         if (refreshMain){
-//            finish();
-//            overridePendingTransition(0, 0);
-//            startActivity(getIntent());
-//            overridePendingTransition(0, 0);
-
 
             //refresh main screen data
             noteList.clear();

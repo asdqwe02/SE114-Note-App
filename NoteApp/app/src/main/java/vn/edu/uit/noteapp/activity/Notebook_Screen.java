@@ -28,16 +28,11 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.uit.noteapp.Notebook_activity;
-import vn.edu.uit.noteapp.adapter.NoteAdapter;
-import vn.edu.uit.noteapp.bottomsheet.Bottom_Sheet_Notebookscreen;
 import vn.edu.uit.noteapp.listeners.NotebooksDatabase;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
 import vn.edu.uit.noteapp.adapter.Notebookscreen_recyclerview_adapter;
 import vn.edu.uit.noteapp.listeners.NotebooksListener;
-
-import static vn.edu.uit.noteapp.activity.MainActivity.REQUEST_CODE_UPDATE_NOTE;
 
 public class Notebook_Screen extends AppCompatActivity {
     public static final int REQUEST_CODE_ADD_NOTEBOOK = 1;

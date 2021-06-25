@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".Notebook_activity">
+    tools:context=".activity.Notebook_activity">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewNotebook"
         android:layout_width="match_parent"

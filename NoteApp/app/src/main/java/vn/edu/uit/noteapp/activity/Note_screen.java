@@ -21,7 +21,9 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -70,6 +72,7 @@ import vn.edu.uit.noteapp.listeners.NotebooksListener;
 public class Note_screen extends AppCompatActivity implements
         Note_Screen_Bottom_Sheet_Setting.BottomSheetListener {
 
+    public static final String CHANNEL_ID = "ChannelID";
     private String note_screen_color;
 
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
@@ -91,10 +94,12 @@ public class Note_screen extends AppCompatActivity implements
     LinearLayout Add_CRI_Views;
     TextView noteDateTime, timeReminder, dateReminder;
     /****/
-    private static final int NOTIFICATION_ID = 100;
+
     //
     private boolean reminder;
     private int mDay, mMonth, mYear, mHour, mMinute;
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
 
 
     public ArrayList<Checkbox_recyclerview_items> checkboxRecyclerviewItems = new ArrayList<>();
@@ -239,6 +244,8 @@ public class Note_screen extends AppCompatActivity implements
         //
         createNotificationChannel();
 
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
     }
 
     /*--------------------function to call date picker dialog--------------------------*/
@@ -278,9 +285,16 @@ public class Note_screen extends AppCompatActivity implements
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        SimpleDateFormat simpleDateFormat =
-                                new SimpleDateFormat("HH:mm");
-                        //calendar.set(0, 0, 0, hourOfDay, minute);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+                        /**/
+                        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+                        pendingIntent = PendingIntent.getBroadcast(
+                                getApplicationContext(),
+                                alreadyAvailableNote.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        createNotificationChannel();
+                        //
+
+                        calendar.setTimeInMillis(System.currentTimeMillis());
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         calendar.set(Calendar.MINUTE, minute);
 
@@ -290,38 +304,42 @@ public class Note_screen extends AppCompatActivity implements
                         saveNote_V2();
 
                         /**/
-                        createNotificationChannel();
-                        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                                getApplicationContext(),
-                                NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                        alarmManager.setRepeating(
-                                AlarmManager.RTC_WAKEUP,
-                                calendar.getTimeInMillis(),
-                                AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-                                pendingIntent);
+//                        alarmManager.setRepeating(
+//                                AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),
+//                                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+                        alarmManager.setExact(AlarmManager.RTC_WAKEUP,
+                                calendar.getTimeInMillis(), pendingIntent);
+
                     }
                 }, mHour, mMinute, true);
         timePickerDialog.show();
     }
 
     /**/
-
     private void createNotificationChannel(){
         CharSequence name = "reminder channel";
         String description = "Easy note";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
-                    "reminderNotify", name, NotificationManager.IMPORTANCE_DEFAULT);
+                    CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription(description);
-
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-
     }
 
+    public int getNoteID(){
+        return alreadyAvailableNote.getId();
+    }
+
+    public void cancelAlarm(){
+        //alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+
+//        if (alarmManager != null) {
+//            alarmManager.cancel(pendingIntent);
+//            Toast.makeText(context, "Cancel alarm", Toast.LENGTH_SHORT).show();
+//        }
+    }
     //
 
     public void Sync_EditText_With_CheckBox_RecyclerView() {
@@ -733,6 +751,7 @@ public class Note_screen extends AppCompatActivity implements
             setResult(RESULT_OK, intent);
             dateReminder.setText("no");
             timeReminder.setText("");
+            cancelAlarm();
             saveNote_V2();
             loadNote_V2();
             startActivity(intent);
