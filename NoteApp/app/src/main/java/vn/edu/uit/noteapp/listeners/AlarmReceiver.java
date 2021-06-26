@@ -23,6 +23,7 @@ import javax.xml.transform.Result;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.activity.Note_screen;
 import vn.edu.uit.noteapp.activity.Reminder_screen;
+import vn.edu.uit.noteapp.bottomsheet.Note_Screen_Bottom_Sheet_Setting;
 import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.entities.Note;
 
@@ -93,7 +94,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     //**//remove note from the reminder table
                     notesList.get(i).setReminder(false);
                     Listnotes.remove(i);
-                    removeReminder(i);
+                    removeReminder(notesList.get(i));
                 }
             }
         }
@@ -106,16 +107,24 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     /* This function doesn't work */
-    public void removeReminder(int position){
-        class RemoverReminder extends AsyncTask<Void, Void, List<Note>>{
+    public void removeReminder(Note note){
+        note.setReminder(false);
+        note.setReminderDate("");
+        note.setReminderTime("");
+        final Note tempNote=note;
+        class RemoverReminder extends AsyncTask<Void, Void, Void>{
             @Override
-            protected List<Note> doInBackground(Void... voids) {
-                List<Note> ListNote = (List<Note>) NotesDatabase
-                        .getNotesDatabase(context)
-                        .noteDao()
-                        .getReminderNote().remove(position);
-                return ListNote;
+            protected Void doInBackground(Void... voids) {
+                Note_screen tempNoteClass = new Note_screen(note);
+                tempNoteClass.save
+                return null;
             }
+
+            @Override
+            protected void onPostExecute(Void unused) {
+                super.onPostExecute(unused);
+            }
+        }
         }
 
         /**/
