@@ -33,6 +33,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     Note note;
     Context context;
     List<Note> notesList = new ArrayList<>();
+
     public AlarmReceiver(Note note) {
         this.note = note;
     }
@@ -49,6 +50,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         class GetNotefromNotification extends AsyncTask<Void, Void, List<Note>> {
             /**/
             final Note note = new Note();
+
             @Override
             protected List<Note> doInBackground(Void... voids) {
                 return NotesDatabase
@@ -107,28 +109,25 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     /* This function doesn't work */
-    public void removeReminder(Note note){
+    public void removeReminder(Note note) {
         note.setReminder(false);
         note.setReminderDate("");
         note.setReminderTime("");
-        final Note tempNote=note;
-        class RemoverReminder extends AsyncTask<Void, Void, Void>{
+        final Note tempNote = note;
+        class RemoverReminder extends AsyncTask<Void, Void, Void> {
             @Override
             protected Void doInBackground(Void... voids) {
                 Note_screen tempNoteClass = new Note_screen(note);
+
                 return null;
             }
-
             @Override
             protected void onPostExecute(Void unused) {
                 super.onPostExecute(unused);
             }
         }
-        }
-
-        /**/
     }
-
+    /**/
 }
 
 
