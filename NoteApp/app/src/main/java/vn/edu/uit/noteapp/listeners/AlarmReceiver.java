@@ -107,14 +107,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     /* This function doesn't work */
     public void removeReminder(int position){
-        class RemoverReminder extends AsyncTask<Void, Void, List<Note>>{
+        class RemoverReminder extends AsyncTask<Void, Void, Void>{
             @Override
-            protected List<Note> doInBackground(Void... voids) {
-                List<Note> ListNote = (List<Note>) NotesDatabase
-                        .getNotesDatabase(context)
-                        .noteDao()
-                        .getReminderNote().remove(position);
-                return ListNote;
+            protected Void doInBackground(Void... voids) {
+
+                return null;
             }
         }
 
