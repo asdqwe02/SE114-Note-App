@@ -262,7 +262,7 @@ public class Notebook_Screen extends AppCompatActivity implements NotebooksListe
                     if (name.matches("")) {
                         Toast.makeText(Notebook_Screen.this, "Please enter your notebook name", Toast.LENGTH_SHORT).show();
                     } else {
-//                            item_model.add(new Model_Item_Notebook_screen(editName.getText().toString()));
+                        // item_model.add(new Model_Item_Notebook_screen(editName.getText().toString()));
                         //save Notebook
                         SaveNotebook(notebook);
                         dialog.dismiss();

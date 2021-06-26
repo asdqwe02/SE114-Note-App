@@ -95,8 +95,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                     //**//remove note from the reminder table
                     notesList.get(i).setReminder(false);
+                    notesList.get(i).setReminderTime("");
+                    notesList.get(i).setReminderDate("");
                     Listnotes.remove(i);
-                    removeReminder(notesList.get(i));
+                    Note_screen temp = new Note_screen(notesList.get(i));
+                    temp.saveNote_V2_FromOutside(context);
                 }
             }
         }
@@ -110,22 +113,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     /* This function doesn't work */
     public void removeReminder(Note note) {
-        note.setReminder(false);
         note.setReminderDate("");
         note.setReminderTime("");
-        final Note tempNote = note;
-        class RemoverReminder extends AsyncTask<Void, Void, Void> {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                Note_screen tempNoteClass = new Note_screen(note);
 
-                return null;
-            }
-            @Override
-            protected void onPostExecute(Void unused) {
-                super.onPostExecute(unused);
-            }
-        }
     }
     /**/
 }
