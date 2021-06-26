@@ -116,7 +116,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             @Override
             protected Void doInBackground(Void... voids) {
                 Note_screen tempNoteClass = new Note_screen(note);
-                tempNoteClass.save
                 return null;
             }
 
