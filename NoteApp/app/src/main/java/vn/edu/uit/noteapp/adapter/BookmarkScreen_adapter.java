@@ -53,7 +53,6 @@ public class BookmarkScreen_adapter extends RecyclerView.Adapter<BookmarkScreen_
         return data.size();
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView bookmark_name;
         private ImageButton threepoints_ic;

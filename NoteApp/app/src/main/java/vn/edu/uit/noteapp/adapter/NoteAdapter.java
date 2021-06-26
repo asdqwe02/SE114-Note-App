@@ -103,7 +103,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         holder.LayoutDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(NoteAdapter.this.title == 0) {
+                if (NoteAdapter.this.title == 0
+                        || NoteAdapter.this.title == 1
+                        || NoteAdapter.this.title == 2) {
                     Intent intent = new Intent(context, Note_screen.class);
                     intent.putExtra("isViewOrUpdate", true);
                     intent.putExtra("note", notes.get(position));
@@ -112,11 +114,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 }
 
 
-                if (NoteAdapter.this.title == 3){
+                if (NoteAdapter.this.title == 3) {
                     Intent intent = new Intent(context, Note_screen.class);
                     intent.putExtra("Delete Reminder", true);
-                    intent.putExtra("note",notes.get(position));
-                    intent.putExtra("SwipeToelete", true);
+
+                    intent.putExtra("note", notes.get(position));
+                    intent.putExtra("SwipeToDelete", true);
                     context.startActivity(intent);
                 }
             }
@@ -129,7 +132,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             public void onClick(View v) {
                 Intent intent = new Intent(context, Note_screen.class);
                 intent.putExtra("Edit Reminder", true);
-                intent.putExtra("note",notes.get(position));
+                intent.putExtra("note", notes.get(position));
                 intent.putExtra("SwipeToEdit", true);
                 context.startActivity(intent);
             }
@@ -219,10 +222,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             }
 
             /**/
-            if(NoteAdapter.this.title == 0 || NoteAdapter.this.title == 1 || NoteAdapter.this.title == 2){
-                LayoutEdit.setVisibility(View.GONE);
-            } else {
+
+            if (NoteAdapter.this.title == 3) {
                 LayoutEdit.setVisibility(View.VISIBLE);
+            } else {
+                LayoutEdit.setVisibility(View.GONE);
             }
         }
 

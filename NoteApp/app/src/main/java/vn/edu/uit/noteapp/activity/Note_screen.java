@@ -490,7 +490,27 @@ public class Note_screen extends AppCompatActivity implements
         }
         new SaveNoteTask().execute();
     }
+    public void saveNote_V2_FromOutside(Context outsideContext){
+        final Note note;
+        if (alreadyAvailableNote!=null)
+            note = alreadyAvailableNote;
+        else return;
+        class SaveNoteTask extends AsyncTask<Void, Void, Void> {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                NotesDatabase.getNotesDatabase(outsideContext).noteDao().insertNote(note);
+                return null;
+            }
 
+            @Override
+            protected void onPostExecute(Void aVoids) {
+                super.onPostExecute(aVoids);
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent); //return ra result code after activity end by saving
+            }
+        }
+        new SaveNoteTask().execute();
+    }
     private void loadNote_V2() {
         title_Text.setText(alreadyAvailableNote.getTitle());
         note_Text.setText(alreadyAvailableNote.getNoteText());
@@ -686,7 +706,7 @@ public class Note_screen extends AppCompatActivity implements
         //open bottomsheet add notebook
         Bottom_Sheet_Add_Notebook bottomsheet = new Bottom_Sheet_Add_Notebook(item_model, new NotebooksListener() {
             @Override
-            public void OnNotebookClicked(Model_Item_Notebook_screen notebook, int position) {
+            public void OnNotebookClicked(Model_Item_Notebook_screen notebook, int position,boolean update) {
                 if (alreadyAvailableNote.getNotebook().equals("")) {
                     Toast.makeText(Note_screen.this, notebook.getItem_name(), Toast.LENGTH_SHORT).show();
                     alreadyAvailableNote.setNotebook(notebook.getItem_name());

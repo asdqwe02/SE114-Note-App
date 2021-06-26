@@ -58,7 +58,7 @@ public class Adapter_For_AddNotebook extends RecyclerView.Adapter<Adapter_For_Ad
             @Override
             public void onClick(View v) {
                 title_text = item.getItem_name();
-                listener.OnNotebookClicked(item_model.get(position),position);
+                listener.OnNotebookClicked(item_model.get(position),position,false);
             }
     });
     }

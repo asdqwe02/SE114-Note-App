@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +25,7 @@ import java.util.List;
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.adapter.Adapter_For_AddNotebook;
 import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
-import vn.edu.uit.noteapp.listeners.NotebooksDatabase;
+import vn.edu.uit.noteapp.entities.NotebooksDatabase;
 import vn.edu.uit.noteapp.listeners.NotebooksListener;
 
 import static android.app.Activity.RESULT_OK;
@@ -39,6 +40,8 @@ public class Bottom_Sheet_Add_Notebook  extends BottomSheetDialogFragment {
     NotebooksListener listener;
     Adapter_For_AddNotebook adapter;
     RecyclerView recyclerView;
+    //tẽtview show No Notebook
+    TextView No_Noteebook;
     public Bottom_Sheet_Add_Notebook(ArrayList<Model_Item_Notebook_screen> item_model, NotebooksListener listener){
         this.item_model = item_model;
         this.listener = listener;
@@ -52,21 +55,25 @@ public class Bottom_Sheet_Add_Notebook  extends BottomSheetDialogFragment {
         View v = LayoutInflater.from(getContext()).inflate(R.layout.bottomsheet_addnotebook,null);
         bottomSheetDialog.setContentView(v);
         RecyclerView recyclerView = v.findViewById(R.id.bottomsheet_addnotebook);
+        No_Noteebook = v.findViewById(R.id.No_Noteebook_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
         adapter = new Adapter_For_AddNotebook(getContext(), item_model, new NotebooksListener() {
             @Override
-            public void OnNotebookClicked(Model_Item_Notebook_screen notebook, int position) {
-                listener.OnNotebookClicked(notebook , position);
+            public void OnNotebookClicked(Model_Item_Notebook_screen notebook, int position,boolean update) {
+                listener.OnNotebookClicked(notebook , position,false);
             }
 
         });
-        recyclerView.setAdapter(adapter);
         getNotebooks(REQUEST_CODE_SHOW_NOTEBOOKS, false);
+        recyclerView.setAdapter(adapter);
+        //Show textview
+
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
         return bottomSheetDialog;
+
     }
     @SuppressLint("StaticFileLeak")
     public void getNotebooks(final int requestCode, final boolean isNotebookDeleted) {
@@ -82,6 +89,7 @@ public class Bottom_Sheet_Add_Notebook  extends BottomSheetDialogFragment {
             protected void onPostExecute(List<Model_Item_Notebook_screen> notebook) {
                 super.onPostExecute(notebook);
                 Log.d("MY_NOTEBOOK", notebook.toString());
+
                 if (requestCode == REQUEST_CODE_SHOW_NOTEBOOKS) {
                     item_model.addAll(notebook);
                     adapter.notifyDataSetChanged();
@@ -96,11 +104,14 @@ public class Bottom_Sheet_Add_Notebook  extends BottomSheetDialogFragment {
                     } else{
                         item_model.add(notebookClickedPosition, notebook.get(notebookClickedPosition));
                         adapter.notifyItemChanged(notebookClickedPosition);
-
                     }
 
                 }
-
+                if(adapter.getItemCount() == 0)
+                {
+                    Log.d("notebook_item_count",  String.valueOf(adapter.getItemCount()));
+                    No_Noteebook.setVisibility(View.VISIBLE);
+                }
             }
         }
         new GetNotebookTask().execute();
