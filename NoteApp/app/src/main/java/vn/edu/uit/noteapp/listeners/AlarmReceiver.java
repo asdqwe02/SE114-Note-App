@@ -11,9 +11,14 @@ import android.os.AsyncTask;
 
 import androidx.core.app.NotificationCompat;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import javax.xml.transform.Result;
 
 import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.activity.Note_screen;
@@ -25,28 +30,30 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     /**/
     Note note;
+    Context context;
     List<Note> notesList = new ArrayList<>();
-
     public AlarmReceiver(Note note) {
         this.note = note;
     }
 
     public AlarmReceiver() {
     }
+
+    public int ID;
     //
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        int flag;
-
-        /**/
         class GetNotefromNotification extends AsyncTask<Void, Void, List<Note>> {
+            /**/
+            final Note note = new Note();
             @Override
             protected List<Note> doInBackground(Void... voids) {
                 return NotesDatabase
                         .getNotesDatabase(context)
-                        .noteDao().getReminderNote();
+                        .noteDao()
+                        .getReminderNote();
             }
 
             @Override
@@ -60,16 +67,14 @@ public class AlarmReceiver extends BroadcastReceiver {
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-                // Create an Intent for the activity you want to start
+                // Set reminder activity at an intent activity when the notification is clicked
                 Intent reminderIntent = new Intent(context, Reminder_screen.class);
 
                 /*Set sound notification*/
                 Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
                 for (int i = 0; i < 1; i++) {
 
-                    PendingIntent reminderPendingIntent = PendingIntent.getActivity(
-                            context, notesList.get(i).getId(), reminderIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent reminderPendingIntent = PendingIntent.getActivity(context, notesList.get(i).getId(), reminderIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                     NotificationCompat.Builder builderNotification = new NotificationCompat.Builder(context, Note_screen.CHANNEL_ID)
                             .setContentIntent(reminderPendingIntent)
@@ -83,27 +88,41 @@ public class AlarmReceiver extends BroadcastReceiver {
                             .setGroup(GROUP_KEY_EASYNOTE)
                             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL)
                             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-
                     notificationManager.notify(getNotificationID(), builderNotification.build());
 
-                    //Delete the reminder note that has been notified
+                    //**//remove note from the reminder table
                     notesList.get(i).setReminder(false);
+                    Listnotes.remove(i);
+                    removeReminder(i);
                 }
             }
-
         }
         new GetNotefromNotification().execute();
-
     }
 
+    //This function is used to pick a random id for notification
     private int getNotificationID() {
         return (int) new Date().getTime();
     }
 
+    /* This function doesn't work */
+    public void removeReminder(int position){
+        class RemoverReminder extends AsyncTask<Void, Void, List<Note>>{
+            @Override
+            protected List<Note> doInBackground(Void... voids) {
+                List<Note> ListNote = (List<Note>) NotesDatabase
+                        .getNotesDatabase(context)
+                        .noteDao()
+                        .getReminderNote().remove(position);
+                return ListNote;
+            }
+        }
+
+        /**/
+    }
+
 }
 
-
-//App ko chạy notification test debug để tìm lỗi
 
 //Build attribute for the notification
 //        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Note_screen.CHANNEL_ID)

@@ -94,7 +94,7 @@ public class Note_screen extends AppCompatActivity implements
     LinearLayout Add_CRI_Views;
     TextView noteDateTime, timeReminder, dateReminder;
     /****/
-
+    final Calendar calendar = Calendar.getInstance();
     //
     private boolean reminder;
     private int mDay, mMonth, mYear, mHour, mMinute;
@@ -251,7 +251,6 @@ public class Note_screen extends AppCompatActivity implements
     /*--------------------function to call date picker dialog--------------------------*/
 
     private void pickDate() {
-        final Calendar calendar = Calendar.getInstance();
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
         mMonth = calendar.get(Calendar.MONTH);
         mYear = calendar.get(Calendar.YEAR);
@@ -262,7 +261,10 @@ public class Note_screen extends AppCompatActivity implements
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        calendar.set(year, month, dayOfMonth);
+                        //calendar.set(year, month, dayOfMonth);
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                         dateReminder.setText(simpleDateFormat.format(calendar.getTime()));
                         pickTime();
@@ -274,8 +276,6 @@ public class Note_screen extends AppCompatActivity implements
     /*--------------------function to call time picker dialog--------------------------*/
 
     public void pickTime() {
-
-        Calendar calendar = Calendar.getInstance();
         mMinute = calendar.get(Calendar.MINUTE);
         mHour = calendar.get(Calendar.HOUR_OF_DAY);
 
@@ -303,10 +303,6 @@ public class Note_screen extends AppCompatActivity implements
                         alreadyAvailableNote.setReminder(reminder);
                         saveNote_V2();
 
-                        /**/
-//                        alarmManager.setRepeating(
-//                                AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),
-//                                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
                         alarmManager.setExact(AlarmManager.RTC_WAKEUP,
                                 calendar.getTimeInMillis(), pendingIntent);
 

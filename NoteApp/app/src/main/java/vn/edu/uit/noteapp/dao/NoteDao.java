@@ -21,7 +21,7 @@ public interface NoteDao {
     @Query("SELECT * FROM notes WHERE Notebook = :name ORDER BY ID DESC")
     List<Note> getNotebookNote(String name);
 
-    @Query("SELECT * FROM notes WHERE reminder = 1 ORDER BY ID DESC")
+    @Query("SELECT * FROM notes WHERE reminder = 1 ORDER BY reminder_Time ASC")
     List<Note> getReminderNote();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -29,4 +29,5 @@ public interface NoteDao {
 
     @Delete
     void deleteNote(Note note);
+
 }
