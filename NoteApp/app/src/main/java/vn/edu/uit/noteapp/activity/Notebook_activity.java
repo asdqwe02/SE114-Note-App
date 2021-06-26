@@ -1,4 +1,4 @@
-package vn.edu.uit.noteapp;
+package vn.edu.uit.noteapp.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -17,6 +17,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.activity.Note_screen;
 import vn.edu.uit.noteapp.adapter.BookmarkScreen_adapter;
 import vn.edu.uit.noteapp.adapter.NoteAdapter;

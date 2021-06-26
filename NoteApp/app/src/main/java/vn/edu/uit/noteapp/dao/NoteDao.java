@@ -21,14 +21,13 @@ public interface NoteDao {
     @Query("SELECT * FROM notes WHERE Notebook = :name ORDER BY ID DESC")
     List<Note> getNotebookNote(String name);
 
-    //query to select reminder_note
-    @Query("SELECT * FROM notes WHERE reminder = 1 ORDER BY ID DESC")
+    @Query("SELECT * FROM notes WHERE reminder = 1 ORDER BY reminder_Time ASC")
     List<Note> getReminderNote();
-    //end
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNote(Note note);
 
     @Delete
     void deleteNote(Note note);
+
 }

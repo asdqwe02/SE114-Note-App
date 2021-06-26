@@ -31,7 +31,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.uit.noteapp.Notebook_activity;
+
+
 import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.entities.Note;
 import vn.edu.uit.noteapp.entities.NotebooksDatabase;
@@ -39,6 +40,7 @@ import vn.edu.uit.noteapp.R;
 import vn.edu.uit.noteapp.data.Model_Item_Notebook_screen;
 import vn.edu.uit.noteapp.adapter.Notebookscreen_recyclerview_adapter;
 import vn.edu.uit.noteapp.listeners.NotebooksListener;
+
 
 public class Notebook_Screen extends AppCompatActivity implements NotebooksListener {
     public static final int REQUEST_CODE_ADD_NOTEBOOK = 1;
@@ -260,7 +262,7 @@ public class Notebook_Screen extends AppCompatActivity implements NotebooksListe
                     if (name.matches("")) {
                         Toast.makeText(Notebook_Screen.this, "Please enter your notebook name", Toast.LENGTH_SHORT).show();
                     } else {
-//                            item_model.add(new Model_Item_Notebook_screen(editName.getText().toString()));
+                        // item_model.add(new Model_Item_Notebook_screen(editName.getText().toString()));
                         //save Notebook
                         SaveNotebook(notebook);
                         dialog.dismiss();

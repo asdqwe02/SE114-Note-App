@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -33,7 +35,7 @@ import vn.edu.uit.noteapp.listeners.NotesListener;
 import vn.edu.uit.noteapp.util.MyItemTouchHelper;
 
 public class Reminder_screen extends AppCompatActivity implements NotesListener{
-    ArrayList<Note> notesList;
+    List<Note> notesList;
     NoteAdapter noteAdapter;
     RecyclerView recyclerView;
     boolean refresh;
@@ -93,7 +95,6 @@ public class Reminder_screen extends AppCompatActivity implements NotesListener{
                         notesList.add(noteClickedPosition, notes.get(noteClickedPosition));
                         noteAdapter.notifyItemChanged(noteClickedPosition);
                     }
-
                 }
 
             }

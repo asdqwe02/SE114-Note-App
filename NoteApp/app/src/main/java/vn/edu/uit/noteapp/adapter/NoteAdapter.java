@@ -117,6 +117,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 if (NoteAdapter.this.title == 3) {
                     Intent intent = new Intent(context, Note_screen.class);
                     intent.putExtra("Delete Reminder", true);
+
                     intent.putExtra("note", notes.get(position));
                     intent.putExtra("SwipeToDelete", true);
                     context.startActivity(intent);
@@ -169,8 +170,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             imageNoteContainer = itemView.findViewById(R.id.imageNoteContainer);
             rDate = itemView.findViewById(R.id.remindDate);
             rTime = itemView.findViewById(R.id.remindTime);
-
-            /**/
             swipeRevealLayout = itemView.findViewById(R.id.swipeRevealLayout);
             LayoutDelete = itemView.findViewById(R.id.layout_delete);
             LayoutEdit = itemView.findViewById(R.id.layout_edit);
@@ -180,8 +179,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             tilteText.setText(note.getTitle());
             if (note.getNoteText().trim().isEmpty()) {
                 noteContentText.setVisibility(itemView.GONE);
-            } else if (note.getNoteText().trim().isEmpty() == false
-                    && (NoteAdapter.this.title == 1 || NoteAdapter.this.title == 2)) {
+            } else if (NoteAdapter.this.title == 1 || NoteAdapter.this.title == 2 ||
+                    NoteAdapter.this.title==3) {
                 noteContentText.setVisibility(itemView.GONE);
             } else {
                 noteContentText.setText(note.getNoteText());
@@ -223,6 +222,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             }
 
             /**/
+
             if (NoteAdapter.this.title == 3) {
                 LayoutEdit.setVisibility(View.VISIBLE);
             } else {
