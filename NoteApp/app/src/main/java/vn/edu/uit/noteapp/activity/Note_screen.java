@@ -404,7 +404,11 @@ public class Note_screen extends AppCompatActivity implements
                 Open_Bottom_Sheet_Setting();
                 return true;
             case android.R.id.home:
-                finish();
+                if (!title_Text.getText().toString().isEmpty()){
+                Sync_EditText_With_CheckBox_RecyclerView();
+                saveNote_V2();
+                }
+                else finish();
                 return true;
             case R.id.SaveNote:
                 Sync_EditText_With_CheckBox_RecyclerView();
@@ -863,8 +867,10 @@ public class Note_screen extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         // your code.
-        Sync_EditText_With_CheckBox_RecyclerView();
-        saveNote_V2();
+        if (!title_Text.getText().toString().isEmpty()){
+            Sync_EditText_With_CheckBox_RecyclerView();
+            saveNote_V2();
+        }
         super.onBackPressed();
     }
 
