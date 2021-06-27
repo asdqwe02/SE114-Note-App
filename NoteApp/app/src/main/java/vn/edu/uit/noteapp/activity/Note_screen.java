@@ -224,18 +224,18 @@ public class Note_screen extends AppCompatActivity implements
             }
         }
 
-        if(getIntent().getBooleanExtra("Delete Reminder", false)){
-            alreadyAvailableNote = (Note)getIntent().getSerializableExtra("note");
+        if (getIntent().getBooleanExtra("Delete Reminder", false)) {
+            alreadyAvailableNote = (Note) getIntent().getSerializableExtra("note");
             loadNote_V2();
-            if (getIntent().getBooleanExtra("SwipeToDelete",false)){
+            if (getIntent().getBooleanExtra("SwipeToDelete", false)) {
                 deleteReminder();
             }
         }
 
-        if(getIntent().getBooleanExtra("Edit Reminder", false)){
-            alreadyAvailableNote = (Note)getIntent().getSerializableExtra("note");
+        if (getIntent().getBooleanExtra("Edit Reminder", false)) {
+            alreadyAvailableNote = (Note) getIntent().getSerializableExtra("note");
             loadNote_V2();
-            if (getIntent().getBooleanExtra("SwipeToEdit",false)){
+            if (getIntent().getBooleanExtra("SwipeToEdit", false)) {
                 pickDate();
             }
         }
@@ -312,7 +312,7 @@ public class Note_screen extends AppCompatActivity implements
     }
 
     /**/
-    private void createNotificationChannel(){
+    private void createNotificationChannel() {
         CharSequence name = "reminder channel";
         String description = "Easy note";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -324,11 +324,11 @@ public class Note_screen extends AppCompatActivity implements
         }
     }
 
-    public int getNoteID(){
+    public int getNoteID() {
         return alreadyAvailableNote.getId();
     }
 
-    public void cancelAlarm(){
+    public void cancelAlarm() {
         //alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
 //        if (alarmManager != null) {
@@ -388,7 +388,9 @@ public class Note_screen extends AppCompatActivity implements
     public void Open_Bottom_Sheet_Setting() {
         Note_Screen_Bottom_Sheet_Setting bottomSheet = new Note_Screen_Bottom_Sheet_Setting();
         Bundle bundle = new Bundle();
-        bundle.putBoolean("Bookmarked",alreadyAvailableNote.isBookmark());
+        if (alreadyAvailableNote != null)
+            bundle.putBoolean("Bookmarked", alreadyAvailableNote.isBookmark());
+        else bundle.putBoolean("Bookmarked", false);
         bottomSheet.setArguments(bundle);
         bottomSheet.show(getSupportFragmentManager(), "Note_Screen_bottomSheetSetting");
     }
@@ -407,11 +409,10 @@ public class Note_screen extends AppCompatActivity implements
                 Open_Bottom_Sheet_Setting();
                 return true;
             case android.R.id.home:
-                if (!title_Text.getText().toString().isEmpty()){
-                Sync_EditText_With_CheckBox_RecyclerView();
-                saveNote_V2();
-                }
-                else finish();
+                if (!title_Text.getText().toString().isEmpty()) {
+                    Sync_EditText_With_CheckBox_RecyclerView();
+                    saveNote_V2();
+                } else finish();
                 return true;
             case R.id.SaveNote:
                 Sync_EditText_With_CheckBox_RecyclerView();
@@ -497,9 +498,10 @@ public class Note_screen extends AppCompatActivity implements
         }
         new SaveNoteTask().execute();
     }
-    public void saveNote_V2_FromOutside(Context outsideContext){
+
+    public void saveNote_V2_FromOutside(Context outsideContext) {
         final Note note;
-        if (alreadyAvailableNote!=null)
+        if (alreadyAvailableNote != null)
             note = alreadyAvailableNote;
         else return;
         class SaveNoteTask extends AsyncTask<Void, Void, Void> {
@@ -518,6 +520,7 @@ public class Note_screen extends AppCompatActivity implements
         }
         new SaveNoteTask().execute();
     }
+
     private void loadNote_V2() {
         title_Text.setText(alreadyAvailableNote.getTitle());
         note_Text.setText(alreadyAvailableNote.getNoteText());
@@ -625,8 +628,8 @@ public class Note_screen extends AppCompatActivity implements
     }
 
     /**/
-    public void deleteReminder(){
-        if (alreadyAvailableNote.isReminder()==true){
+    public void deleteReminder() {
+        if (alreadyAvailableNote.isReminder() == true) {
             reminder = false;
             alreadyAvailableNote.setReminder(reminder);
             Intent intent = new Intent(Note_screen.this, Reminder_screen.class);
@@ -713,7 +716,7 @@ public class Note_screen extends AppCompatActivity implements
         //open bottomsheet add notebook
         Bottom_Sheet_Add_Notebook bottomsheet = new Bottom_Sheet_Add_Notebook(item_model, new NotebooksListener() {
             @Override
-            public void OnNotebookClicked(Model_Item_Notebook_screen notebook, int position,boolean update) {
+            public void OnNotebookClicked(Model_Item_Notebook_screen notebook, int position, boolean update) {
                 if (alreadyAvailableNote.getNotebook().equals("")) {
                     Toast.makeText(Note_screen.this, notebook.getItem_name(), Toast.LENGTH_SHORT).show();
                     alreadyAvailableNote.setNotebook(notebook.getItem_name());
@@ -870,7 +873,7 @@ public class Note_screen extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         // your code.
-        if (!title_Text.getText().toString().isEmpty()){
+        if (!title_Text.getText().toString().isEmpty()) {
             Sync_EditText_With_CheckBox_RecyclerView();
             saveNote_V2();
         }
