@@ -387,6 +387,9 @@ public class Note_screen extends AppCompatActivity implements
 
     public void Open_Bottom_Sheet_Setting() {
         Note_Screen_Bottom_Sheet_Setting bottomSheet = new Note_Screen_Bottom_Sheet_Setting();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("Bookmarked",alreadyAvailableNote.isBookmark());
+        bottomSheet.setArguments(bundle);
         bottomSheet.show(getSupportFragmentManager(), "Note_Screen_bottomSheetSetting");
     }
 

@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,8 +47,10 @@ public class Note_Screen_Bottom_Sheet_Setting extends BottomSheetDialogFragment 
 
     Button add_to_bookmark;
     Button add_to_notebook;
+    boolean bookmarked;
 
     //Bottom Sheet SharedPreferences
+
     public static final String BOTTOM_SHEET_SHARE_PREFS="shareadPreferences";
     public static final String[] BOTTOM_SHEET_COlOR_BUTTON= new String[6];
     public boolean bottom_sheet_color_button[]=new boolean[6];
@@ -171,6 +174,12 @@ public class Note_Screen_Bottom_Sheet_Setting extends BottomSheetDialogFragment 
         });
         //end of edit
 
+        bookmarked=this.getArguments().getBoolean("Bookmarked");
+        Log.d("BottomSheet_BookMark", "onCreateView: bookmark=" +bookmarked );
+        if (bookmarked) {
+            add_to_bookmark.setText("        Un-Bookmark This Note");
+            add_to_bookmark.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bookmark_remove, 0, 0, 0);
+        }
         sync_bottomSheet_colorButton_With_noteScreen();
         return v;
     }
