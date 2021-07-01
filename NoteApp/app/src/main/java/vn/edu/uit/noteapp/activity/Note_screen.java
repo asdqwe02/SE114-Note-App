@@ -387,11 +387,19 @@ public class Note_screen extends AppCompatActivity implements
 
     public void Open_Bottom_Sheet_Setting() {
         Note_Screen_Bottom_Sheet_Setting bottomSheet = new Note_Screen_Bottom_Sheet_Setting();
-        Bundle bundle = new Bundle();
-        if (alreadyAvailableNote != null)
-            bundle.putBoolean("Bookmarked", alreadyAvailableNote.isBookmark());
-        else bundle.putBoolean("Bookmarked", false);
-        bottomSheet.setArguments(bundle);
+        Bundle bundleBookmark = new Bundle();
+        Bundle bundleReminder = new Bundle();
+        if (alreadyAvailableNote != null){
+            bundleBookmark.putBoolean("Bookmarked", alreadyAvailableNote.isBookmark());
+            bundleReminder.putBoolean("Remindered", alreadyAvailableNote.isReminder());
+        }
+        else {
+            bundleBookmark.putBoolean("Bookmarked", false);
+            bundleReminder.putBoolean("Reminder", false);
+        }
+        bottomSheet.setArguments(bundleBookmark);
+        bottomSheet.setArguments(bundleReminder);
+
         bottomSheet.show(getSupportFragmentManager(), "Note_Screen_bottomSheetSetting");
     }
 
