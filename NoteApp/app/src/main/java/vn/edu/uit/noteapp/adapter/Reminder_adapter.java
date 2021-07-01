@@ -35,9 +35,9 @@ public class Reminder_adapter extends RecyclerView.Adapter<Reminder_adapter.View
         private TextView tv_time;
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_title = itemView.findViewById(R.id.item_name);
-            tv_date = itemView.findViewById(R.id.tv_date);
-            tv_time = itemView.findViewById(R.id.tv_time);
+            tv_title = itemView.findViewById(R.id.noteTitle);
+            tv_date = itemView.findViewById(R.id.remindDate);
+            tv_time = itemView.findViewById(R.id.remindTime);
         }
 
         void setReminder (Reminders reminders) {

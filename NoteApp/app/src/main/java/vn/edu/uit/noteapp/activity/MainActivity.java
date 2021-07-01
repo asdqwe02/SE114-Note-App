@@ -228,12 +228,6 @@ public class MainActivity extends AppCompatActivity implements
                 intent = new Intent(MainActivity.this, Setting_Screen.class);
                 startActivity(intent);
                 break;
-
-            //link to feedback screen
-            case R.id.nav_feedback:
-                intent = new Intent(MainActivity.this, Feedback_activity.class);
-                startActivity(intent);
-                break;
         }
         return true;
     }

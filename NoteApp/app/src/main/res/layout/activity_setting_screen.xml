@@ -53,37 +53,14 @@
                     android:textColor="@color/text_color"
                     android:layout_marginBottom="5dp"/>
 
-                <Switch
-                    android:id="@+id/swnotionly"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:theme="@style/SwitchTheme"
-                    android:text="@string/only_notifications"
-                    android:textColor="@color/text_color"
-                    android:layout_marginBottom="5dp"/>
-
-                <Switch
-                    android:id="@+id/swsoundonly"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:theme="@style/SwitchTheme"
-                    android:text="@string/only_sounds"
-                    android:textColor="@color/text_color"
-                    android:layout_marginBottom="5dp"/>
-
-                <Switch
-                    android:id="@+id/swbothnoti"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:theme="@style/SwitchTheme"
-                    android:text="@string/both_notifications_and_sounds"
-                    android:textColor="@color/text_color"
-                    android:layout_marginBottom="5dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"/>
+
+
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
