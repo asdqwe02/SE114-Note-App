@@ -86,7 +86,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 app:cardCornerRadius="7dp"
@@ -96,25 +96,27 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     >
 
                     <View
                         android:id="@+id/view"
                         android:layout_width="7dp"
-                        android:layout_height="60dp"
+                        android:layout_height="55dp"
                         android:layout_marginRight="5dp"
                         android:background="@color/blue_light" />
 
                     <TextView
                         android:id="@+id/noteTitle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Hello text"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/text_color"
-                        android:textSize="24sp"
-                        android:layout_marginTop="3dp"
+                        android:textSize="16sp"
+                        android:maxLines="1"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/ubuntu_medium"
                         />
 
 
@@ -127,7 +129,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_toRightOf="@+id/view"
                         android:text="21/2/2022"
-                        android:textSize="16sp"/>
+                        android:textSize="13sp"/>
 
                     <TextView
                         android:id="@+id/remindTime"
@@ -137,7 +139,7 @@
                         android:layout_toRightOf="@+id/remindDate"
                         android:paddingLeft="10dp"
                         android:layout_marginTop="5dp"
-                        android:textSize="16sp"
+                        android:textSize="13sp"
                         android:text="10.00 P.M" />
 
                 </RelativeLayout>
