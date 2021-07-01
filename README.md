@@ -42,7 +42,7 @@ Hệ quản trị cơ sở dữ liệu: SQLite thông qua Room Database
 ![Bookmark screen](https://user-images.githubusercontent.com/62055305/123032699-9b991c00-d410-11eb-9425-1f3324332e3d.JPG)
 ##### Màn hình Reminder
 ![Reminder light](https://user-images.githubusercontent.com/62055305/124143074-03a4cd80-dab5-11eb-8000-83ad6a83d04f.JPG)
-![Reminder dark](https://user-images.githubusercontent.com/62055305/124143077-04d5fa80-dab5-11eb-8f89-bd8aa4657c5e.JPG)
+![Reminder dark](https://user-images.githubusercontent.com/62055305/124143416-4c5c8680-dab5-11eb-8cf6-951c4ae84569.JPG)
 ##### Màn hình Setting
 ![Setting screen](https://user-images.githubusercontent.com/62055305/124143044-fd165600-dab4-11eb-8bdb-bca82c39b9bc.JPG)
 ![Setting screen dark](https://user-images.githubusercontent.com/62055305/124143052-fee01980-dab4-11eb-88f3-1df6b9c6bb15.JPG)
