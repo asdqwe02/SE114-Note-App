@@ -100,7 +100,7 @@ public class Note_screen extends AppCompatActivity implements
     private int mDay, mMonth, mYear, mHour, mMinute;
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
-
+    int rYear,rMonth,rDayOfMonth;
 
     public ArrayList<Checkbox_recyclerview_items> checkboxRecyclerviewItems = new ArrayList<>();
 
@@ -262,11 +262,15 @@ public class Note_screen extends AppCompatActivity implements
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         //calendar.set(year, month, dayOfMonth);
+                        rYear=year;
+                        rMonth=month;
+                        rDayOfMonth=dayOfMonth;
                         calendar.set(Calendar.YEAR, year);
                         calendar.set(Calendar.MONTH, month);
                         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                         dateReminder.setText(simpleDateFormat.format(calendar.getTime()));
+                        Log.d("calendarSet", "onDateSet: " + "butt"+ calendar.getTime().toString());
                         pickTime();
                     }
                 }, mYear, mMonth, mDay);
@@ -297,15 +301,15 @@ public class Note_screen extends AppCompatActivity implements
                         calendar.setTimeInMillis(System.currentTimeMillis());
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         calendar.set(Calendar.MINUTE, minute);
-
+                        calendar.set(Calendar.YEAR, rYear);
+                        calendar.set(Calendar.MONTH, rMonth);
+                        calendar.set(Calendar.DAY_OF_MONTH, rDayOfMonth);
                         timeReminder.setText(simpleDateFormat.format(calendar.getTime()));
                         reminder = true;
                         alreadyAvailableNote.setReminder(reminder);
-                        saveNote_V2();
-
                         alarmManager.setExact(AlarmManager.RTC_WAKEUP,
                                 calendar.getTimeInMillis(), pendingIntent);
-
+                        saveNote_V2();
                     }
                 }, mHour, mMinute, true);
         timePickerDialog.show();
