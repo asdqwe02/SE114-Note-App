@@ -27,7 +27,8 @@ Hệ quản trị cơ sở dữ liệu: SQLite thông qua Room Database
 ##### Màn hình tìm kiếm
 ![Search Note Screen](https://user-images.githubusercontent.com/62055305/123032317-f2eabc80-d40f-11eb-855d-d7f363a06dbf.JPG)
 ##### Màn hình Navigation
-![navigate screen](https://user-images.githubusercontent.com/62055305/123032965-21b56280-d411-11eb-8a78-7de5395fa468.JPG)
+![navigate screen](https://user-images.githubusercontent.com/62055305/124143188-1c14e800-dab5-11eb-8124-4e3f04b801c4.JPG)
+![navigate screen dark](https://user-images.githubusercontent.com/62055305/124143196-1d461500-dab5-11eb-9fec-dab38fbb1401.JPG)
 ##### Màn hình Note và các customization của note
 ![Normal note](https://user-images.githubusercontent.com/62055305/123032588-5f65bb80-d410-11eb-956c-47fb254e32d6.JPG)
 ![Note Bottomsheet](https://user-images.githubusercontent.com/62055305/123032372-072eb980-d410-11eb-8169-1e6df86cac51.JPG) \
@@ -39,9 +40,12 @@ Hệ quản trị cơ sở dữ liệu: SQLite thông qua Room Database
 ![Inside 1 Notebook](https://user-images.githubusercontent.com/62055305/123032774-bf5c6200-d410-11eb-999a-cea2054f3029.JPG)
 ##### Màn hình Bookmark
 ![Bookmark screen](https://user-images.githubusercontent.com/62055305/123032699-9b991c00-d410-11eb-9425-1f3324332e3d.JPG)
+##### Màn hình Reminder
+![Reminder light](https://user-images.githubusercontent.com/62055305/124143074-03a4cd80-dab5-11eb-8000-83ad6a83d04f.JPG)
+![Reminder dark](https://user-images.githubusercontent.com/62055305/124143416-4c5c8680-dab5-11eb-8cf6-951c4ae84569.JPG)
 ##### Màn hình Setting
-![Setting screen](https://user-images.githubusercontent.com/62055305/123032786-c4211600-d410-11eb-895f-36e34f2c128a.JPG)
-![Setting screen dark](https://user-images.githubusercontent.com/62055305/123032814-d733e600-d410-11eb-9253-67b57102e718.JPG)
+![Setting screen](https://user-images.githubusercontent.com/62055305/124143044-fd165600-dab4-11eb-8bdb-bca82c39b9bc.JPG)
+![Setting screen dark](https://user-images.githubusercontent.com/62055305/124143052-fee01980-dab4-11eb-88f3-1df6b9c6bb15.JPG)
 ## Môi trường phát triển và triển khai
 ### Môi trường phát triển
 * Hệ điều hành: Microsoft Windows 10
