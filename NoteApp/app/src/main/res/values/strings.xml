@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Note App</string>
+    <string name="app_name">Easy Note</string>
 
     <string name="app_label">EASY NOTE</string>
     <string name="search_hint">Search your note </string>
