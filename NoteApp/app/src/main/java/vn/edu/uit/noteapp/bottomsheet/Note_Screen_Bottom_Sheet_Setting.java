@@ -41,15 +41,13 @@ public class Note_Screen_Bottom_Sheet_Setting extends BottomSheetDialogFragment 
     Button whiteButton;
     Button moveNoteToTrashButton;
     Button addReminder;
-
-    //variable for reminder
+    boolean remindered;
     private int mDay,mMonth, mYear, mHour, mMinute;
 
     Button add_to_bookmark;
     Button add_to_notebook;
     boolean bookmarked;
 
-    //Bottom Sheet SharedPreferences
 
     public static final String BOTTOM_SHEET_SHARE_PREFS="shareadPreferences";
     public static final String[] BOTTOM_SHEET_COlOR_BUTTON= new String[6];
@@ -164,20 +162,22 @@ public class Note_Screen_Bottom_Sheet_Setting extends BottomSheetDialogFragment 
             }
         });
 
-        //start edit the add reminder function
-        //if click the menu make the app crash edit this section
         addReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.OnBottomSheet_ButtonClicked("Add reminder");
             }
         });
-        //end of edit
+
+        remindered = this.getArguments().getBoolean("Remindered");
+        if(remindered){
+            addReminder.setText("        Remove reminder");
+        }
 
         bookmarked=this.getArguments().getBoolean("Bookmarked");
         Log.d("BottomSheet_BookMark", "onCreateView: bookmark=" +bookmarked );
         if (bookmarked) {
-            add_to_bookmark.setText("        Un-Bookmark This Note");
+            add_to_bookmark.setText("        Remove bookmark This Note");
             add_to_bookmark.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bookmark_remove, 0, 0, 0);
         }
         sync_bottomSheet_colorButton_With_noteScreen();

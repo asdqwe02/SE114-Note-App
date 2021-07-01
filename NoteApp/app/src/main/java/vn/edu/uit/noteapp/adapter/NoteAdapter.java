@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.zip.Inflater;
 
 import vn.edu.uit.noteapp.activity.MainActivity;
 import vn.edu.uit.noteapp.activity.Note_screen;
@@ -76,30 +77,60 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @NonNull
     @Override
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new NoteViewHolder(
-                LayoutInflater.from(parent.getContext()).inflate(
-                        R.layout.note_container,
-                        parent,
-                        false
-                )
-        );
+
+        View view;
+
+        if (NoteAdapter.this.title == 3) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.reminder_row,parent, false);
+        }
+        else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_container, parent, false);
+        }
+
+        return new NoteViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         holder.setNote(notes.get(position));
-        holder.NoteContainerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notesListener.onNoteClicked(notes.get(position), position);
-                notes.get(position).getId();
-            }
-        });
-        viewBinderHelper.setOpenOnlyOne(true);
-        viewBinderHelper.bind(holder.swipeRevealLayout, String.valueOf(notes.get(position).getId()));
+        if (NoteAdapter.this.title==3){
+            holder.ReminderContainerLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    notesListener.onNoteClicked(notes.get(position), position);
+                    //notes.get(position).getId();
+                }
+            });
+            viewBinderHelper.setOpenOnlyOne(true);
 
-        //demo delete note in main with swipe;
-        // note: main and bookmark should have the same delete
+            holder.LayoutEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, Note_screen.class);
+                    intent.putExtra("Edit Reminder", true);
+                    intent.putExtra("note", notes.get(position));
+                    intent.putExtra("SwipeToEdit", true);
+                    context.startActivity(intent);
+                }
+            });
+
+
+        }
+
+        else{
+            holder.NoteContainerLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    notesListener.onNoteClicked(notes.get(position), position);
+                    notes.get(position).getId();
+                }
+            });
+            viewBinderHelper.setOpenOnlyOne(true);
+            viewBinderHelper.bind(holder.swipeRevealLayout, String.valueOf(notes.get(position).getId()));
+
+        }
+
+        // crash when click to reminder screen because of these function
         holder.LayoutDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,10 +154,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                     context.startActivity(intent);
                 }
             }
-
         });
 
-        //
         holder.LayoutEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,6 +166,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 context.startActivity(intent);
             }
         });
+
     }
 
     @Override
@@ -151,82 +181,97 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
 
     public class NoteViewHolder extends RecyclerView.ViewHolder {
-        TextView tilteText, noteContentText, noteDateTimeText, rDate, rTime;
-        LinearLayout NoteContainerLayout;
+        TextView titleText, noteContentText, noteDateTimeText, rDate, rTime;
+        LinearLayout NoteContainerLayout, LayoutDelete, LayoutEdit, ReminderContainerLayout;
+        SwipeRevealLayout swipeRevealLayout;
         RoundedImageView imageNoteContainer;
 
-        /**/
-        SwipeRevealLayout swipeRevealLayout;
-        LinearLayout LayoutDelete;
-        LinearLayout LayoutEdit;
-
-
-        public NoteViewHolder(@NonNull View itemView) {
+        public NoteViewHolder(@NonNull  View itemView) {
             super(itemView);
-            tilteText = itemView.findViewById(R.id.noteTitle);
-            noteContentText = itemView.findViewById(R.id.noteTextContent);
-            noteDateTimeText = itemView.findViewById(R.id.noteDateTimeText);
-            NoteContainerLayout = itemView.findViewById(R.id.note_container_layout);
-            imageNoteContainer = itemView.findViewById(R.id.imageNoteContainer);
+            titleText = itemView.findViewById(R.id.noteTitle);
             rDate = itemView.findViewById(R.id.remindDate);
             rTime = itemView.findViewById(R.id.remindTime);
-            swipeRevealLayout = itemView.findViewById(R.id.swipeRevealLayout);
-            LayoutDelete = itemView.findViewById(R.id.layout_delete);
-            LayoutEdit = itemView.findViewById(R.id.layout_edit);
+
+//            if(NoteAdapter.this.title == 0){
+//                NoteContainerLayout = itemView.findViewById(R.id.note_container_layout);
+//                imageNoteContainer = itemView.findViewById(R.id.imageNoteContainer);
+//                swipeRevealLayout = itemView.findViewById(R.id.swipeRevealLayout);
+//                LayoutDelete = itemView.findViewById(R.id.layout_delete);
+//                LayoutEdit = itemView.findViewById(R.id.layout_edit);
+//                noteContentText = itemView.findViewById(R.id.noteTextContent);
+//                noteDateTimeText = itemView.findViewById(R.id.noteDateTimeText);
+//            }
+
+            if(NoteAdapter.this.title == 3){
+                ReminderContainerLayout = itemView.findViewById(R.id.reminder_container);
+                swipeRevealLayout = itemView.findViewById(R.id.swipeRevealLayout);
+                LayoutDelete = itemView.findViewById(R.id.layout_delete);
+                LayoutEdit = itemView.findViewById(R.id.layout_edit);
+            }
+
+            else {
+                NoteContainerLayout = itemView.findViewById(R.id.note_container_layout);
+                imageNoteContainer = itemView.findViewById(R.id.imageNoteContainer);
+                swipeRevealLayout = itemView.findViewById(R.id.swipeRevealLayout);
+                LayoutDelete = itemView.findViewById(R.id.layout_delete);
+                LayoutEdit = itemView.findViewById(R.id.layout_edit);
+                noteContentText = itemView.findViewById(R.id.noteTextContent);
+                noteDateTimeText = itemView.findViewById(R.id.noteDateTimeText);
+            }
         }
 
-        public void setNote(Note note) {
-            tilteText.setText(note.getTitle());
-            if (note.getNoteText().trim().isEmpty()) {
-                noteContentText.setVisibility(itemView.GONE);
-            } else if (NoteAdapter.this.title == 1 || NoteAdapter.this.title == 2 ||
-                    NoteAdapter.this.title==3) {
-                noteContentText.setVisibility(itemView.GONE);
-            } else {
-                noteContentText.setText(note.getNoteText());
-            }
-            noteDateTimeText.setText(note.getDateTime());
-            /*----*/
+
+        public void setNote(Note note){
+            titleText.setText(note.getTitle());
             rDate.setText(note.getReminderDate());
             rTime.setText(note.getReminderTime());
 
-            GradientDrawable gradientDrawable = (GradientDrawable) NoteContainerLayout.getBackground();
-            if (note.getColor() != null) {
-                String note_screen_color = note.getColor();
-                if (note_screen_color.equals("#FAFAFA")
-                        || note_screen_color.equals("#303030")
-                        || note_screen_color.equals("#FFFFFF")) {
-                    int currentNightMode = noteContentText.getContext().getResources().getConfiguration().uiMode
-                            & Configuration.UI_MODE_NIGHT_MASK;
-                    switch (currentNightMode) {
-                        case Configuration.UI_MODE_NIGHT_NO:
-                            gradientDrawable.setColor(Color.parseColor("#FFFFFF"));
-                            break;
-                        case Configuration.UI_MODE_NIGHT_YES:
-                            gradientDrawable.setColor(Color.parseColor("#303030"));
-                            break;
-                    }
-                } else gradientDrawable.setColor(Color.parseColor(note.getColor()));
-            } else {
-                gradientDrawable.setColor(Color.parseColor("#00FFFFFF"));
+            if(NoteAdapter.this.title == 3) {
+
             }
+            //Home screen adapter & bookmark adapter
+            else {
+                if (note.getNoteText().trim().isEmpty()){
+                    noteContentText.setVisibility(View.GONE);
+                }else{noteContentText.setText(note.getNoteText());}
+                noteDateTimeText.setText(note.getDateTime());
 
-            /**/
-            if (note.getImagePath() != null && NoteAdapter.this.title == 0) {
-                imageNoteContainer.setImageBitmap(BitmapFactory.decodeFile(note.getImagePath()));
-                imageNoteContainer.setVisibility(View.VISIBLE);
-            } else if (note.getImagePath() != null && (note.isBookmark() == true || note.isReminder() == true)) {
-                imageNoteContainer.setVisibility(View.GONE);
-            } else {
-                imageNoteContainer.setVisibility(View.GONE);
-            }
 
-            /**/
+                //set color for each item
+                GradientDrawable gradientDrawable = (GradientDrawable) NoteContainerLayout.getBackground();
+                if (note.getColor() != null) {
+                    String note_screen_color = note.getColor();
+                    if (note_screen_color.equals("#FAFAFA")
+                            || note_screen_color.equals("#303030")
+                            || note_screen_color.equals("#FFFFFF")) {
+                        int currentNightMode = noteContentText.getContext().getResources().getConfiguration().uiMode
+                                & Configuration.UI_MODE_NIGHT_MASK;
+                        switch (currentNightMode) {
+                            case Configuration.UI_MODE_NIGHT_NO:
+                                gradientDrawable.setColor(Color.parseColor("#FFFFFF"));
+                                break;
+                            case Configuration.UI_MODE_NIGHT_YES:
+                                gradientDrawable.setColor(Color.parseColor("#303030"));
+                                break;
+                        }
+                    } else gradientDrawable.setColor(Color.parseColor(note.getColor()));
+                } else {
+                    gradientDrawable.setColor(Color.parseColor("#00FFFFFF"));
+                }
 
-            if (NoteAdapter.this.title == 3) {
-                LayoutEdit.setVisibility(View.VISIBLE);
-            } else {
+                //set image for the note which has image
+                if (note.getImagePath() != null) {
+                    imageNoteContainer.setImageBitmap(BitmapFactory.decodeFile(note.getImagePath()));
+                    imageNoteContainer.setVisibility(View.VISIBLE);
+                } else {
+                    imageNoteContainer.setVisibility(View.GONE);
+                }
                 LayoutEdit.setVisibility(View.GONE);
+
+                if(NoteAdapter.this.title == 1 || NoteAdapter.this.title==2){
+                    imageNoteContainer.setVisibility(View.GONE);
+                    noteContentText.setVisibility(View.GONE);
+                }
             }
         }
 

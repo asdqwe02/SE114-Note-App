@@ -5,12 +5,16 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 
 import androidx.core.app.NotificationCompat;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -28,8 +32,6 @@ import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.entities.Note;
 
 public class AlarmReceiver extends BroadcastReceiver {
-
-    /**/
     Note note;
     Context context;
     List<Note> notesList = new ArrayList<>();
@@ -40,9 +42,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     public AlarmReceiver() {
     }
-
-    public int ID;
-    //
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -79,24 +78,68 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                     PendingIntent reminderPendingIntent = PendingIntent.getActivity(context, notesList.get(i).getId(), reminderIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                    NotificationCompat.Builder builderNotification = new NotificationCompat.Builder(context, Note_screen.CHANNEL_ID)
-                            .setContentIntent(reminderPendingIntent)
-                            .setSmallIcon(R.mipmap.ic_easy_note)
-                            .setContentTitle(notesList.get(i).getTitle())
-                            .setContentText(notesList.get(i).getNoteText())
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                            .setAutoCancel(true)
-                            .setSound(alarmSound)
-                            .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                            .setGroup(GROUP_KEY_EASYNOTE)
-                            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL)
-                            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-                    notificationManager.notify(getNotificationID(), builderNotification.build());
+                    if(notesList.get(i).getNoteText() != null) {
+                        NotificationCompat.Builder builderNotification = new NotificationCompat.Builder(context, Note_screen.CHANNEL_ID)
+                                .setContentIntent(reminderPendingIntent)
+                                .setSmallIcon(R.mipmap.ic_easy_note)
+                                .setContentTitle(notesList.get(i).getTitle())
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                .setAutoCancel(true)
+                                .setStyle(new NotificationCompat.BigTextStyle()
+                                        .bigText(notesList.get(i).getNoteText()))
+                                .setSound(alarmSound)
+                                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                                .setGroup(GROUP_KEY_EASYNOTE)
+                                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL)
+                                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+                        notificationManager.notify(getNotificationID(), builderNotification.build());
+                    }
+//                    if (notesList.get(i).getImagePath() != null){
+//                        File sd = Environment.getExternalStorageDirectory();
+//                        File image = new File(sd + notesList.get(i).getImagePath(), "");
+//
+//                        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//                        Bitmap bitmap = BitmapFactory.decodeFile(image.getPath(), bmOptions);
+//                        bitmap = Bitmap.createScaledBitmap(bitmap, 300, 250, true);
+//
+//                        NotificationCompat.Builder builderNotification = new NotificationCompat.Builder(context, Note_screen.CHANNEL_ID)
+//                                .setContentIntent(reminderPendingIntent)
+//                                .setSmallIcon(R.mipmap.ic_easy_note)
+//                                .setContentTitle(notesList.get(i).getTitle())
+//                                .setContentText(notesList.get(i).getNoteText())
+//                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                                .setAutoCancel(true)
+//                                .setLargeIcon(Bitmap.createBitmap(bitmap))
+//                                .setStyle(new NotificationCompat.BigPictureStyle()
+//                                .bigPicture(bitmap)
+//                                .bigLargeIcon(bitmap))
+//                                .setSound(alarmSound)
+//                                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+//                                .setGroup(GROUP_KEY_EASYNOTE)
+//                                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL)
+//                                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+//                        notificationManager.notify(getNotificationID(), builderNotification.build());
+//                    }
+                    else {
+                        NotificationCompat.Builder builderNotification = new NotificationCompat.Builder(context, Note_screen.CHANNEL_ID)
+                                .setContentIntent(reminderPendingIntent)
+                                .setSmallIcon(R.mipmap.ic_easy_note)
+                                .setContentTitle(notesList.get(i).getTitle())
+                                .setContentText(notesList.get(i).getNoteText())
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                .setAutoCancel(true)
+                                .setSound(alarmSound)
+                                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                                .setGroup(GROUP_KEY_EASYNOTE)
+                                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL)
+                                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+                        notificationManager.notify(getNotificationID(), builderNotification.build());
+                    }
 
                     //**//remove note from the reminder table
                     notesList.get(i).setReminder(false);
                     notesList.get(i).setReminderTime("");
-                    notesList.get(i).setReminderDate("");
+                    notesList.get(i).setReminderDate("no");
                     Listnotes.remove(i);
                     Note_screen temp = new Note_screen(notesList.get(i));
                     temp.saveNote_V2_FromOutside(context);
@@ -110,29 +153,4 @@ public class AlarmReceiver extends BroadcastReceiver {
     private int getNotificationID() {
         return (int) new Date().getTime();
     }
-
-    /* This function doesn't work */
-    public void removeReminder(Note note) {
-        note.setReminderDate("");
-        note.setReminderTime("");
-
-    }
-    /**/
 }
-
-
-//Build attribute for the notification
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Note_screen.CHANNEL_ID)
-//                .setContentIntent(reminderPendingIntent)
-//                .setSmallIcon(R.mipmap.ic_easy_note)
-//                .setContentTitle("Note title")
-//                .setContentText("You are having an upcoming activity! Click here for more information")
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//                .setAutoCancel(true)
-//                .setSound(alarmSound)
-//                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-//                .setGroup(GROUP_KEY_EASYNOTE)
-//                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL)
-//                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-//
-//        notificationManager.notify(getNotificationID(), builder.build());
