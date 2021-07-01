@@ -81,9 +81,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         View view;
 
         if (NoteAdapter.this.title == 3) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.reminder_row,parent, false);
-        }
-        else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.reminder_row, parent, false);
+        } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_container, parent, false);
         }
 
@@ -93,14 +92,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         holder.setNote(notes.get(position));
-        if (NoteAdapter.this.title==3){
-            holder.ReminderContainerLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    notesListener.onNoteClicked(notes.get(position), position);
-                    //notes.get(position).getId();
-                }
-            });
+        if (NoteAdapter.this.title == 3) {
+            //Reminder don't need to be able to edit the note contents
+//            holder.ReminderContainerLayout.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    notesListener.onNoteClicked(notes.get(position), position);
+//                    //notes.get(position).getId();
+//                }
+//            });
             viewBinderHelper.setOpenOnlyOne(true);
 
             holder.LayoutEdit.setOnClickListener(new View.OnClickListener() {
@@ -111,13 +111,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                     intent.putExtra("note", notes.get(position));
                     intent.putExtra("SwipeToEdit", true);
                     context.startActivity(intent);
+
                 }
             });
 
 
-        }
-
-        else{
+        } else {
             holder.NoteContainerLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -185,8 +184,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         LinearLayout NoteContainerLayout, LayoutDelete, LayoutEdit, ReminderContainerLayout;
         SwipeRevealLayout swipeRevealLayout;
         RoundedImageView imageNoteContainer;
+        View rView;
 
-        public NoteViewHolder(@NonNull  View itemView) {
+        public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
             titleText = itemView.findViewById(R.id.noteTitle);
             rDate = itemView.findViewById(R.id.remindDate);
@@ -202,14 +202,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 //                noteDateTimeText = itemView.findViewById(R.id.noteDateTimeText);
 //            }
 
-            if(NoteAdapter.this.title == 3){
+            if (NoteAdapter.this.title == 3) {
                 ReminderContainerLayout = itemView.findViewById(R.id.reminder_container);
                 swipeRevealLayout = itemView.findViewById(R.id.swipeRevealLayout);
+                rView = itemView.findViewById(R.id.view);
                 LayoutDelete = itemView.findViewById(R.id.layout_delete);
                 LayoutEdit = itemView.findViewById(R.id.layout_edit);
-            }
-
-            else {
+            } else {
                 NoteContainerLayout = itemView.findViewById(R.id.note_container_layout);
                 imageNoteContainer = itemView.findViewById(R.id.imageNoteContainer);
                 swipeRevealLayout = itemView.findViewById(R.id.swipeRevealLayout);
@@ -221,19 +220,25 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         }
 
 
-        public void setNote(Note note){
+        public void setNote(Note note) {
             titleText.setText(note.getTitle());
             rDate.setText(note.getReminderDate());
             rTime.setText(note.getReminderTime());
 
-            if(NoteAdapter.this.title == 3) {
-
+            if (NoteAdapter.this.title == 3) {
+                if (note.getColor().equals("#FAFAFA")
+                        || note.getColor().equals("#FFFFFF")
+                        || note.getColor().equals("#303030")) {
+                    rView.setBackgroundColor(Color.parseColor("#3490DA"));
+                } else rView.setBackgroundColor(Color.parseColor(note.getColor()));
             }
             //Home screen adapter & bookmark adapter
             else {
-                if (note.getNoteText().trim().isEmpty()){
+                if (note.getNoteText().trim().isEmpty()) {
                     noteContentText.setVisibility(View.GONE);
-                }else{noteContentText.setText(note.getNoteText());}
+                } else {
+                    noteContentText.setText(note.getNoteText());
+                }
                 noteDateTimeText.setText(note.getDateTime());
 
 
@@ -268,7 +273,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 }
                 LayoutEdit.setVisibility(View.GONE);
 
-                if(NoteAdapter.this.title == 1 || NoteAdapter.this.title==2){
+                if (NoteAdapter.this.title == 1 || NoteAdapter.this.title == 2) {
                     imageNoteContainer.setVisibility(View.GONE);
                     noteContentText.setVisibility(View.GONE);
                 }
