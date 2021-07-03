@@ -78,14 +78,15 @@ public class MainActivity extends AppCompatActivity implements
         /*------------Hooks------------*/
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.bringToFront();
         img_menuBTN = (ImageButton) findViewById(R.id.imgbtn_menu);
-
         img_menuBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigationView.bringToFront();
+                //navigationView.bringToFront();
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START);
+                    navigationView.setCheckedItem(R.id.nav_home);
                 } else {
                     drawerLayout.openDrawer(GravityCompat.START);
                 }
@@ -182,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onBackPressed() {
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
+            navigationView.setCheckedItem(R.id.nav_home);
         } else{
             super.onBackPressed();
         }
@@ -201,8 +203,10 @@ public class MainActivity extends AppCompatActivity implements
         switch (menuItem.getItemId()) {
                 //Link notes screen (home screen)
             case R.id.nav_home:
-                Intent i = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(i);
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
                 break; //because we are already in note screen
 
                 //link to bookmark screen
