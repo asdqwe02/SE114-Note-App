@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
+import vn.edu.uit.noteapp.bottomsheet.Bottom_Sheet_Notebookscreen;
 import vn.edu.uit.noteapp.database.NotesDatabase;
 import vn.edu.uit.noteapp.entities.Note;
 import vn.edu.uit.noteapp.entities.NotebooksDatabase;
@@ -42,7 +42,8 @@ import vn.edu.uit.noteapp.adapter.Notebookscreen_recyclerview_adapter;
 import vn.edu.uit.noteapp.listeners.NotebooksListener;
 
 
-public class Notebook_Screen extends AppCompatActivity implements NotebooksListener {
+public class Notebook_Screen extends AppCompatActivity implements NotebooksListener,
+        Bottom_Sheet_Notebookscreen.NoteBookBottomSheetListener {
     public static final int REQUEST_CODE_ADD_NOTEBOOK = 1;
     public static final int REQUEST_CODE_UPDATE_NOTEBOOK = 2;
     public static final int REQUEST_CODE_SHOW_NOTEBOOKS = 3;
@@ -186,6 +187,7 @@ public class Notebook_Screen extends AppCompatActivity implements NotebooksListe
                     item_model.add(0, notebook.get(0));
                     recycler_adapter.notifyItemInserted(0);
                     recyclerView.smoothScrollToPosition(0);
+                    refreshNotebookData();
                 } else if (requestCode == REQUEST_CODE_UPDATE_NOTEBOOK) {
                     item_model.remove(notebookClickedPosition);
                     if (isNotebookDeleted) {
@@ -271,7 +273,7 @@ public class Notebook_Screen extends AppCompatActivity implements NotebooksListe
 
                        /*Rename every note that have notebook.getItem_name() in it and
                         change it into the new notebook name*/
-                        final Context notebookContext=getApplicationContext();
+                        final Context notebookContext = getApplicationContext();
                         class RenameNoteBookInNoteTask extends AsyncTask<Void, Void, List<Note>> {
                             @Override
                             protected List<Note> doInBackground(Void... voids) {
@@ -279,6 +281,7 @@ public class Notebook_Screen extends AppCompatActivity implements NotebooksListe
                                         .getNotesDatabase(getApplicationContext())
                                         .noteDao().getNotebookNote(notebook.getItem_name());
                             }
+
                             @Override
                             protected void onPostExecute(List<Note> notes) {
                                 super.onPostExecute(notes);
@@ -296,13 +299,22 @@ public class Notebook_Screen extends AppCompatActivity implements NotebooksListe
             dialog.show();
         }
     }
-
-
     private void refreshNotebookData() {
         item_model.clear();
         recycler_adapter = new Notebookscreen_recyclerview_adapter(this, item_model, this);
         recyclerView.setAdapter(recycler_adapter);
-        getNotebooks(REQUEST_CODE_ADD_NOTEBOOK, false);
+        getNotebooks(REQUEST_CODE_SHOW_NOTEBOOKS, false);
+    }
+    private void reloadActivity(){
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
     }
 
+    @Override
+    public void onDeleteButtonClick(Boolean deleted) {
+        if (deleted)
+            refreshNotebookData();
+    }
 }

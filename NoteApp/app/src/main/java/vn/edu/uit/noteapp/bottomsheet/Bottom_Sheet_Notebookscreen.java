@@ -1,10 +1,12 @@
 package vn.edu.uit.noteapp.bottomsheet;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -20,6 +22,7 @@ public class Bottom_Sheet_Notebookscreen extends BottomSheetDialogFragment {
     ArrayList<Model_Item_Notebook_screen> item_model;
     private int position;
     private Button remove,rename;
+    private NoteBookBottomSheetListener mListener;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -30,8 +33,9 @@ public class Bottom_Sheet_Notebookscreen extends BottomSheetDialogFragment {
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter.remove();
-                adapter.deleteNotebook(position);
+                adapter.remove(position);
+                mListener.onDeleteButtonClick(true);
+//                adapter.deleteNotebook(position);
                 Bottom_Sheet_Notebookscreen.this.dismiss();
                 }
             });
@@ -51,5 +55,20 @@ public class Bottom_Sheet_Notebookscreen extends BottomSheetDialogFragment {
     {
         this.position = position;
         this.adapter = adapter;
+    }
+    public interface NoteBookBottomSheetListener{
+        void onDeleteButtonClick(Boolean deleted);
+
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (NoteBookBottomSheetListener) context;
+        } catch (ClassCastException e) {
+            throw  new ClassCastException(context.toString()
+                    +"must implement BottomSheetListener");
+        }
     }
 }

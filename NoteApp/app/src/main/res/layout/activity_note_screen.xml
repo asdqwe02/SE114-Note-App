@@ -59,7 +59,8 @@
                 android:layout_marginTop="5dp"
                 android:text="date time"
                 android:fontFamily="@font/ubuntu_medium"
-                android:textColor="@color/blue_light" />
+                android:textColor="@color/blue_light"
+                />
             <View
                 android:id="@+id/normal_view"
                 android:layout_width="50dp"

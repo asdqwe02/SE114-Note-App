@@ -300,6 +300,7 @@ public class Note_screen extends AppCompatActivity implements
 
                         calendar.setTimeInMillis(System.currentTimeMillis());
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        Log.d("checkDateSet", "onTimeSet: " + calendar.getTime());
                         calendar.set(Calendar.MINUTE, minute);
                         calendar.set(Calendar.YEAR, rYear);
                         calendar.set(Calendar.MONTH, rMonth);

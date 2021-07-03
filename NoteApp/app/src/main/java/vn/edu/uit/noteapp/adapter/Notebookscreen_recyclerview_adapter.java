@@ -3,6 +3,7 @@ package vn.edu.uit.noteapp.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +89,8 @@ public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<No
         return item_model.size();
     }
 
-    public void remove() {
+    public void remove(int position) {
+        Log.d("notebookRem", "remove pos: " + position);
         class DeleteNoteBookTask extends AsyncTask<Void, Void, Void> {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -102,6 +104,7 @@ public class Notebookscreen_recyclerview_adapter extends RecyclerView.Adapter<No
                 super.onPostExecute(aVoid);
                 Intent intent = new Intent();
                 intent.putExtra("isNoteDeleted", true);
+
             }
         }
         new DeleteNoteBookTask().execute();
