@@ -25,6 +25,7 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -190,9 +191,20 @@ public class Note_screen extends AppCompatActivity implements
         Add_CRI_Btton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Add_CRI();
+                Add_CRI(Add_CRI_Etext.getText().toString());
             }
         });
+        Add_CRI_Etext.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+                    Add_CRI(Add_CRI_Etext.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
+
 
         findViewById(R.id.imageRemoveImage).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -368,14 +380,14 @@ public class Note_screen extends AppCompatActivity implements
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    public void Add_CRI() {
+    public void Add_CRI(String text) {
         int position = checkboxRecyclerviewItems.size();
-        checkboxRecyclerviewItems.add(position, new Checkbox_recyclerview_items(Add_CRI_Etext.getText().toString(), false));
+        checkboxRecyclerviewItems.add(position, new Checkbox_recyclerview_items(text, false));
         Add_CRI_Etext.setText("");
         mAdapter.notifyItemInserted(position);
-
         /*Reuse code in Sync_EditText_With_CheckBox_RecyclerView() to update the recycler view
          this shit is dumb as fuck but it work, it does make the file bloated tho*/
+//
         ArrayList<Checkbox_recyclerview_items> tempCRI_List = new ArrayList<>();
         tempCRI_List = mAdapter.getCri_LIST();
         String lines[] = new String[tempCRI_List.size()];

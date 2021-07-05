@@ -1,6 +1,7 @@
 package vn.edu.uit.noteapp.adapter;
 
 import android.content.Context;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,6 @@ public class Checkbox_recyclerview_adapter extends RecyclerView.Adapter<Checkbox
             super(itemView);
             checkBox=itemView.findViewById(R.id.recycler_checkbox);
             checkBox_EditText=itemView.findViewById(R.id.checkbox_edittext);
-
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

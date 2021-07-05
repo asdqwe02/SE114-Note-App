@@ -33,6 +33,7 @@
             android:layout_height="35dp"
             android:layout_marginTop="4dp"
             android:hint="Text here"
+            android:singleLine="true"
             android:paddingTop="2dp" />
     </LinearLayout>
 
