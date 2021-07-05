@@ -16,4 +16,5 @@ public class Checkbox_recyclerview_items {
     {
         return checkbox_editText;
     }
+    public void set_checkbox_edittext(String edittext){checkbox_editText=edittext;}
 }
